@@ -1,19 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    olÀ
-</body>
-</html><!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>🍽️ Cardápio Escolar - Administração</title>
+    <title>🔵 Cardápio Escolar - Administração</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <style>
         * {
@@ -24,7 +14,7 @@
         }
 
         body {
-            background: linear-gradient(145deg, #f0ebe4 0%, #e2d7cb 100%);
+            background: linear-gradient(145deg, #dce6f5 0%, #b3c9e8 100%);
             min-height: 100vh;
             padding: 2rem 1.5rem;
             display: flex;
@@ -33,18 +23,18 @@
         }
 
         .container {
-            max-width: 900px;
+            max-width: 960px;
             width: 100%;
         }
 
         /* Cards */
         .card {
-            background: #fffffffa;
+            background: #eaf1fd;
             backdrop-filter: blur(2px);
             border-radius: 32px;
             padding: 2rem 2.2rem;
-            box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.2);
-            border: 1px solid rgba(255, 245, 235, 0.5);
+            box-shadow: 0 20px 40px -12px rgba(0, 40, 80, 0.25);
+            border: 1px solid rgba(70, 130, 200, 0.25);
             margin-bottom: 2rem;
             transition: 0.2s;
         }
@@ -59,7 +49,7 @@
             display: flex;
             align-items: center;
             gap: 0.8rem;
-            border-bottom: 3px dashed #d9c8b2;
+            border-bottom: 3px dashed #7a9fd4;
             padding-bottom: 0.8rem;
             margin-bottom: 1.8rem;
             flex-wrap: wrap;
@@ -67,8 +57,8 @@
 
         .card-header i {
             font-size: 2rem;
-            color: #c77d3a;
-            background: #f3e8dc;
+            color: #1a4b8c;
+            background: #c5d8f0;
             padding: 0.4rem 0.7rem;
             border-radius: 50%;
         }
@@ -76,44 +66,65 @@
         .card-header h2 {
             font-size: 1.6rem;
             font-weight: 600;
-            color: #3d2c1e;
+            color: #0a2a5c;
         }
 
         .card-header .badge {
             margin-left: auto;
-            background: #efe4d8;
+            background: #b8cce6;
             padding: 0.2rem 1rem;
             border-radius: 40px;
             font-size: 0.8rem;
-            color: #4d3827;
+            color: #103a6b;
         }
 
         /* Admin - área de gerenciamento */
+        .admin-section {
+            background: #dae6f7;
+            border-radius: 20px;
+            padding: 1.2rem 1.5rem;
+            margin-bottom: 1.2rem;
+            border: 1px solid #7a9fd4;
+        }
+
+        .admin-section h3 {
+            color: #0a2a5c;
+            font-size: 1rem;
+            margin-bottom: 0.6rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .admin-section h3 i {
+            color: #1a4b8c;
+        }
+
         .admin-row {
             display: flex;
             flex-wrap: wrap;
             gap: 0.8rem;
-            margin-bottom: 1rem;
+            margin-bottom: 0.8rem;
         }
 
         .admin-row input {
-            flex: 2 1 200px;
-            padding: 0.8rem 1.2rem;
-            border: 1px solid #d5c2b0;
+            flex: 2 1 180px;
+            padding: 0.7rem 1.2rem;
+            border: 2px solid #7a9fd4;
             border-radius: 60px;
-            font-size: 1rem;
+            font-size: 0.95rem;
             background: white;
             outline: none;
             transition: 0.2s;
         }
 
         .admin-row input:focus {
-            border-color: #b56e32;
-            box-shadow: 0 0 0 3px rgba(183, 106, 43, 0.15);
+            border-color: #1a4b8c;
+            box-shadow: 0 0 0 3px rgba(26, 75, 140, 0.2);
         }
 
         .admin-row button {
-            padding: 0.8rem 1.8rem;
+            padding: 0.7rem 1.6rem;
             border: none;
             border-radius: 60px;
             font-weight: 600;
@@ -122,64 +133,77 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
         }
 
         .btn-add {
-            background: #ba7b46;
+            background: #1a4b8c;
             color: white;
-            box-shadow: 0 4px 10px rgba(144, 85, 36, 0.25);
+            box-shadow: 0 4px 10px rgba(26, 75, 140, 0.3);
         }
         .btn-add:hover {
-            background: #a86830;
+            background: #0f3a70;
             transform: scale(1.02);
         }
 
-        .btn-remove {
-            background: #d1b9a6;
-            color: #3d2c1e;
+        .btn-reset {
+            background: #5a7fb0;
+            color: white;
         }
-        .btn-remove:hover {
-            background: #c0a48b;
+        .btn-reset:hover {
+            background: #3d6290;
         }
 
-        .btn-danger {
+        .btn-remover-item {
+            background: #b0c8e5;
+            color: #0a2a5c;
+            border: none;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.15s;
+        }
+        .btn-remover-item:hover {
             background: #c0392b;
             color: white;
         }
-        .btn-danger:hover {
-            background: #a93226;
-        }
 
-        /* Lista de opções */
+        /* Lista de opções (tags) */
         .opcoes-lista {
             display: flex;
             flex-wrap: wrap;
-            gap: 0.7rem;
-            margin-top: 0.8rem;
-            min-height: 50px;
+            gap: 0.6rem;
+            margin-top: 0.5rem;
+            min-height: 40px;
         }
 
         .opcao-tag {
-            background: #f3e8dc;
-            padding: 0.5rem 1.2rem;
+            background: white;
+            padding: 0.4rem 1rem 0.4rem 1.2rem;
             border-radius: 60px;
             display: inline-flex;
             align-items: center;
-            gap: 10px;
-            border: 1px solid #d5c2b0;
+            gap: 8px;
+            border: 2px solid #7a9fd4;
             font-weight: 500;
-            color: #3d2c1e;
+            color: #0a2a5c;
+            font-size: 0.9rem;
         }
 
         .opcao-tag button {
             background: transparent;
             border: none;
-            color: #8b5a3a;
+            color: #4a6f9e;
             cursor: pointer;
             font-size: 1rem;
             padding: 0 2px;
             transition: 0.15s;
+            display: flex;
+            align-items: center;
         }
         .opcao-tag button:hover {
             color: #c0392b;
@@ -187,20 +211,20 @@
         }
 
         .empty-msg {
-            color: #8a7766;
+            color: #4a6f9e;
             font-style: italic;
-            padding: 0.5rem 0;
+            padding: 0.3rem 0;
         }
 
-        /* Formulário para alunos (prato dinâmico) */
+        /* Formulário para alunos */
         .opcoes-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 0.9rem;
-            background: #fcf9f5;
+            gap: 0.8rem;
+            background: #dae6f7;
             padding: 1.2rem;
             border-radius: 28px;
-            border: 1px solid #e5d6c6;
+            border: 1px solid #7a9fd4;
         }
 
         .opcao-item {
@@ -208,20 +232,20 @@
             align-items: center;
             gap: 10px;
             background: white;
-            padding: 0.7rem 1rem 0.7rem 1.2rem;
+            padding: 0.6rem 1rem 0.6rem 1.2rem;
             border-radius: 60px;
-            border: 1px solid #dbcbba;
+            border: 2px solid #b0c8e5;
             transition: 0.15s;
             cursor: pointer;
         }
 
         .opcao-item:hover {
-            background: #f6efe7;
-            border-color: #b9855a;
+            background: #eaf1fd;
+            border-color: #1a4b8c;
         }
 
         .opcao-item input[type="radio"] {
-            accent-color: #b8692a;
+            accent-color: #1a4b8c;
             width: 1.1rem;
             height: 1.1rem;
             flex-shrink: 0;
@@ -230,95 +254,163 @@
 
         .opcao-item label {
             font-weight: 500;
-            color: #2d241b;
+            color: #0a2a5c;
             cursor: pointer;
             flex: 1;
+            font-size: 0.95rem;
         }
 
         .opcao-item i {
-            color: #a5764b;
+            color: #1a4b8c;
             margin-right: 2px;
         }
 
         .opcao-item:has(input:checked) {
-            background: #efe3d6;
-            border-color: #b06d30;
-            box-shadow: 0 0 0 1px #b06d30;
+            background: #b8cce6;
+            border-color: #1a4b8c;
+            box-shadow: 0 0 0 2px #1a4b8c;
         }
 
-        /* outros campos */
-        .row-dupla {
+        /* Campos editáveis (acompanhamentos e proteínas) */
+        .campos-editaveis {
             display: flex;
             flex-wrap: wrap;
             gap: 1.5rem;
-            background: #fcf9f5;
+            background: #dae6f7;
             padding: 1.5rem;
             border-radius: 28px;
-            border: 1px solid #e5d6c6;
+            border: 1px solid #7a9fd4;
         }
 
-        .row-dupla .campo {
-            flex: 1 1 180px;
+        .campos-editaveis .campo {
+            flex: 1 1 200px;
         }
 
         .campo label {
             display: block;
-            font-weight: 500;
-            color: #4b3826;
+            font-weight: 600;
+            color: #0a2a5c;
             margin-bottom: 6px;
             font-size: 0.95rem;
         }
 
-        .campo select,
-        .campo input {
+        .campo select {
             width: 100%;
             padding: 0.7rem 1rem;
             background: white;
-            border: 1px solid #d5c2b0;
+            border: 2px solid #7a9fd4;
             border-radius: 60px;
             font-size: 0.95rem;
-            color: #2c1f14;
+            color: #0a2a5c;
             outline: none;
             transition: 0.2s;
+            cursor: pointer;
         }
 
-        .campo select:focus,
-        .campo input:focus {
-            border-color: #b56e32;
-            box-shadow: 0 0 0 3px rgba(183, 106, 43, 0.15);
+        .campo select:focus {
+            border-color: #1a4b8c;
+            box-shadow: 0 0 0 3px rgba(26, 75, 140, 0.2);
         }
 
+        .campo .admin-mini {
+            display: flex;
+            gap: 6px;
+            margin-top: 6px;
+            flex-wrap: wrap;
+        }
+
+        .campo .admin-mini input {
+            flex: 2 1 100px;
+            padding: 0.4rem 0.8rem;
+            border: 2px solid #7a9fd4;
+            border-radius: 60px;
+            font-size: 0.8rem;
+            background: white;
+            outline: none;
+        }
+
+        .campo .admin-mini input:focus {
+            border-color: #1a4b8c;
+        }
+
+        .campo .admin-mini button {
+            padding: 0.3rem 1rem;
+            border: none;
+            border-radius: 60px;
+            background: #1a4b8c;
+            color: white;
+            font-weight: 600;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: 0.15s;
+        }
+        .campo .admin-mini button:hover {
+            background: #0f3a70;
+        }
+
+        .campo .tags-mini {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin-top: 4px;
+        }
+
+        .campo .tags-mini .tag-mini {
+            background: white;
+            padding: 0.15rem 0.7rem 0.15rem 0.9rem;
+            border-radius: 40px;
+            border: 1.5px solid #7a9fd4;
+            font-size: 0.75rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            color: #0a2a5c;
+        }
+
+        .campo .tags-mini .tag-mini button {
+            background: transparent;
+            border: none;
+            color: #4a6f9e;
+            cursor: pointer;
+            font-size: 0.8rem;
+            padding: 0 2px;
+        }
+        .campo .tags-mini .tag-mini button:hover {
+            color: #c0392b;
+        }
+
+        /* Restrições */
         .restricoes-area {
-            background: #fcf9f5;
+            background: #dae6f7;
             padding: 1.5rem;
             border-radius: 28px;
-            border: 1px solid #e5d6c6;
+            border: 1px solid #7a9fd4;
         }
 
         .restricoes-area textarea {
             width: 100%;
             padding: 0.9rem 1.2rem;
-            border: 1px solid #d5c2b0;
+            border: 2px solid #7a9fd4;
             border-radius: 24px;
             resize: vertical;
             min-height: 70px;
             font-size: 0.95rem;
             background: white;
             transition: 0.2s;
-            color: #2f241b;
+            color: #0a2a5c;
+            outline: none;
         }
 
         .restricoes-area textarea:focus {
-            border-color: #b56e32;
-            box-shadow: 0 0 0 3px rgba(183, 106, 43, 0.12);
-            outline: none;
+            border-color: #1a4b8c;
+            box-shadow: 0 0 0 3px rgba(26, 75, 140, 0.15);
         }
 
         .btn-enviar {
             margin-top: 2rem;
             width: 100%;
             padding: 1rem;
-            background: #ba7b46;
+            background: #1a4b8c;
             border: none;
             border-radius: 60px;
             color: white;
@@ -328,13 +420,13 @@
             align-items: center;
             justify-content: center;
             gap: 12px;
-            box-shadow: 0 8px 16px -6px rgba(144, 85, 36, 0.3);
+            box-shadow: 0 8px 16px -6px rgba(26, 75, 140, 0.35);
             transition: 0.2s;
             cursor: pointer;
         }
 
         .btn-enviar:hover {
-            background: #a86830;
+            background: #0f3a70;
             transform: scale(1.01);
         }
 
@@ -345,7 +437,7 @@
         .form-label {
             display: block;
             font-weight: 600;
-            color: #3b2c1d;
+            color: #0a2a5c;
             margin-bottom: 0.6rem;
             font-size: 1.1rem;
             display: flex;
@@ -354,7 +446,7 @@
         }
 
         .form-label i {
-            color: #b0682b;
+            color: #1a4b8c;
             width: 1.4rem;
         }
 
@@ -362,7 +454,7 @@
             text-align: center;
             margin-top: 1.2rem;
             font-size: 0.85rem;
-            color: #7a624c;
+            color: #2a4a7a;
             display: flex;
             justify-content: center;
             gap: 20px;
@@ -370,20 +462,28 @@
         }
 
         .footer-info i {
-            color: #b67f4c;
+            color: #1a4b8c;
         }
 
         .alert {
-            padding: 0.8rem 1.2rem;
+            padding: 0.7rem 1.2rem;
             border-radius: 40px;
-            background: #f1e4d8;
-            color: #4d3827;
+            background: #b8cce6;
+            color: #0a2a5c;
             margin-top: 0.8rem;
             display: none;
+            font-weight: 500;
         }
 
         .alert.show {
             display: block;
+        }
+
+        /* Divisor */
+        .divider {
+            border: none;
+            border-top: 2px dotted #7a9fd4;
+            margin: 1.5rem 0;
         }
     </style>
 </head>
@@ -395,22 +495,43 @@
         <div class="card">
             <div class="card-header">
                 <i class="fas fa-gear"></i>
-                <h2>Gerenciar opções</h2>
+                <h2>Gerenciar Cardápio</h2>
                 <span class="badge"><i class="fas fa-database"></i> localStorage</span>
             </div>
 
-            <div class="admin-row">
-                <input type="text" id="novaOpcaoInput" placeholder="Ex: Frango grelhado, Omelete, ..." />
-                <button class="btn-add" id="btnAdicionarOpcao"><i class="fas fa-plus"></i> Adicionar</button>
-                <button class="btn-remove" id="btnResetarOpcoes"><i class="fas fa-undo"></i> Restaurar padrão</button>
+            <!-- PRATOS PRINCIPAIS -->
+            <div class="admin-section">
+                <h3><i class="fas fa-utensils"></i> Pratos principais</h3>
+                <div class="admin-row">
+                    <input type="text" id="novaOpcaoInput" placeholder="Ex: Frango grelhado, Omelete..." />
+                    <button class="btn-add" id="btnAdicionarOpcao"><i class="fas fa-plus"></i> Adicionar</button>
+                    <button class="btn-reset" id="btnResetarOpcoes"><i class="fas fa-undo"></i> Padrão</button>
+                </div>
+                <div id="listaOpcoesAdmin" class="opcoes-lista"></div>
             </div>
 
-            <div style="display: flex; gap: 0.8rem; flex-wrap: wrap; align-items: center;">
-                <span style="font-weight: 500; color: #4b3826;"><i class="fas fa-list"></i> Opções disponíveis:</span>
-                <div id="listaOpcoesAdmin" class="opcoes-lista">
-                    <!-- preenchido via JS -->
+            <!-- ACOMPANHAMENTOS -->
+            <div class="admin-section">
+                <h3><i class="fas fa-bowl-food"></i> Acompanhamentos</h3>
+                <div class="admin-row">
+                    <input type="text" id="novoAcompanhamentoInput" placeholder="Ex: Arroz, Salada..." />
+                    <button class="btn-add" id="btnAdicionarAcompanhamento"><i class="fas fa-plus"></i> Adicionar</button>
+                    <button class="btn-reset" id="btnResetarAcompanhamentos"><i class="fas fa-undo"></i> Padrão</button>
                 </div>
+                <div id="listaAcompanhamentosAdmin" class="opcoes-lista"></div>
             </div>
+
+            <!-- PROTEÍNAS EXTRAS -->
+            <div class="admin-section">
+                <h3><i class="fas fa-plus-circle"></i> Proteínas extras</h3>
+                <div class="admin-row">
+                    <input type="text" id="novaProteinaInput" placeholder="Ex: Ovo, Queijo..." />
+                    <button class="btn-add" id="btnAdicionarProteina"><i class="fas fa-plus"></i> Adicionar</button>
+                    <button class="btn-reset" id="btnResetarProteinas"><i class="fas fa-undo"></i> Padrão</button>
+                </div>
+                <div id="listaProteinasAdmin" class="opcoes-lista"></div>
+            </div>
+
             <div id="alertAdmin" class="alert"></div>
         </div>
 
@@ -419,12 +540,12 @@
             <div class="card-header">
                 <i class="fas fa-utensils"></i>
                 <h2>Peça seu almoço</h2>
-                <span class="badge"><i class="far fa-calendar-alt"></i> 24/08</span>
+                <span class="badge"><i class="far fa-calendar-alt"></i> Hoje</span>
             </div>
 
             <form id="formAlmoco">
 
-                <!-- opção principal (dinâmica) -->
+                <!-- Prato principal (dinâmico) -->
                 <div class="form-group" style="margin-bottom: 1.8rem;">
                     <span class="form-label"><i class="fas fa-circle-check"></i> Escolha seu prato</span>
                     <div id="opcoesAluno" class="opcoes-grid">
@@ -432,34 +553,22 @@
                     </div>
                 </div>
 
-                <!-- acompanhamentos -->
+                <!-- Acompanhamentos e Proteínas (dinâmicos) -->
                 <div class="form-group" style="margin-bottom: 1.8rem;">
-                    <span class="form-label"><i class="fas fa-bowl-food"></i> Acompanhamentos</span>
-                    <div class="row-dupla">
+                    <span class="form-label"><i class="fas fa-bowl-food"></i> Acompanhamentos & extras</span>
+                    <div class="campos-editaveis">
                         <div class="campo">
                             <label for="acompanhamento"><i class="fas fa-utensil-spoon"></i> Acompanhamento</label>
-                            <select id="acompanhamento">
-                                <option value="Arroz e feijão">🍚 Arroz & feijão</option>
-                                <option value="Arroz integral e lentilha">🌾 Arroz integral + lentilha</option>
-                                <option value="Purê de batata">🥔 Purê de batata</option>
-                                <option value="Salada verde">🥗 Salada verde</option>
-                                <option value="Legumes grelhados">🥕 Legumes grelhados</option>
-                            </select>
+                            <select id="acompanhamento"></select>
                         </div>
                         <div class="campo">
                             <label for="proteinaExtra"><i class="fas fa-plus-circle"></i> Proteína extra</label>
-                            <select id="proteinaExtra">
-                                <option value="Nenhum">🚫 Nenhum</option>
-                                <option value="Ovo cozido">🥚 Ovo cozido</option>
-                                <option value="Queijo ralado">🧀 Queijo ralado</option>
-                                <option value="Frango desfiado">🍗 Frango desfiado</option>
-                                <option value="Tofu">🌱 Tofu</option>
-                            </select>
+                            <select id="proteinaExtra"></select>
                         </div>
                     </div>
                 </div>
 
-                <!-- restrições -->
+                <!-- Restrições -->
                 <div class="form-group" style="margin-bottom: 1.2rem;">
                     <span class="form-label"><i class="fas fa-triangle-exclamation"></i> Restrições / alergias</span>
                     <div class="restricoes-area">
@@ -467,14 +576,14 @@
                     </div>
                 </div>
 
-                <!-- nome/turma -->
-                <div style="display: flex; flex-wrap: wrap; gap: 1rem; background: #fcf9f5; padding: 1rem 1.5rem; border-radius: 28px; border: 1px solid #e5d6c6; margin-bottom: 0.5rem;">
+                <!-- Nome/Turma -->
+                <div style="display: flex; flex-wrap: wrap; gap: 1rem; background: #dae6f7; padding: 1rem 1.5rem; border-radius: 28px; border: 1px solid #7a9fd4; margin-bottom: 0.5rem;">
                     <div style="flex: 2 1 180px;">
-                        <label style="font-weight: 500; color: #4b3826; display: block; margin-bottom: 4px;"><i class="fas fa-user-graduate"></i> Nome / Turma</label>
-                        <input type="text" id="nomeTurma" placeholder="Ex: Ana J. - 5º A" style="width: 100%; padding: 0.7rem 1rem; border: 1px solid #d5c2b0; border-radius: 60px; background: white; font-size: 0.95rem;" />
+                        <label style="font-weight: 600; color: #0a2a5c; display: block; margin-bottom: 4px;"><i class="fas fa-user-graduate"></i> Nome / Turma</label>
+                        <input type="text" id="nomeTurma" placeholder="Ex: Ana J. - 5º A" style="width: 100%; padding: 0.7rem 1rem; border: 2px solid #7a9fd4; border-radius: 60px; background: white; font-size: 0.95rem; outline: none;" />
                     </div>
                     <div style="flex: 1 1 100px; display: flex; align-items: flex-end;">
-                        <span style="background: #efe5db; padding: 0.3rem 1rem; border-radius: 40px; font-size: 0.8rem; color: #4a3523;"><i class="far fa-clock"></i> 11:30 - 13:30</span>
+                        <span style="background: #b8cce6; padding: 0.3rem 1rem; border-radius: 40px; font-size: 0.8rem; color: #0a2a5c;"><i class="far fa-clock"></i> 11:30 - 13:30</span>
                     </div>
                 </div>
 
@@ -483,7 +592,7 @@
                 </button>
 
                 <div class="footer-info">
-                    <span><i class="fas fa-check-circle" style="color: #458b5e;"></i> Pedido registrado</span>
+                    <span><i class="fas fa-check-circle" style="color: #1a6b3c;"></i> Pedido registrado</span>
                     <span><i class="fas fa-rotate-left"></i> Altere até 10:00</span>
                 </div>
             </form>
@@ -492,140 +601,158 @@
 
     <script>
         (function() {
-            // ----- CHAVE LOCALSTORAGE -----
-            const STORAGE_KEY = 'opcoesAlmocoEscolar';
+            // ----- CHAVES LOCALSTORAGE -----
+            const STORAGE_PRATOS = 'opcoesPratos';
+            const STORAGE_ACOMP = 'opcoesAcompanhamentos';
+            const STORAGE_PROT = 'opcoesProteinas';
 
-            // ----- OPÇÕES PADRÃO (fallback) -----
-            const DEFAULT_OPCOES = [
-                'Frango grelhado',
-                'Carne moída',
-                'Omelete',
-                'Vegetariano (grão-de-bico)',
-                'Peixe assado',
-                'Macarrão ao molho'
-            ];
+            // ----- VALORES PADRÃO -----
+            const DEFAULT_PRATOS = ['Frango grelhado', 'Carne moída', 'Omelete', 'Vegetariano', 'Peixe assado', 'Macarrão'];
+            const DEFAULT_ACOMP = ['Arroz e feijão', 'Arroz integral e lentilha', 'Purê de batata', 'Salada verde', 'Legumes grelhados'];
+            const DEFAULT_PROT = ['Nenhum', 'Ovo cozido', 'Queijo ralado', 'Frango desfiado', 'Tofu'];
 
             // ----- FUNÇÕES DE PERSISTÊNCIA -----
-            function getOpcoes() {
-                const stored = localStorage.getItem(STORAGE_KEY);
+            function getLista(chave, padrao) {
+                const stored = localStorage.getItem(chave);
                 if (stored) {
                     try {
                         const parsed = JSON.parse(stored);
                         if (Array.isArray(parsed) && parsed.length > 0) {
                             return parsed;
                         }
-                    } catch (_) { /* ignora */ }
+                    } catch (_) {}
                 }
-                // se não houver, salva as padrão e retorna
-                setOpcoes(DEFAULT_OPCOES);
-                return DEFAULT_OPCOES;
+                setLista(chave, padrao);
+                return padrao;
             }
 
-            function setOpcoes(opcoesArray) {
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(opcoesArray));
+            function setLista(chave, lista) {
+                localStorage.setItem(chave, JSON.stringify(lista));
             }
 
-            // ----- RENDERIZAÇÃO -----
+            // ----- RENDERIZAÇÃO GERAL -----
             function renderizarTudo() {
-                const opcoes = getOpcoes();
-                renderizarAdmin(opcoes);
-                renderizarAluno(opcoes);
+                renderizarPratos();
+                renderizarAcompanhamentos();
+                renderizarProteinas();
+                renderizarFormAluno();
             }
 
-            // Admin: lista de tags
-            function renderizarAdmin(opcoes) {
-                const container = document.getElementById('listaOpcoesAdmin');
-                if (!container) return;
-
-                if (opcoes.length === 0) {
-                    container.innerHTML = `<span class="empty-msg"><i class="fas fa-circle-exclamation"></i> Nenhuma opção cadastrada. Adicione uma acima.</span>`;
-                    return;
+            // ----- RENDER: PRATOS (Admin + Aluno) -----
+            function renderizarPratos() {
+                const opcoes = getLista(STORAGE_PRATOS, DEFAULT_PRATOS);
+                // Admin
+                const containerAdmin = document.getElementById('listaOpcoesAdmin');
+                if (containerAdmin) {
+                    if (opcoes.length === 0) {
+                        containerAdmin.innerHTML = `<span class="empty-msg"><i class="fas fa-circle-exclamation"></i> Nenhum prato cadastrado.</span>`;
+                    } else {
+                        containerAdmin.innerHTML = opcoes.map((item, i) =>
+                            `<span class="opcao-tag">${item} <button class="btn-remover-item" data-lista="pratos" data-index="${i}"><i class="fas fa-xmark"></i></button></span>`
+                        ).join('');
+                    }
                 }
-
-                let html = '';
-                opcoes.forEach((opcao, index) => {
-                    html += `
-                        <div class="opcao-tag">
-                            <span>${opcao}</span>
-                            <button type="button" class="btn-remover-item" data-index="${index}" title="Remover">
-                                <i class="fas fa-xmark"></i>
-                            </button>
-                        </div>
-                    `;
-                });
-                container.innerHTML = html;
-
-                // eventos para os botões de remover
-                document.querySelectorAll('.btn-remover-item').forEach(btn => {
-                    btn.addEventListener('click', function(e) {
-                        const index = parseInt(this.dataset.index, 10);
-                        removerOpcao(index);
-                    });
-                });
-            }
-
-            // Aluno: opções em forma de radio
-            function renderizarAluno(opcoes) {
-                const container = document.getElementById('opcoesAluno');
-                if (!container) return;
-
-                if (opcoes.length === 0) {
-                    container.innerHTML = `<div style="grid-column:1/-1; text-align:center; color:#7a624c; padding:1rem;">
-                        <i class="fas fa-triangle-exclamation"></i> Nenhuma opção disponível hoje.
-                    </div>`;
-                    return;
+                // Aluno (formulário)
+                const containerAluno = document.getElementById('opcoesAluno');
+                if (containerAluno) {
+                    if (opcoes.length === 0) {
+                        containerAluno.innerHTML = `<div style="grid-column:1/-1; text-align:center; color:#4a6f9e; padding:1rem;">
+                            <i class="fas fa-triangle-exclamation"></i> Nenhuma opção disponível.
+                        </div>`;
+                    } else {
+                        containerAluno.innerHTML = opcoes.map((item, i) =>
+                            `<div class="opcao-item">
+                                <input type="radio" name="refeicao" id="opcao_${i}" value="${item}" ${i === 0 ? 'checked' : ''}>
+                                <label for="opcao_${i}"><i class="fas fa-utensil-spoon"></i> ${item}</label>
+                            </div>`
+                        ).join('');
+                    }
                 }
-
-                let html = '';
-                opcoes.forEach((opcao, index) => {
-                    const id = `opcao_${index}`;
-                    const checked = index === 0 ? 'checked' : '';
-                    html += `
-                        <div class="opcao-item">
-                            <input type="radio" name="refeicao" id="${id}" value="${opcao}" ${checked}>
-                            <label for="${id}"><i class="fas fa-utensil-spoon"></i> ${opcao}</label>
-                        </div>
-                    `;
-                });
-                container.innerHTML = html;
             }
 
-            // ----- AÇÕES ADMIN -----
-            function adicionarOpcao() {
-                const input = document.getElementById('novaOpcaoInput');
+            // ----- RENDER: ACOMPANHAMENTOS (Admin + select) -----
+            function renderizarAcompanhamentos() {
+                const opcoes = getLista(STORAGE_ACOMP, DEFAULT_ACOMP);
+                // Admin
+                const containerAdmin = document.getElementById('listaAcompanhamentosAdmin');
+                if (containerAdmin) {
+                    if (opcoes.length === 0) {
+                        containerAdmin.innerHTML = `<span class="empty-msg"><i class="fas fa-circle-exclamation"></i> Nenhum acompanhamento.</span>`;
+                    } else {
+                        containerAdmin.innerHTML = opcoes.map((item, i) =>
+                            `<span class="opcao-tag">${item} <button class="btn-remover-item" data-lista="acomp" data-index="${i}"><i class="fas fa-xmark"></i></button></span>`
+                        ).join('');
+                    }
+                }
+                // Select do formulário
+                const select = document.getElementById('acompanhamento');
+                if (select) {
+                    select.innerHTML = opcoes.map(item => `<option value="${item}">${item}</option>`).join('');
+                }
+            }
+
+            // ----- RENDER: PROTEÍNAS (Admin + select) -----
+            function renderizarProteinas() {
+                const opcoes = getLista(STORAGE_PROT, DEFAULT_PROT);
+                // Admin
+                const containerAdmin = document.getElementById('listaProteinasAdmin');
+                if (containerAdmin) {
+                    if (opcoes.length === 0) {
+                        containerAdmin.innerHTML = `<span class="empty-msg"><i class="fas fa-circle-exclamation"></i> Nenhuma proteína extra.</span>`;
+                    } else {
+                        containerAdmin.innerHTML = opcoes.map((item, i) =>
+                            `<span class="opcao-tag">${item} <button class="btn-remover-item" data-lista="prot" data-index="${i}"><i class="fas fa-xmark"></i></button></span>`
+                        ).join('');
+                    }
+                }
+                // Select do formulário
+                const select = document.getElementById('proteinaExtra');
+                if (select) {
+                    select.innerHTML = opcoes.map(item => `<option value="${item}">${item}</option>`).join('');
+                }
+            }
+
+            // ----- RENDER: formulário aluno (chama todos) -----
+            function renderizarFormAluno() {
+                renderizarPratos();
+                renderizarAcompanhamentos();
+                renderizarProteinas();
+            }
+
+            // ----- FUNÇÕES DE MANIPULAÇÃO -----
+            function adicionarItem(chave, padrao, inputId, alertMsg) {
+                const input = document.getElementById(inputId);
                 const valor = input.value.trim();
                 if (!valor) {
-                    mostrarAlerta('Digite o nome da opção.', 'warning');
+                    mostrarAlerta('Digite um nome válido.', 'warning');
                     return;
                 }
-
-                const opcoes = getOpcoes();
-                if (opcoes.includes(valor)) {
-                    mostrarAlerta(`"${valor}" já está na lista.`, 'warning');
+                const lista = getLista(chave, padrao);
+                if (lista.includes(valor)) {
+                    mostrarAlerta(`"${valor}" já existe.`, 'warning');
                     return;
                 }
-
-                opcoes.push(valor);
-                setOpcoes(opcoes);
+                lista.push(valor);
+                setLista(chave, lista);
                 renderizarTudo();
                 input.value = '';
-                mostrarAlerta(`"${valor}" adicionado com sucesso!`, 'success');
+                mostrarAlerta(`"${valor}" adicionado!`, 'success');
             }
 
-            function removerOpcao(index) {
-                let opcoes = getOpcoes();
-                if (index < 0 || index >= opcoes.length) return;
-                const removido = opcoes[index];
-                opcoes.splice(index, 1);
-                setOpcoes(opcoes);
+            function removerItem(chave, padrao, index) {
+                const lista = getLista(chave, padrao);
+                if (index < 0 || index >= lista.length) return;
+                const removido = lista[index];
+                lista.splice(index, 1);
+                setLista(chave, lista);
                 renderizarTudo();
                 mostrarAlerta(`"${removido}" removido.`, 'info');
             }
 
-            function resetarOpcoes() {
-                setOpcoes(DEFAULT_OPCOES);
+            function resetarLista(chave, padrao, msg) {
+                setLista(chave, padrao);
                 renderizarTudo();
-                mostrarAlerta('Opções restauradas para o padrão.', 'success');
+                mostrarAlerta(msg, 'success');
             }
 
             // ----- ALERTA -----
@@ -634,61 +761,103 @@
                 if (!alertDiv) return;
                 alertDiv.textContent = mensagem;
                 alertDiv.className = 'alert show';
-                alertDiv.style.background = tipo === 'success' ? '#d4edc9' :
-                                            tipo === 'warning' ? '#f5e6d3' :
-                                            '#e8e0d8';
+                alertDiv.style.background = tipo === 'success' ? '#b8d4b8' :
+                                            tipo === 'warning' ? '#d4c9b8' :
+                                            '#b8cce6';
                 clearTimeout(alertDiv._timer);
                 alertDiv._timer = setTimeout(() => {
                     alertDiv.classList.remove('show');
-                }, 3500);
+                }, 3000);
             }
 
-            // ----- ENVIO DO FORMULÁRIO (aluno) -----
+            // ----- CONFIGURAR EVENTOS (delegação para botões remover) -----
+            function configurarEventosRemocao() {
+                document.querySelectorAll('.btn-remover-item').forEach(btn => {
+                    btn.removeEventListener('click', handleRemover);
+                    btn.addEventListener('click', handleRemover);
+                });
+            }
+
+            function handleRemover(e) {
+                const btn = e.currentTarget;
+                const lista = btn.dataset.lista;
+                const index = parseInt(btn.dataset.index, 10);
+                if (lista === 'pratos') removerItem(STORAGE_PRATOS, DEFAULT_PRATOS, index);
+                else if (lista === 'acomp') removerItem(STORAGE_ACOMP, DEFAULT_ACOMP, index);
+                else if (lista === 'prot') removerItem(STORAGE_PROT, DEFAULT_PROT, index);
+            }
+
+            // ----- ENVIO DO FORMULÁRIO -----
             function configurarFormulario() {
                 const form = document.getElementById('formAlmoco');
                 form.addEventListener('submit', function(e) {
                     e.preventDefault();
-
-                    const opcoes = getOpcoes();
-                    const radioSelecionado = document.querySelector('input[name="refeicao"]:checked');
-                    const prato = radioSelecionado ? radioSelecionado.value : 'Nenhum selecionado';
-
+                    const radio = document.querySelector('input[name="refeicao"]:checked');
+                    const prato = radio ? radio.value : 'Nenhum';
                     const acompanhamento = document.getElementById('acompanhamento').value;
-                    const proteinaExtra = document.getElementById('proteinaExtra').value;
+                    const proteina = document.getElementById('proteinaExtra').value;
                     const restricoes = document.getElementById('restricoes').value.trim() || 'Nenhuma';
-                    const nomeTurma = document.getElementById('nomeTurma').value.trim() || 'Não informado';
+                    const nome = document.getElementById('nomeTurma').value.trim() || 'Não informado';
 
-                    let msg = '🍽️ PEDIDO DE ALMOÇO\n';
-                    msg += '━━━━━━━━━━━━━━━━\n';
-                    msg += `👤 ${nomeTurma}\n`;
-                    msg += `🍛 ${prato}\n`;
-                    msg += `🍚 ${acompanhamento}\n`;
-                    msg += `🥩 ${proteinaExtra}\n`;
-                    msg += `⚠️ ${restricoes}\n`;
-                    msg += '━━━━━━━━━━━━━━━━\n';
-                    msg += '✅ Pedido registrado!';
-
-                    alert(msg);
+                    alert(`🍽️ PEDIDO\n━━━━━━━━━━━\n👤 ${nome}\n🍛 ${prato}\n🍚 ${acompanhamento}\n🥩 ${proteina}\n⚠️ ${restricoes}\n━━━━━━━━━━━\n✅ Registrado!`);
                 });
             }
 
             // ----- INICIALIZAÇÃO -----
             function init() {
-                // garante que exista opções no storage
-                getOpcoes();
+                // Garante dados iniciais
+                getLista(STORAGE_PRATOS, DEFAULT_PRATOS);
+                getLista(STORAGE_ACOMP, DEFAULT_ACOMP);
+                getLista(STORAGE_PROT, DEFAULT_PROT);
 
                 renderizarTudo();
                 configurarFormulario();
 
-                // eventos dos botões admin
-                document.getElementById('btnAdicionarOpcao').addEventListener('click', adicionarOpcao);
-                document.getElementById('btnResetarOpcoes').addEventListener('click', resetarOpcoes);
+                // Eventos dos botões de adicionar
+                document.getElementById('btnAdicionarOpcao').addEventListener('click', () =>
+                    adicionarItem(STORAGE_PRATOS, DEFAULT_PRATOS, 'novaOpcaoInput', 'Prato adicionado!')
+                );
+                document.getElementById('btnAdicionarAcompanhamento').addEventListener('click', () =>
+                    adicionarItem(STORAGE_ACOMP, DEFAULT_ACOMP, 'novoAcompanhamentoInput', 'Acompanhamento adicionado!')
+                );
+                document.getElementById('btnAdicionarProteina').addEventListener('click', () =>
+                    adicionarItem(STORAGE_PROT, DEFAULT_PROT, 'novaProteinaInput', 'Proteína adicionada!')
+                );
 
-                // Enter no input de nova opção
-                document.getElementById('novaOpcaoInput').addEventListener('keypress', function(e) {
-                    if (e.key === 'Enter') {
-                        e.preventDefault();
-                        adicionarOpcao();
+                // Reset
+                document.getElementById('btnResetarOpcoes').addEventListener('click', () =>
+                    resetarLista(STORAGE_PRATOS, DEFAULT_PRATOS, 'Pratos restaurados para o padrão!')
+                );
+                document.getElementById('btnResetarAcompanhamentos').addEventListener('click', () =>
+                    resetarLista(STORAGE_ACOMP, DEFAULT_ACOMP, 'Acompanhamentos restaurados!')
+                );
+                document.getElementById('btnResetarProteinas').addEventListener('click', () =>
+                    resetarLista(STORAGE_PROT, DEFAULT_PROT, 'Proteínas restauradas!')
+                );
+
+                // Enter nos inputs
+                document.getElementById('novaOpcaoInput').addEventListener('keypress', e => {
+                    if (e.key === 'Enter') { e.preventDefault();
+                        document.getElementById('btnAdicionarOpcao').click(); }
+                });
+                document.getElementById('novoAcompanhamentoInput').addEventListener('keypress', e => {
+                    if (e.key === 'Enter') { e.preventDefault();
+                        document.getElementById('btnAdicionarAcompanhamento').click(); }
+                });
+                document.getElementById('novaProteinaInput').addEventListener('keypress', e => {
+                    if (e.key === 'Enter') { e.preventDefault();
+                        document.getElementById('btnAdicionarProteina').click(); }
+                });
+
+                // Delegação para remoção (porque os itens são recriados)
+                document.addEventListener('click', function(e) {
+                    const btn = e.target.closest('.btn-remover-item');
+                    if (btn) {
+                        const lista = btn.dataset.lista;
+                        const index = parseInt(btn.dataset.index, 10);
+                        if (lista === 'pratos') removerItem(STORAGE_PRATOS, DEFAULT_PRATOS, index);
+                        else if (lista === 'acomp') removerItem(STORAGE_ACOMP, DEFAULT_ACOMP, index);
+                        else if (lista === 'prot') removerItem(STORAGE_PROT, DEFAULT_PROT, index);
                     }
                 });
             }
