@@ -1,869 +1,858 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>🔵 Cardápio Escolar - Administração</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🍽️ Marcação de Almoço</title>
     <style>
+        /* ===== ESTILO AZUL COMPLETO ===== */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         body {
-            background: linear-gradient(145deg, #dce6f5 0%, #b3c9e8 100%);
+            background: linear-gradient(135deg, #0a1628, #1a3a6b);
             min-height: 100vh;
-            padding: 2rem 1.5rem;
             display: flex;
-            flex-direction: column;
-            align-items: center;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 30px 20px;
         }
 
         .container {
-            max-width: 960px;
-            width: 100%;
-        }
-
-        /* Cards */
-        .card {
-            background: #eaf1fd;
-            backdrop-filter: blur(2px);
-            border-radius: 32px;
-            padding: 2rem 2.2rem;
-            box-shadow: 0 20px 40px -12px rgba(0, 40, 80, 0.25);
-            border: 1px solid rgba(70, 130, 200, 0.25);
-            margin-bottom: 2rem;
-            transition: 0.2s;
-        }
-
-        @media (max-width: 550px) {
-            .card {
-                padding: 1.5rem 1rem;
-            }
-        }
-
-        .card-header {
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-            border-bottom: 3px dashed #7a9fd4;
-            padding-bottom: 0.8rem;
-            margin-bottom: 1.8rem;
-            flex-wrap: wrap;
-        }
-
-        .card-header i {
-            font-size: 2rem;
-            color: #1a4b8c;
-            background: #c5d8f0;
-            padding: 0.4rem 0.7rem;
-            border-radius: 50%;
-        }
-
-        .card-header h2 {
-            font-size: 1.6rem;
-            font-weight: 600;
-            color: #0a2a5c;
-        }
-
-        .card-header .badge {
-            margin-left: auto;
-            background: #b8cce6;
-            padding: 0.2rem 1rem;
-            border-radius: 40px;
-            font-size: 0.8rem;
-            color: #103a6b;
-        }
-
-        /* Admin - área de gerenciamento */
-        .admin-section {
-            background: #dae6f7;
+            background: rgba(255, 255, 255, 0.95);
             border-radius: 20px;
-            padding: 1.2rem 1.5rem;
-            margin-bottom: 1.2rem;
-            border: 1px solid #7a9fd4;
+            padding: 40px;
+            max-width: 800px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            border: 2px solid #4a90d9;
+            margin: 20px 0;
         }
 
-        .admin-section h3 {
-            color: #0a2a5c;
-            font-size: 1rem;
-            margin-bottom: 0.6rem;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+        h1 {
+            color: #1a3a6b;
+            text-align: center;
+            font-size: 2.2em;
+            margin-bottom: 5px;
         }
 
-        .admin-section h3 i {
-            color: #1a4b8c;
+        h1 span {
+            color: #4a90d9;
         }
 
-        .admin-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.8rem;
-            margin-bottom: 0.8rem;
+        .subtitulo {
+            text-align: center;
+            color: #555;
+            margin-bottom: 10px;
+            font-size: 0.95em;
         }
 
-        .admin-row input {
-            flex: 2 1 180px;
-            padding: 0.7rem 1.2rem;
-            border: 2px solid #7a9fd4;
-            border-radius: 60px;
-            font-size: 0.95rem;
-            background: white;
-            outline: none;
-            transition: 0.2s;
+        .data-atual {
+            text-align: center;
+            background: #e8f0fe;
+            padding: 10px;
+            border-radius: 10px;
+            color: #1a3a6b;
+            font-weight: bold;
+            margin-bottom: 20px;
+            border: 1px solid #4a90d9;
         }
 
-        .admin-row input:focus {
-            border-color: #1a4b8c;
-            box-shadow: 0 0 0 3px rgba(26, 75, 140, 0.2);
+        .info-multipla {
+            text-align: center;
+            background: #fff3cd;
+            padding: 8px;
+            border-radius: 8px;
+            color: #856404;
+            margin-bottom: 20px;
+            font-size: 0.9em;
+            border: 1px solid #ffc107;
         }
 
-        .admin-row button {
-            padding: 0.7rem 1.6rem;
-            border: none;
-            border-radius: 60px;
-            font-weight: 600;
+        /* ===== OPÇÕES DE COMIDA ===== */
+        .opcoes {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 12px;
+            margin: 15px 0;
+        }
+
+        .opcao {
+            background: #f0f7ff;
+            border: 2px solid #b8d4f0;
+            border-radius: 12px;
+            padding: 15px 10px;
+            text-align: center;
             cursor: pointer;
-            transition: 0.2s;
+            transition: all 0.3s ease;
+            font-size: 1.05em;
+            font-weight: 600;
+            color: #1a3a6b;
+            user-select: none;
+            position: relative;
+        }
+
+        .opcao:hover {
+            transform: scale(1.03);
+            border-color: #4a90d9;
+            background: #dce8f7;
+        }
+
+        .opcao.selecionada {
+            background: #1a3a6b;
+            color: white;
+            border-color: #1a3a6b;
+            box-shadow: 0 4px 15px rgba(26, 58, 107, 0.3);
+        }
+
+        .opcao.selecionada .emoji {
+            filter: brightness(10);
+        }
+
+        .opcao .check {
+            display: none;
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #27ae60;
+            color: white;
+            border-radius: 50%;
+            width: 28px;
+            height: 28px;
+            font-size: 16px;
+            line-height: 28px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(39, 174, 96, 0.4);
+        }
+
+        .opcao.selecionada .check {
+            display: block;
+        }
+
+        .emoji {
+            display: block;
+            font-size: 2em;
+            margin-bottom: 5px;
+        }
+
+        /* ===== BOTÕES ===== */
+        .btn {
+            background: #1a3a6b;
+            color: white;
+            border: none;
+            padding: 14px 30px;
+            border-radius: 50px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .btn:hover {
+            background: #4a90d9;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(74, 144, 217, 0.4);
+        }
+
+        .btn-secundario {
+            background: transparent;
+            color: #1a3a6b;
+            border: 2px solid #4a90d9;
+            margin-top: 10px;
+        }
+
+        .btn-secundario:hover {
+            background: #e8f0fe;
+            box-shadow: none;
+            transform: none;
+        }
+
+        .btn-vermelho {
+            background: #c0392b;
+        }
+
+        .btn-vermelho:hover {
+            background: #e74c3c;
+            box-shadow: 0 6px 20px rgba(192, 57, 43, 0.4);
+        }
+
+        .btn-verde {
+            background: #27ae60;
+        }
+
+        .btn-verde:hover {
+            background: #2ecc71;
+            box-shadow: 0 6px 20px rgba(39, 174, 96, 0.4);
+        }
+
+        .btn-pequeno {
+            padding: 10px 20px;
+            font-size: 0.9em;
+            width: auto;
+            margin: 0;
+        }
+
+        .grupo-botoes {
             display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .grupo-botoes .btn {
+            flex: 1;
+            min-width: 120px;
+        }
+
+        /* ===== MODAL ADMIN ===== */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            justify-content: center;
             align-items: center;
-            gap: 8px;
-            font-size: 0.9rem;
+            z-index: 1000;
         }
 
-        .btn-add {
-            background: #1a4b8c;
+        .modal.ativo {
+            display: flex;
+        }
+
+        .modal-conteudo {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 650px;
+            width: 90%;
+            max-height: 85vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            border: 3px solid #4a90d9;
+        }
+
+        .modal-conteudo h2 {
+            color: #1a3a6b;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .modal-conteudo input[type="text"],
+        .modal-conteudo input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #b8d4f0;
+            border-radius: 10px;
+            font-size: 1em;
+            margin-bottom: 10px;
+        }
+
+        .modal-conteudo input:focus {
+            outline: none;
+            border-color: #4a90d9;
+        }
+
+        .resultado-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 12px;
+            border-bottom: 1px solid #e8f0fe;
+            font-size: 1em;
+        }
+
+        .resultado-item .nome {
+            color: #1a3a6b;
+            font-weight: 600;
+            flex: 1;
+        }
+
+        .resultado-item .numero {
+            background: #1a3a6b;
             color: white;
-            box-shadow: 0 4px 10px rgba(26, 75, 140, 0.3);
-        }
-        .btn-add:hover {
-            background: #0f3a70;
-            transform: scale(1.02);
+            padding: 2px 14px;
+            border-radius: 50px;
+            font-weight: bold;
+            margin: 0 10px;
+            font-size: 0.9em;
         }
 
-        .btn-reset {
-            background: #5a7fb0;
+        .resultado-item .btn-remover {
+            background: #e74c3c;
             color: white;
-        }
-        .btn-reset:hover {
-            background: #3d6290;
-        }
-
-        .btn-remover-item {
-            background: #b0c8e5;
-            color: #0a2a5c;
             border: none;
             border-radius: 50%;
-            width: 24px;
-            height: 24px;
+            width: 28px;
+            height: 28px;
             cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            transition: 0.15s;
+            font-weight: bold;
+            transition: all 0.3s;
+            font-size: 14px;
         }
-        .btn-remover-item:hover {
+
+        .resultado-item .btn-remover:hover {
             background: #c0392b;
-            color: white;
+            transform: scale(1.1);
         }
 
-        /* Lista de opções (tags) */
-        .opcoes-lista {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.6rem;
-            margin-top: 0.5rem;
-            min-height: 40px;
-        }
-
-        .opcao-tag {
-            background: white;
-            padding: 0.4rem 1rem 0.4rem 1.2rem;
-            border-radius: 60px;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            border: 2px solid #7a9fd4;
-            font-weight: 500;
-            color: #0a2a5c;
-            font-size: 0.9rem;
-        }
-
-        .opcao-tag button {
-            background: transparent;
-            border: none;
-            color: #4a6f9e;
-            cursor: pointer;
-            font-size: 1rem;
-            padding: 0 2px;
-            transition: 0.15s;
-            display: flex;
-            align-items: center;
-        }
-        .opcao-tag button:hover {
-            color: #c0392b;
-            transform: scale(1.2);
-        }
-
-        .empty-msg {
-            color: #4a6f9e;
-            font-style: italic;
-            padding: 0.3rem 0;
-        }
-
-        /* Formulário para alunos */
-        .opcoes-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 0.8rem;
-            background: #dae6f7;
-            padding: 1.2rem;
-            border-radius: 28px;
-            border: 1px solid #7a9fd4;
-        }
-
-        .opcao-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            background: white;
-            padding: 0.6rem 1rem 0.6rem 1.2rem;
-            border-radius: 60px;
-            border: 2px solid #b0c8e5;
-            transition: 0.15s;
-            cursor: pointer;
-        }
-
-        .opcao-item:hover {
-            background: #eaf1fd;
-            border-color: #1a4b8c;
-        }
-
-        .opcao-item input[type="radio"] {
-            accent-color: #1a4b8c;
-            width: 1.1rem;
-            height: 1.1rem;
-            flex-shrink: 0;
-            cursor: pointer;
-        }
-
-        .opcao-item label {
-            font-weight: 500;
-            color: #0a2a5c;
-            cursor: pointer;
-            flex: 1;
-            font-size: 0.95rem;
-        }
-
-        .opcao-item i {
-            color: #1a4b8c;
-            margin-right: 2px;
-        }
-
-        .opcao-item:has(input:checked) {
-            background: #b8cce6;
-            border-color: #1a4b8c;
-            box-shadow: 0 0 0 2px #1a4b8c;
-        }
-
-        /* Campos editáveis (acompanhamentos e proteínas) */
-        .campos-editaveis {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1.5rem;
-            background: #dae6f7;
-            padding: 1.5rem;
-            border-radius: 28px;
-            border: 1px solid #7a9fd4;
-        }
-
-        .campos-editaveis .campo {
-            flex: 1 1 200px;
-        }
-
-        .campo label {
-            display: block;
-            font-weight: 600;
-            color: #0a2a5c;
-            margin-bottom: 6px;
-            font-size: 0.95rem;
-        }
-
-        .campo select {
-            width: 100%;
-            padding: 0.7rem 1rem;
-            background: white;
-            border: 2px solid #7a9fd4;
-            border-radius: 60px;
-            font-size: 0.95rem;
-            color: #0a2a5c;
-            outline: none;
-            transition: 0.2s;
-            cursor: pointer;
-        }
-
-        .campo select:focus {
-            border-color: #1a4b8c;
-            box-shadow: 0 0 0 3px rgba(26, 75, 140, 0.2);
-        }
-
-        .campo .admin-mini {
-            display: flex;
-            gap: 6px;
-            margin-top: 6px;
-            flex-wrap: wrap;
-        }
-
-        .campo .admin-mini input {
-            flex: 2 1 100px;
-            padding: 0.4rem 0.8rem;
-            border: 2px solid #7a9fd4;
-            border-radius: 60px;
-            font-size: 0.8rem;
-            background: white;
-            outline: none;
-        }
-
-        .campo .admin-mini input:focus {
-            border-color: #1a4b8c;
-        }
-
-        .campo .admin-mini button {
-            padding: 0.3rem 1rem;
-            border: none;
-            border-radius: 60px;
-            background: #1a4b8c;
-            color: white;
-            font-weight: 600;
-            font-size: 0.75rem;
-            cursor: pointer;
-            transition: 0.15s;
-        }
-        .campo .admin-mini button:hover {
-            background: #0f3a70;
-        }
-
-        .campo .tags-mini {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 4px;
-            margin-top: 4px;
-        }
-
-        .campo .tags-mini .tag-mini {
-            background: white;
-            padding: 0.15rem 0.7rem 0.15rem 0.9rem;
-            border-radius: 40px;
-            border: 1.5px solid #7a9fd4;
-            font-size: 0.75rem;
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            color: #0a2a5c;
-        }
-
-        .campo .tags-mini .tag-mini button {
-            background: transparent;
-            border: none;
-            color: #4a6f9e;
-            cursor: pointer;
-            font-size: 0.8rem;
-            padding: 0 2px;
-        }
-        .campo .tags-mini .tag-mini button:hover {
-            color: #c0392b;
-        }
-
-        /* Restrições */
-        .restricoes-area {
-            background: #dae6f7;
-            padding: 1.5rem;
-            border-radius: 28px;
-            border: 1px solid #7a9fd4;
-        }
-
-        .restricoes-area textarea {
-            width: 100%;
-            padding: 0.9rem 1.2rem;
-            border: 2px solid #7a9fd4;
-            border-radius: 24px;
-            resize: vertical;
-            min-height: 70px;
-            font-size: 0.95rem;
-            background: white;
-            transition: 0.2s;
-            color: #0a2a5c;
-            outline: none;
-        }
-
-        .restricoes-area textarea:focus {
-            border-color: #1a4b8c;
-            box-shadow: 0 0 0 3px rgba(26, 75, 140, 0.15);
-        }
-
-        .btn-enviar {
-            margin-top: 2rem;
-            width: 100%;
-            padding: 1rem;
-            background: #1a4b8c;
-            border: none;
-            border-radius: 60px;
-            color: white;
-            font-weight: 600;
-            font-size: 1.2rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            box-shadow: 0 8px 16px -6px rgba(26, 75, 140, 0.35);
-            transition: 0.2s;
-            cursor: pointer;
-        }
-
-        .btn-enviar:hover {
-            background: #0f3a70;
-            transform: scale(1.01);
-        }
-
-        .btn-enviar:active {
-            transform: scale(0.96);
-        }
-
-        .form-label {
-            display: block;
-            font-weight: 600;
-            color: #0a2a5c;
-            margin-bottom: 0.6rem;
-            font-size: 1.1rem;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .form-label i {
-            color: #1a4b8c;
-            width: 1.4rem;
-        }
-
-        .footer-info {
+        .total-votos {
             text-align: center;
-            margin-top: 1.2rem;
-            font-size: 0.85rem;
-            color: #2a4a7a;
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            flex-wrap: wrap;
+            margin: 15px 0;
+            padding: 12px;
+            background: #e8f0fe;
+            border-radius: 10px;
+            color: #1a3a6b;
+            font-weight: bold;
+            font-size: 1em;
         }
 
-        .footer-info i {
-            color: #1a4b8c;
-        }
-
-        .alert {
-            padding: 0.7rem 1.2rem;
-            border-radius: 40px;
-            background: #b8cce6;
-            color: #0a2a5c;
-            margin-top: 0.8rem;
+        .msg-confirmacao {
+            text-align: center;
+            padding: 12px;
+            background: #27ae60;
+            color: white;
+            border-radius: 10px;
+            margin-top: 15px;
             display: none;
-            font-weight: 500;
         }
 
-        .alert.show {
+        .msg-confirmacao.mostrar {
             display: block;
         }
 
-        /* Divisor */
-        .divider {
-            border: none;
-            border-top: 2px dotted #7a9fd4;
-            margin: 1.5rem 0;
+        .area-adicionar {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            border: 2px dashed #4a90d9;
+        }
+
+        .area-adicionar .linha {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .area-adicionar .linha input {
+            flex: 1;
+            margin-bottom: 0;
+        }
+
+        .area-adicionar .linha .btn {
+            flex: 0 0 auto;
+            padding: 12px 25px;
+        }
+
+        .area-adicionar .linha input#novoEmojiInput {
+            max-width: 70px;
+            text-align: center;
+            font-size: 1.5em;
+        }
+
+        .vazio {
+            text-align: center;
+            padding: 30px;
+            color: #888;
+            font-size: 1.1em;
+        }
+
+        .vazio .emoji-grande {
+            font-size: 3em;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        /* ===== RESPONSIVO ===== */
+        @media (max-width: 700px) {
+            .opcoes { grid-template-columns: 1fr 1fr; }
+        }
+
+        @media (max-width: 500px) {
+            .container { padding: 20px; }
+            .opcoes { grid-template-columns: 1fr; }
+            h1 { font-size: 1.6em; }
+            .grupo-botoes { flex-direction: column; }
+            .area-adicionar .linha { flex-direction: column; }
+            .area-adicionar .linha .btn { width: 100%; }
+            .area-adicionar .linha input#novoEmojiInput { max-width: 100%; }
         }
     </style>
 </head>
 <body>
 
     <div class="container">
+        <h1>🍽️ <span>Almoço</span> do Dia</h1>
+        <p class="subtitulo">Marque todas as opções que você vai comer hoje!</p>
 
-        <!-- ==================== ADMIN ==================== -->
-        <div class="card">
-            <div class="card-header">
-                <i class="fas fa-gear"></i>
-                <h2>Gerenciar Cardápio</h2>
-                <span class="badge"><i class="fas fa-database"></i> localStorage</span>
-            </div>
+        <div class="data-atual" id="dataAtual"></div>
+        <div class="info-multipla">✅ Você pode marcar QUANTAS opções quiser!</div>
 
-            <!-- PRATOS PRINCIPAIS -->
-            <div class="admin-section">
-                <h3><i class="fas fa-utensils"></i> Pratos principais</h3>
-                <div class="admin-row">
-                    <input type="text" id="novaOpcaoInput" placeholder="Ex: Frango grelhado, Omelete..." />
-                    <button class="btn-add" id="btnAdicionarOpcao"><i class="fas fa-plus"></i> Adicionar</button>
-                    <button class="btn-reset" id="btnResetarOpcoes"><i class="fas fa-undo"></i> Padrão</button>
-                </div>
-                <div id="listaOpcoesAdmin" class="opcoes-lista"></div>
-            </div>
+        <!-- OPÇÕES -->
+        <div class="opcoes" id="opcoesContainer"></div>
 
-            <!-- ACOMPANHAMENTOS -->
-            <div class="admin-section">
-                <h3><i class="fas fa-bowl-food"></i> Acompanhamentos</h3>
-                <div class="admin-row">
-                    <input type="text" id="novoAcompanhamentoInput" placeholder="Ex: Arroz, Salada..." />
-                    <button class="btn-add" id="btnAdicionarAcompanhamento"><i class="fas fa-plus"></i> Adicionar</button>
-                    <button class="btn-reset" id="btnResetarAcompanhamentos"><i class="fas fa-undo"></i> Padrão</button>
-                </div>
-                <div id="listaAcompanhamentosAdmin" class="opcoes-lista"></div>
-            </div>
-
-            <!-- PROTEÍNAS EXTRAS -->
-            <div class="admin-section">
-                <h3><i class="fas fa-plus-circle"></i> Proteínas extras</h3>
-                <div class="admin-row">
-                    <input type="text" id="novaProteinaInput" placeholder="Ex: Ovo, Queijo..." />
-                    <button class="btn-add" id="btnAdicionarProteina"><i class="fas fa-plus"></i> Adicionar</button>
-                    <button class="btn-reset" id="btnResetarProteinas"><i class="fas fa-undo"></i> Padrão</button>
-                </div>
-                <div id="listaProteinasAdmin" class="opcoes-lista"></div>
-            </div>
-
-            <div id="alertAdmin" class="alert"></div>
+        <div class="grupo-botoes">
+            <button class="btn" id="btnVotar">✅ Marcar opções selecionadas</button>
+            <button class="btn btn-secundario" id="btnAdmin">🔐 Admin</button>
         </div>
 
-        <!-- ==================== FORMULÁRIO DO ALUNO ==================== -->
-        <div class="card">
-            <div class="card-header">
-                <i class="fas fa-utensils"></i>
-                <h2>Peça seu almoço</h2>
-                <span class="badge"><i class="far fa-calendar-alt"></i> Hoje</span>
+        <div class="msg-confirmacao" id="msgConfirmacao">
+            ✅ Suas opções foram marcadas com sucesso!
+        </div>
+    </div>
+
+    <!-- ===== MODAL ADMIN ===== -->
+    <div class="modal" id="modalAdmin">
+        <div class="modal-conteudo">
+            <h2>🔐 Painel Administrativo</h2>
+
+            <!-- Login -->
+            <div id="loginAdmin">
+                <p style="text-align:center;color:#666;margin-bottom:15px;">Digite a senha para gerenciar as opções</p>
+                <input type="password" id="senhaInput" placeholder="Digite a senha...">
+                <button class="btn" id="btnEntrarAdmin">🔓 Entrar</button>
+                <button class="btn btn-secundario" id="btnFecharModal">Fechar</button>
             </div>
 
-            <form id="formAlmoco">
+            <!-- Painel (só aparece após login) -->
+            <div id="painelAdmin" style="display:none;">
+                <h3 style="color:#1a3a6b;text-align:center;margin-bottom:15px;">📊 Gerenciar Opções</h3>
 
-                <!-- Prato principal (dinâmico) -->
-                <div class="form-group" style="margin-bottom: 1.8rem;">
-                    <span class="form-label"><i class="fas fa-circle-check"></i> Escolha seu prato</span>
-                    <div id="opcoesAluno" class="opcoes-grid">
-                        <!-- preenchido via JS -->
+                <!-- Adicionar nova opção -->
+                <div class="area-adicionar">
+                    <h4 style="color:#1a3a6b;margin-bottom:10px;">➕ Adicionar nova comida</h4>
+                    <div class="linha">
+                        <input type="text" id="novaOpcaoInput" placeholder="Ex: Pizza, Hambúrguer, Macarrão...">
+                        <input type="text" id="novoEmojiInput" placeholder="🍕" maxlength="2">
+                        <button class="btn btn-verde btn-pequeno" id="btnAdicionarOpcao">Adicionar</button>
                     </div>
+                    <small style="color:#888;">Digite o nome e escolha um emoji (ex: 🍕, 🍔, 🍝)</small>
                 </div>
 
-                <!-- Acompanhamentos e Proteínas (dinâmicos) -->
-                <div class="form-group" style="margin-bottom: 1.8rem;">
-                    <span class="form-label"><i class="fas fa-bowl-food"></i> Acompanhamentos & extras</span>
-                    <div class="campos-editaveis">
-                        <div class="campo">
-                            <label for="acompanhamento"><i class="fas fa-utensil-spoon"></i> Acompanhamento</label>
-                            <select id="acompanhamento"></select>
-                        </div>
-                        <div class="campo">
-                            <label for="proteinaExtra"><i class="fas fa-plus-circle"></i> Proteína extra</label>
-                            <select id="proteinaExtra"></select>
-                        </div>
-                    </div>
-                </div>
+                <!-- Lista de opções com resultados -->
+                <div id="listaResultados"></div>
+                <div class="total-votos" id="totalVotos">📊 Total: 0 votos</div>
 
-                <!-- Restrições -->
-                <div class="form-group" style="margin-bottom: 1.2rem;">
-                    <span class="form-label"><i class="fas fa-triangle-exclamation"></i> Restrições / alergias</span>
-                    <div class="restricoes-area">
-                        <textarea id="restricoes" placeholder="Ex: alérgico a lactose, gluten, frutos do mar..."></textarea>
-                    </div>
+                <div class="grupo-botoes">
+                    <button class="btn btn-vermelho" id="btnZerar">🔄 Zerar todos os votos</button>
+                    <button class="btn btn-secundario" id="btnSairAdmin">🚪 Sair</button>
                 </div>
-
-                <!-- Nome/Turma -->
-                <div style="display: flex; flex-wrap: wrap; gap: 1rem; background: #dae6f7; padding: 1rem 1.5rem; border-radius: 28px; border: 1px solid #7a9fd4; margin-bottom: 0.5rem;">
-                    <div style="flex: 2 1 180px;">
-                        <label style="font-weight: 600; color: #0a2a5c; display: block; margin-bottom: 4px;"><i class="fas fa-user-graduate"></i> Nome / Turma</label>
-                        <input type="text" id="nomeTurma" placeholder="Ex: Ana J. - 5º A" style="width: 100%; padding: 0.7rem 1rem; border: 2px solid #7a9fd4; border-radius: 60px; background: white; font-size: 0.95rem; outline: none;" />
-                    </div>
-                    <div style="flex: 1 1 100px; display: flex; align-items: flex-end;">
-                        <span style="background: #b8cce6; padding: 0.3rem 1rem; border-radius: 40px; font-size: 0.8rem; color: #0a2a5c;"><i class="far fa-clock"></i> 11:30 - 13:30</span>
-                    </div>
-                </div>
-
-                <button type="submit" class="btn-enviar">
-                    <i class="fas fa-paper-plane"></i> Enviar pedido
-                </button>
-
-                <div class="footer-info">
-                    <span><i class="fas fa-check-circle" style="color: #1a6b3c;"></i> Pedido registrado</span>
-                    <span><i class="fas fa-rotate-left"></i> Altere até 10:00</span>
-                </div>
-            </form>
+            </div>
         </div>
     </div>
 
     <script>
-        (function() {
-            // ----- CHAVES LOCALSTORAGE -----
-            const STORAGE_PRATOS = 'opcoesPratos';
-            const STORAGE_ACOMP = 'opcoesAcompanhamentos';
-            const STORAGE_PROT = 'opcoesProteinas';
+        // ============================================
+        // DADOS (salvos no localStorage)
+        // ============================================
+        let opcoes = [];
+        let votos = {};
+        let selecionados = new Set();
 
-            // ----- VALORES PADRÃO -----
-            const DEFAULT_PRATOS = ['Frango grelhado', 'Carne moída', 'Omelete', 'Vegetariano', 'Peixe assado', 'Macarrão'];
-            const DEFAULT_ACOMP = ['Arroz e feijão', 'Arroz integral e lentilha', 'Purê de batata', 'Salada verde', 'Legumes grelhados'];
-            const DEFAULT_PROT = ['Nenhum', 'Ovo cozido', 'Queijo ralado', 'Frango desfiado', 'Tofu'];
+        const SENHA_ADMIN = 'admin123'; // ⚠️ MUDE A SENHA AQUI
 
-            // ----- FUNÇÕES DE PERSISTÊNCIA -----
-            function getLista(chave, padrao) {
-                const stored = localStorage.getItem(chave);
-                if (stored) {
-                    try {
-                        const parsed = JSON.parse(stored);
-                        if (Array.isArray(parsed) && parsed.length > 0) {
-                            return parsed;
-                        }
-                    } catch (_) {}
+        // ============================================
+        // OPÇÕES PADRÃO (se não houver salvas)
+        // ============================================
+        function getOpcoesPadrao() {
+            return [
+                { id: 1, nome: 'Frango Grelhado', emoji: '🍗' },
+                { id: 2, nome: 'Bife à Parmegiana', emoji: '🥩' },
+                { id: 3, nome: 'Salmão grelhado', emoji: '🐟' },
+                { id: 4, nome: 'Salada Completa', emoji: '🥗' },
+                { id: 5, nome: 'Macarrão com Bolonhesa', emoji: '🍝' },
+                { id: 6, nome: 'Wrap de Frango', emoji: '🌯' }
+            ];
+        }
+
+        // ============================================
+        // INICIALIZAÇÃO
+        // ============================================
+        function iniciar() {
+            // Data atual
+            const hoje = new Date();
+            document.getElementById('dataAtual').textContent =
+                `📅 ${hoje.toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}`;
+
+            // Carregar dados
+            carregarDados();
+
+            // Renderizar opções
+            renderizarOpcoes();
+
+            // Carregar seleções anteriores
+            carregarSelecoes();
+
+            // Eventos
+            document.getElementById('btnVotar').addEventListener('click', votar);
+            document.getElementById('btnAdmin').addEventListener('click', abrirModal);
+            document.getElementById('btnFecharModal').addEventListener('click', fecharModal);
+            document.getElementById('btnEntrarAdmin').addEventListener('click', entrarAdmin);
+            document.getElementById('btnSairAdmin').addEventListener('click', sairAdmin);
+            document.getElementById('btnZerar').addEventListener('click', zerarVotos);
+            document.getElementById('btnAdicionarOpcao').addEventListener('click', adicionarOpcao);
+
+            // Enter na senha
+            document.getElementById('senhaInput').addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') entrarAdmin();
+            });
+
+            // Enter na nova opção
+            document.getElementById('novaOpcaoInput').addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') adicionarOpcao();
+            });
+            document.getElementById('novoEmojiInput').addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') adicionarOpcao();
+            });
+        }
+
+        // ============================================
+        // FUNÇÕES DE DADOS
+        // ============================================
+        function carregarDados() {
+            // Carregar opções
+            const dados = localStorage.getItem('opcoesAlmoco');
+            if (dados) {
+                opcoes = JSON.parse(dados);
+            } else {
+                opcoes = getOpcoesPadrao();
+                salvarOpcoes();
+            }
+
+            // Carregar votos
+            const votosData = localStorage.getItem('votosAlmoco');
+            if (votosData) {
+                votos = JSON.parse(votosData);
+            } else {
+                votos = {};
+                opcoes.forEach(op => { votos[op.id] = 0; });
+                salvarVotos();
+            }
+
+            // Garantir que todas as opções tenham voto
+            opcoes.forEach(op => {
+                if (votos[op.id] === undefined) {
+                    votos[op.id] = 0;
                 }
-                setLista(chave, padrao);
-                return padrao;
+            });
+            salvarVotos();
+        }
+
+        function salvarOpcoes() {
+            localStorage.setItem('opcoesAlmoco', JSON.stringify(opcoes));
+        }
+
+        function salvarVotos() {
+            localStorage.setItem('votosAlmoco', JSON.stringify(votos));
+        }
+
+        function carregarSelecoes() {
+            const salvas = localStorage.getItem('selecoesAtuais');
+            if (salvas) {
+                const ids = JSON.parse(salvas);
+                ids.forEach(id => selecionados.add(id));
+                atualizarSelecoesUI();
+            }
+        }
+
+        function salvarSelecoes() {
+            localStorage.setItem('selecoesAtuais', JSON.stringify([...selecionados]));
+        }
+
+        // ============================================
+        // RENDERIZAR OPÇÕES
+        // ============================================
+        function renderizarOpcoes() {
+            const container = document.getElementById('opcoesContainer');
+            container.innerHTML = '';
+
+            if (opcoes.length === 0) {
+                container.innerHTML = `
+                    <div class="vazio" style="grid-column:1/-1;">
+                        <span class="emoji-grande">😕</span>
+                        Nenhuma opção cadastrada.<br>
+                        <small style="color:#aaa;">O admin pode adicionar no painel.</small>
+                    </div>
+                `;
+                return;
             }
 
-            function setLista(chave, lista) {
-                localStorage.setItem(chave, JSON.stringify(lista));
-            }
-
-            // ----- RENDERIZAÇÃO GERAL -----
-            function renderizarTudo() {
-                renderizarPratos();
-                renderizarAcompanhamentos();
-                renderizarProteinas();
-                renderizarFormAluno();
-            }
-
-            // ----- RENDER: PRATOS (Admin + Aluno) -----
-            function renderizarPratos() {
-                const opcoes = getLista(STORAGE_PRATOS, DEFAULT_PRATOS);
-                // Admin
-                const containerAdmin = document.getElementById('listaOpcoesAdmin');
-                if (containerAdmin) {
-                    if (opcoes.length === 0) {
-                        containerAdmin.innerHTML = `<span class="empty-msg"><i class="fas fa-circle-exclamation"></i> Nenhum prato cadastrado.</span>`;
-                    } else {
-                        containerAdmin.innerHTML = opcoes.map((item, i) =>
-                            `<span class="opcao-tag">${item} <button class="btn-remover-item" data-lista="pratos" data-index="${i}"><i class="fas fa-xmark"></i></button></span>`
-                        ).join('');
-                    }
+            opcoes.forEach(op => {
+                const div = document.createElement('div');
+                div.className = 'opcao';
+                if (selecionados.has(op.id)) {
+                    div.classList.add('selecionada');
                 }
-                // Aluno (formulário)
-                const containerAluno = document.getElementById('opcoesAluno');
-                if (containerAluno) {
-                    if (opcoes.length === 0) {
-                        containerAluno.innerHTML = `<div style="grid-column:1/-1; text-align:center; color:#4a6f9e; padding:1rem;">
-                            <i class="fas fa-triangle-exclamation"></i> Nenhuma opção disponível.
-                        </div>`;
-                    } else {
-                        containerAluno.innerHTML = opcoes.map((item, i) =>
-                            `<div class="opcao-item">
-                                <input type="radio" name="refeicao" id="opcao_${i}" value="${item}" ${i === 0 ? 'checked' : ''}>
-                                <label for="opcao_${i}"><i class="fas fa-utensil-spoon"></i> ${item}</label>
-                            </div>`
-                        ).join('');
-                    }
-                }
-            }
+                div.dataset.id = op.id;
+                div.innerHTML = `
+                    <span class="check">✓</span>
+                    <span class="emoji">${op.emoji || '🍽️'}</span>
+                    ${op.nome}
+                `;
 
-            // ----- RENDER: ACOMPANHAMENTOS (Admin + select) -----
-            function renderizarAcompanhamentos() {
-                const opcoes = getLista(STORAGE_ACOMP, DEFAULT_ACOMP);
-                // Admin
-                const containerAdmin = document.getElementById('listaAcompanhamentosAdmin');
-                if (containerAdmin) {
-                    if (opcoes.length === 0) {
-                        containerAdmin.innerHTML = `<span class="empty-msg"><i class="fas fa-circle-exclamation"></i> Nenhum acompanhamento.</span>`;
-                    } else {
-                        containerAdmin.innerHTML = opcoes.map((item, i) =>
-                            `<span class="opcao-tag">${item} <button class="btn-remover-item" data-lista="acomp" data-index="${i}"><i class="fas fa-xmark"></i></button></span>`
-                        ).join('');
-                    }
-                }
-                // Select do formulário
-                const select = document.getElementById('acompanhamento');
-                if (select) {
-                    select.innerHTML = opcoes.map(item => `<option value="${item}">${item}</option>`).join('');
-                }
-            }
-
-            // ----- RENDER: PROTEÍNAS (Admin + select) -----
-            function renderizarProteinas() {
-                const opcoes = getLista(STORAGE_PROT, DEFAULT_PROT);
-                // Admin
-                const containerAdmin = document.getElementById('listaProteinasAdmin');
-                if (containerAdmin) {
-                    if (opcoes.length === 0) {
-                        containerAdmin.innerHTML = `<span class="empty-msg"><i class="fas fa-circle-exclamation"></i> Nenhuma proteína extra.</span>`;
-                    } else {
-                        containerAdmin.innerHTML = opcoes.map((item, i) =>
-                            `<span class="opcao-tag">${item} <button class="btn-remover-item" data-lista="prot" data-index="${i}"><i class="fas fa-xmark"></i></button></span>`
-                        ).join('');
-                    }
-                }
-                // Select do formulário
-                const select = document.getElementById('proteinaExtra');
-                if (select) {
-                    select.innerHTML = opcoes.map(item => `<option value="${item}">${item}</option>`).join('');
-                }
-            }
-
-            // ----- RENDER: formulário aluno (chama todos) -----
-            function renderizarFormAluno() {
-                renderizarPratos();
-                renderizarAcompanhamentos();
-                renderizarProteinas();
-            }
-
-            // ----- FUNÇÕES DE MANIPULAÇÃO -----
-            function adicionarItem(chave, padrao, inputId, alertMsg) {
-                const input = document.getElementById(inputId);
-                const valor = input.value.trim();
-                if (!valor) {
-                    mostrarAlerta('Digite um nome válido.', 'warning');
-                    return;
-                }
-                const lista = getLista(chave, padrao);
-                if (lista.includes(valor)) {
-                    mostrarAlerta(`"${valor}" já existe.`, 'warning');
-                    return;
-                }
-                lista.push(valor);
-                setLista(chave, lista);
-                renderizarTudo();
-                input.value = '';
-                mostrarAlerta(`"${valor}" adicionado!`, 'success');
-            }
-
-            function removerItem(chave, padrao, index) {
-                const lista = getLista(chave, padrao);
-                if (index < 0 || index >= lista.length) return;
-                const removido = lista[index];
-                lista.splice(index, 1);
-                setLista(chave, lista);
-                renderizarTudo();
-                mostrarAlerta(`"${removido}" removido.`, 'info');
-            }
-
-            function resetarLista(chave, padrao, msg) {
-                setLista(chave, padrao);
-                renderizarTudo();
-                mostrarAlerta(msg, 'success');
-            }
-
-            // ----- ALERTA -----
-            function mostrarAlerta(mensagem, tipo = 'info') {
-                const alertDiv = document.getElementById('alertAdmin');
-                if (!alertDiv) return;
-                alertDiv.textContent = mensagem;
-                alertDiv.className = 'alert show';
-                alertDiv.style.background = tipo === 'success' ? '#b8d4b8' :
-                                            tipo === 'warning' ? '#d4c9b8' :
-                                            '#b8cce6';
-                clearTimeout(alertDiv._timer);
-                alertDiv._timer = setTimeout(() => {
-                    alertDiv.classList.remove('show');
-                }, 3000);
-            }
-
-            // ----- CONFIGURAR EVENTOS (delegação para botões remover) -----
-            function configurarEventosRemocao() {
-                document.querySelectorAll('.btn-remover-item').forEach(btn => {
-                    btn.removeEventListener('click', handleRemover);
-                    btn.addEventListener('click', handleRemover);
-                });
-            }
-
-            function handleRemover(e) {
-                const btn = e.currentTarget;
-                const lista = btn.dataset.lista;
-                const index = parseInt(btn.dataset.index, 10);
-                if (lista === 'pratos') removerItem(STORAGE_PRATOS, DEFAULT_PRATOS, index);
-                else if (lista === 'acomp') removerItem(STORAGE_ACOMP, DEFAULT_ACOMP, index);
-                else if (lista === 'prot') removerItem(STORAGE_PROT, DEFAULT_PROT, index);
-            }
-
-            // ----- ENVIO DO FORMULÁRIO -----
-            function configurarFormulario() {
-                const form = document.getElementById('formAlmoco');
-                form.addEventListener('submit', function(e) {
-                    e.preventDefault();
-                    const radio = document.querySelector('input[name="refeicao"]:checked');
-                    const prato = radio ? radio.value : 'Nenhum';
-                    const acompanhamento = document.getElementById('acompanhamento').value;
-                    const proteina = document.getElementById('proteinaExtra').value;
-                    const restricoes = document.getElementById('restricoes').value.trim() || 'Nenhuma';
-                    const nome = document.getElementById('nomeTurma').value.trim() || 'Não informado';
-
-                    alert(`🍽️ PEDIDO\n━━━━━━━━━━━\n👤 ${nome}\n🍛 ${prato}\n🍚 ${acompanhamento}\n🥩 ${proteina}\n⚠️ ${restricoes}\n━━━━━━━━━━━\n✅ Registrado!`);
-                });
-            }
-
-            // ----- INICIALIZAÇÃO -----
-            function init() {
-                // Garante dados iniciais
-                getLista(STORAGE_PRATOS, DEFAULT_PRATOS);
-                getLista(STORAGE_ACOMP, DEFAULT_ACOMP);
-                getLista(STORAGE_PROT, DEFAULT_PROT);
-
-                renderizarTudo();
-                configurarFormulario();
-
-                // Eventos dos botões de adicionar
-                document.getElementById('btnAdicionarOpcao').addEventListener('click', () =>
-                    adicionarItem(STORAGE_PRATOS, DEFAULT_PRATOS, 'novaOpcaoInput', 'Prato adicionado!')
-                );
-                document.getElementById('btnAdicionarAcompanhamento').addEventListener('click', () =>
-                    adicionarItem(STORAGE_ACOMP, DEFAULT_ACOMP, 'novoAcompanhamentoInput', 'Acompanhamento adicionado!')
-                );
-                document.getElementById('btnAdicionarProteina').addEventListener('click', () =>
-                    adicionarItem(STORAGE_PROT, DEFAULT_PROT, 'novaProteinaInput', 'Proteína adicionada!')
-                );
-
-                // Reset
-                document.getElementById('btnResetarOpcoes').addEventListener('click', () =>
-                    resetarLista(STORAGE_PRATOS, DEFAULT_PRATOS, 'Pratos restaurados para o padrão!')
-                );
-                document.getElementById('btnResetarAcompanhamentos').addEventListener('click', () =>
-                    resetarLista(STORAGE_ACOMP, DEFAULT_ACOMP, 'Acompanhamentos restaurados!')
-                );
-                document.getElementById('btnResetarProteinas').addEventListener('click', () =>
-                    resetarLista(STORAGE_PROT, DEFAULT_PROT, 'Proteínas restauradas!')
-                );
-
-                // Enter nos inputs
-                document.getElementById('novaOpcaoInput').addEventListener('keypress', e => {
-                    if (e.key === 'Enter') { e.preventDefault();
-                        document.getElementById('btnAdicionarOpcao').click(); }
-                });
-                document.getElementById('novoAcompanhamentoInput').addEventListener('keypress', e => {
-                    if (e.key === 'Enter') { e.preventDefault();
-                        document.getElementById('btnAdicionarAcompanhamento').click(); }
-                });
-                document.getElementById('novaProteinaInput').addEventListener('keypress', e => {
-                    if (e.key === 'Enter') { e.preventDefault();
-                        document.getElementById('btnAdicionarProteina').click(); }
+                div.addEventListener('click', function() {
+                    const id = parseInt(this.dataset.id);
+                    toggleSelecao(id);
                 });
 
-                // Delegação para remoção (porque os itens são recriados)
-                document.addEventListener('click', function(e) {
-                    const btn = e.target.closest('.btn-remover-item');
-                    if (btn) {
-                        const lista = btn.dataset.lista;
-                        const index = parseInt(btn.dataset.index, 10);
-                        if (lista === 'pratos') removerItem(STORAGE_PRATOS, DEFAULT_PRATOS, index);
-                        else if (lista === 'acomp') removerItem(STORAGE_ACOMP, DEFAULT_ACOMP, index);
-                        else if (lista === 'prot') removerItem(STORAGE_PROT, DEFAULT_PROT, index);
+                container.appendChild(div);
+            });
+        }
+
+        function toggleSelecao(id) {
+            if (selecionados.has(id)) {
+                selecionados.delete(id);
+            } else {
+                selecionados.add(id);
+            }
+            salvarSelecoes();
+            atualizarSelecoesUI();
+        }
+
+        function atualizarSelecoesUI() {
+            document.querySelectorAll('.opcao').forEach(el => {
+                const id = parseInt(el.dataset.id);
+                if (selecionados.has(id)) {
+                    el.classList.add('selecionada');
+                } else {
+                    el.classList.remove('selecionada');
+                }
+            });
+        }
+
+        // ============================================
+        // VOTAR
+        // ============================================
+        function votar() {
+            if (selecionados.size === 0) {
+                alert('⚠️ Marque pelo menos uma opção antes de votar!');
+                return;
+            }
+
+            // Salvar votos anteriores para remover
+            const votosAnteriores = localStorage.getItem('votosAnteriores');
+            if (votosAnteriores) {
+                const idsAnt = JSON.parse(votosAnteriores);
+                idsAnt.forEach(id => {
+                    if (votos[id] !== undefined && votos[id] > 0) {
+                        votos[id]--;
                     }
                 });
             }
 
-            init();
-        })();
+            // Adicionar novos votos
+            selecionados.forEach(id => {
+                votos[id] = (votos[id] || 0) + 1;
+            });
+
+            // Salvar votos atuais para remover depois
+            localStorage.setItem('votosAnteriores', JSON.stringify([...selecionados]));
+
+            salvarVotos();
+
+            // Mostrar mensagem
+            const msg = document.getElementById('msgConfirmacao');
+            msg.classList.add('mostrar');
+            setTimeout(() => msg.classList.remove('mostrar'), 3000);
+
+            // Feedback visual
+            document.querySelectorAll('.opcao.selecionada').forEach(el => {
+                el.style.transition = '0.2s';
+                el.style.transform = 'scale(0.95)';
+                setTimeout(() => el.style.transform = 'scale(1)', 300);
+            });
+        }
+
+        // ============================================
+        // ADMIN
+        // ============================================
+        function abrirModal() {
+            document.getElementById('modalAdmin').classList.add('ativo');
+            document.getElementById('senhaInput').value = '';
+            document.getElementById('senhaInput').focus();
+            document.getElementById('loginAdmin').style.display = 'block';
+            document.getElementById('painelAdmin').style.display = 'none';
+        }
+
+        function fecharModal() {
+            document.getElementById('modalAdmin').classList.remove('ativo');
+        }
+
+        function entrarAdmin() {
+            const senha = document.getElementById('senhaInput').value;
+            if (senha === SENHA_ADMIN) {
+                document.getElementById('loginAdmin').style.display = 'none';
+                document.getElementById('painelAdmin').style.display = 'block';
+                mostrarResultadosAdmin();
+            } else {
+                alert('❌ Senha incorreta! Tente novamente.');
+                document.getElementById('senhaInput').value = '';
+                document.getElementById('senhaInput').focus();
+            }
+        }
+
+        function sairAdmin() {
+            document.getElementById('painelAdmin').style.display = 'none';
+            document.getElementById('loginAdmin').style.display = 'block';
+            document.getElementById('senhaInput').value = '';
+            document.getElementById('senhaInput').focus();
+        }
+
+        function mostrarResultadosAdmin() {
+            const container = document.getElementById('listaResultados');
+            container.innerHTML = '';
+
+            if (opcoes.length === 0) {
+                container.innerHTML = `
+                    <div class="vazio">
+                        <span class="emoji-grande">📭</span>
+                        Nenhuma opção cadastrada.<br>
+                        <small style="color:#aaa;">Adicione uma acima!</small>
+                    </div>
+                `;
+                document.getElementById('totalVotos').textContent = '📊 Total: 0 votos';
+                return;
+            }
+
+            let total = 0;
+            opcoes.forEach(op => {
+                const qtd = votos[op.id] || 0;
+                total += qtd;
+                const div = document.createElement('div');
+                div.className = 'resultado-item';
+                div.innerHTML = `
+                    <span class="nome">${op.emoji || '🍽️'} ${op.nome}</span>
+                    <span class="numero">${qtd}</span>
+                    <button class="btn-remover" data-id="${op.id}" title="Remover esta opção">✕</button>
+                `;
+                container.appendChild(div);
+            });
+
+            // Eventos de remover
+            container.querySelectorAll('.btn-remover').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const id = parseInt(this.dataset.id);
+                    removerOpcao(id);
+                });
+            });
+
+            document.getElementById('totalVotos').textContent = `📊 Total: ${total} votos (${opcoes.length} opções)`;
+        }
+
+        // ============================================
+        // GERENCIAR OPÇÕES
+        // ============================================
+        function adicionarOpcao() {
+            const inputNome = document.getElementById('novaOpcaoInput');
+            const inputEmoji = document.getElementById('novoEmojiInput');
+            const nome = inputNome.value.trim();
+            const emoji = inputEmoji.value.trim() || '🍽️';
+
+            if (!nome) {
+                alert('⚠️ Digite o nome da comida!');
+                inputNome.focus();
+                return;
+            }
+
+            // Verificar se já existe
+            if (opcoes.some(op => op.nome.toLowerCase() === nome.toLowerCase())) {
+                alert('⚠️ Esta opção já existe!');
+                inputNome.value = '';
+                inputNome.focus();
+                return;
+            }
+
+            // Gerar novo ID
+            const novoId = opcoes.length > 0 ? Math.max(...opcoes.map(o => o.id)) + 1 : 1;
+
+            // Adicionar
+            opcoes.push({ id: novoId, nome: nome, emoji: emoji });
+            votos[novoId] = 0;
+
+            salvarOpcoes();
+            salvarVotos();
+
+            // Limpar campos
+            inputNome.value = '';
+            inputEmoji.value = '';
+
+            // Atualizar UI
+            renderizarOpcoes();
+            mostrarResultadosAdmin();
+
+            // Feedback
+            inputNome.style.borderColor = '#27ae60';
+            setTimeout(() => inputNome.style.borderColor = '', 1000);
+
+            alert(`✅ "${nome}" foi adicionado com sucesso!`);
+        }
+
+        function removerOpcao(id) {
+            const op = opcoes.find(o => o.id === id);
+            if (!op) return;
+
+            if (!confirm(`⚠️ Tem certeza que quer remover "${op.nome}"?\nIsso também apagará todos os votos dela.`)) {
+                return;
+            }
+
+            // Remover opção
+            opcoes = opcoes.filter(o => o.id !== id);
+            delete votos[id];
+
+            // Remover das seleções atuais
+            selecionados.delete(id);
+
+            salvarOpcoes();
+            salvarVotos();
+            salvarSelecoes();
+
+            // Atualizar UI
+            renderizarOpcoes();
+            mostrarResultadosAdmin();
+
+            alert(`✅ "${op.nome}" foi removido!`);
+        }
+
+        function zerarVotos() {
+            if (!confirm('⚠️ Tem certeza que deseja ZERAR todos os votos?')) return;
+
+            opcoes.forEach(op => { votos[op.id] = 0; });
+            salvarVotos();
+            localStorage.removeItem('votosAnteriores');
+
+            // Limpar seleções
+            selecionados.clear();
+            salvarSelecoes();
+            atualizarSelecoesUI();
+
+            mostrarResultadosAdmin();
+            alert('✅ Todos os votos foram zerados!');
+        }
+
+        // ============================================
+        // FECHAR MODAL
+        // ============================================
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') fecharModal();
+        });
+
+        document.getElementById('modalAdmin').addEventListener('click', function(e) {
+            if (e.target === this) fecharModal();
+        });
+
+        // ============================================
+        // INICIAR
+        // ============================================
+        window.onload = iniciar;
     </script>
 
 </body>
