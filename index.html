@@ -1,1030 +1,429 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🍽️ Marcação de Almoço</title>
-    <style>
-        /* ===== ESTILO AZUL COMPLETO ===== */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        body {
-            background: linear-gradient(135deg, #0a1628, #1a3a6b);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            padding: 30px 20px;
-        }
-
-        .container {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 20px;
-            padding: 40px;
-            max-width: 800px;
-            width: 100%;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-            border: 2px solid #4a90d9;
-            margin: 20px 0;
-        }
-
-        h1 {
-            color: #1a3a6b;
-            text-align: center;
-            font-size: 2.2em;
-            margin-bottom: 5px;
-        }
-
-        h1 span {
-            color: #4a90d9;
-        }
-
-        .subtitulo {
-            text-align: center;
-            color: #555;
-            margin-bottom: 10px;
-            font-size: 0.95em;
-        }
-
-        .data-atual {
-            text-align: center;
-            background: #e8f0fe;
-            padding: 10px;
-            border-radius: 10px;
-            color: #1a3a6b;
-            font-weight: bold;
-            margin-bottom: 20px;
-            border: 1px solid #4a90d9;
-        }
-
-        .info-multipla {
-            text-align: center;
-            background: #fff3cd;
-            padding: 8px;
-            border-radius: 8px;
-            color: #856404;
-            margin-bottom: 20px;
-            font-size: 0.9em;
-            border: 1px solid #ffc107;
-        }
-
-        /* ===== TELA DE LOGIN ===== */
-        .tela-login {
-            display: none;
-            text-align: center;
-        }
-
-        .tela-login.ativo {
-            display: block;
-        }
-
-        .tela-login h2 {
-            color: #1a3a6b;
-            margin-bottom: 10px;
-            font-size: 1.5em;
-        }
-
-        .tela-login p {
-            color: #666;
-            margin-bottom: 20px;
-            font-size: 0.95em;
-        }
-
-        .tela-login input {
-            width: 100%;
-            padding: 14px;
-            border: 2px solid #b8d4f0;
-            border-radius: 10px;
-            font-size: 1em;
-            margin-bottom: 15px;
-            text-align: center;
-        }
-
-        .tela-login input:focus {
-            outline: none;
-            border-color: #4a90d9;
-        }
-
-        .aviso-dominio {
-            background: #e8f0fe;
-            padding: 10px;
-            border-radius: 8px;
-            color: #1a3a6b;
-            font-size: 0.85em;
-            margin-bottom: 15px;
-            border-left: 4px solid #4a90d9;
-            text-align: left;
-        }
-
-        .aviso-dominio strong {
-            color: #4a90d9;
-        }
-
-        .erro-login {
-            background: #f8d7da;
-            color: #721c24;
-            padding: 10px;
-            border-radius: 8px;
-            margin-bottom: 15px;
-            border-left: 4px solid #e74c3c;
-            font-size: 0.9em;
-            display: none;
-        }
-
-        .erro-login.mostrar {
-            display: block;
-        }
-
-        /* ===== PAINEL DO USUÁRIO LOGADO ===== */
-        .painel-usuario {
-            display: none;
-        }
-
-        .painel-usuario.ativo {
-            display: block;
-        }
-
-        .barra-usuario {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: #1a3a6b;
-            color: white;
-            padding: 12px 20px;
-            border-radius: 12px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .barra-usuario .info-user {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 0.9em;
-        }
-
-        .barra-usuario .avatar {
-            background: #4a90d9;
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2em;
-        }
-
-        .barra-usuario .btn-sair {
-            background: transparent;
-            color: white;
-            border: 1px solid rgba(255,255,255,0.4);
-            padding: 6px 16px;
-            border-radius: 50px;
-            cursor: pointer;
-            font-size: 0.85em;
-            transition: all 0.3s;
-        }
-
-        .barra-usuario .btn-sair:hover {
-            background: rgba(255,255,255,0.15);
-            border-color: white;
-        }
-
-        /* ===== OPÇÕES DE COMIDA ===== */
-        .opcoes {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 12px;
-            margin: 15px 0;
-        }
-
-        .opcao {
-            background: #f0f7ff;
-            border: 2px solid #b8d4f0;
-            border-radius: 12px;
-            padding: 15px 10px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 1.05em;
-            font-weight: 600;
-            color: #1a3a6b;
-            user-select: none;
-            position: relative;
-        }
-
-        .opcao:hover {
-            transform: scale(1.03);
-            border-color: #4a90d9;
-            background: #dce8f7;
-        }
-
-        .opcao.selecionada {
-            background: #1a3a6b;
-            color: white;
-            border-color: #1a3a6b;
-            box-shadow: 0 4px 15px rgba(26, 58, 107, 0.3);
-        }
-
-        .opcao.selecionada .emoji {
-            filter: brightness(10);
-        }
-
-        .opcao .check {
-            display: none;
-            position: absolute;
-            top: -8px;
-            right: -8px;
-            background: #27ae60;
-            color: white;
-            border-radius: 50%;
-            width: 28px;
-            height: 28px;
-            font-size: 16px;
-            line-height: 28px;
-            text-align: center;
-            box-shadow: 0 2px 8px rgba(39, 174, 96, 0.4);
-        }
-
-        .opcao.selecionada .check {
-            display: block;
-        }
-
-        .emoji {
-            display: block;
-            font-size: 2em;
-            margin-bottom: 5px;
-        }
-
-        /* ===== BOTÕES ===== */
-        .btn {
-            background: #1a3a6b;
-            color: white;
-            border: none;
-            padding: 14px 30px;
-            border-radius: 50px;
-            font-size: 1.1em;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s;
-            width: 100%;
-            margin-top: 10px;
-        }
-
-        .btn:hover {
-            background: #4a90d9;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(74, 144, 217, 0.4);
-        }
-
-        .btn-secundario {
-            background: transparent;
-            color: #1a3a6b;
-            border: 2px solid #4a90d9;
-            margin-top: 10px;
-        }
-
-        .btn-secundario:hover {
-            background: #e8f0fe;
-            box-shadow: none;
-            transform: none;
-        }
-
-        .btn-vermelho {
-            background: #c0392b;
-        }
-
-        .btn-vermelho:hover {
-            background: #e74c3c;
-            box-shadow: 0 6px 20px rgba(192, 57, 43, 0.4);
-        }
-
-        .btn-verde {
-            background: #27ae60;
-        }
-
-        .btn-verde:hover {
-            background: #2ecc71;
-            box-shadow: 0 6px 20px rgba(39, 174, 96, 0.4);
-        }
-
-        .btn-pequeno {
-            padding: 10px 20px;
-            font-size: 0.9em;
-            width: auto;
-            margin: 0;
-        }
-
-        .grupo-botoes {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        .grupo-botoes .btn {
-            flex: 1;
-            min-width: 120px;
-        }
-
-        /* ===== MODAL ADMIN ===== */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(5px);
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-
-        .modal.ativo {
-            display: flex;
-        }
-
-        .modal-conteudo {
-            background: white;
-            border-radius: 20px;
-            padding: 40px;
-            max-width: 700px;
-            width: 90%;
-            max-height: 85vh;
-            overflow-y: auto;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-            border: 3px solid #4a90d9;
-        }
-
-        .modal-conteudo h2 {
-            color: #1a3a6b;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-
-        .modal-conteudo input[type="text"],
-        .modal-conteudo input[type="password"] {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #b8d4f0;
-            border-radius: 10px;
-            font-size: 1em;
-            margin-bottom: 10px;
-        }
-
-        .modal-conteudo input:focus {
-            outline: none;
-            border-color: #4a90d9;
-        }
-
-        .resultado-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 12px;
-            border-bottom: 1px solid #e8f0fe;
-            font-size: 1em;
-        }
-
-        .resultado-item .nome {
-            color: #1a3a6b;
-            font-weight: 600;
-            flex: 1;
-        }
-
-        .resultado-item .numero {
-            background: #1a3a6b;
-            color: white;
-            padding: 2px 14px;
-            border-radius: 50px;
-            font-weight: bold;
-            margin: 0 10px;
-            font-size: 0.9em;
-        }
-
-        .resultado-item .btn-remover {
-            background: #e74c3c;
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 28px;
-            height: 28px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: all 0.3s;
-            font-size: 14px;
-        }
-
-        .resultado-item .btn-remover:hover {
-            background: #c0392b;
-            transform: scale(1.1);
-        }
-
-        .total-votos {
-            text-align: center;
-            margin: 15px 0;
-            padding: 12px;
-            background: #e8f0fe;
-            border-radius: 10px;
-            color: #1a3a6b;
-            font-weight: bold;
-            font-size: 1em;
-        }
-
-        .msg-confirmacao {
-            text-align: center;
-            padding: 12px;
-            background: #27ae60;
-            color: white;
-            border-radius: 10px;
-            margin-top: 15px;
-            display: none;
-        }
-
-        .msg-confirmacao.mostrar {
-            display: block;
-        }
-
-        .area-adicionar {
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 10px;
-            margin: 15px 0;
-            border: 2px dashed #4a90d9;
-        }
-
-        .area-adicionar .linha {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-        }
-
-        .area-adicionar .linha input {
-            flex: 1;
-            margin-bottom: 0;
-        }
-
-        .area-adicionar .linha .btn {
-            flex: 0 0 auto;
-            padding: 12px 25px;
-        }
-
-        .area-adicionar .linha input#novoEmojiInput {
-            max-width: 70px;
-            text-align: center;
-            font-size: 1.5em;
-        }
-
-        .vazio {
-            text-align: center;
-            padding: 30px;
-            color: #888;
-            font-size: 1.1em;
-        }
-
-        .vazio .emoji-grande {
-            font-size: 3em;
-            display: block;
-            margin-bottom: 10px;
-        }
-
-        /* ===== LISTA DE VOTANTES (ADMIN) ===== */
-        .secao-votantes {
-            margin-top: 20px;
-            border-top: 2px solid #e8f0fe;
-            padding-top: 20px;
-        }
-
-        .secao-votantes h4 {
-            color: #1a3a6b;
-            margin-bottom: 10px;
-            text-align: center;
-        }
-
-        .votante-item {
-            background: #f8f9fa;
-            padding: 10px 15px;
-            border-radius: 8px;
-            margin-bottom: 8px;
-            font-size: 0.85em;
-            border-left: 4px solid #4a90d9;
-        }
-
-        .votante-item .email {
-            color: #1a3a6b;
-            font-weight: 600;
-            word-break: break-all;
-        }
-
-        .votante-item .escolhas {
-            color: #666;
-            margin-top: 4px;
-            font-size: 0.95em;
-        }
-
-        .votante-item .horario {
-            color: #999;
-            font-size: 0.8em;
-            margin-top: 4px;
-        }
-
-        /* ===== RESPONSIVO ===== */
-        @media (max-width: 700px) {
-            .opcoes { grid-template-columns: 1fr 1fr; }
-        }
-
-        @media (max-width: 500px) {
-            .container { padding: 20px; }
-            .opcoes { grid-template-columns: 1fr; }
-            h1 { font-size: 1.6em; }
-            .grupo-botoes { flex-direction: column; }
-            .area-adicionar .linha { flex-direction: column; }
-            .area-adicionar .linha .btn { width: 100%; }
-            .area-adicionar .linha input#novoEmojiInput { max-width: 100%; }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🍽️ Marcação de Almoço</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif}
+body{background:linear-gradient(135deg,#0a1628,#1a3a6b);min-height:100vh;display:flex;justify-content:center;align-items:flex-start;padding:30px 20px}
+.container{background:rgba(255,255,255,0.95);border-radius:20px;padding:40px;max-width:800px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,0.5);border:2px solid #4a90d9;margin:20px 0}
+h1{color:#1a3a6b;text-align:center;font-size:2.2em;margin-bottom:5px}
+h1 span{color:#4a90d9}
+.subtitulo{text-align:center;color:#555;margin-bottom:10px;font-size:0.95em}
+.data-atual{text-align:center;background:#e8f0fe;padding:10px;border-radius:10px;color:#1a3a6b;font-weight:bold;margin-bottom:20px;border:1px solid #4a90d9}
+.info-multipla{text-align:center;background:#fff3cd;padding:8px;border-radius:8px;color:#856404;margin-bottom:20px;font-size:0.9em;border:1px solid #ffc107}
+.tela-login{display:none;text-align:center}
+.tela-login.ativo{display:block}
+.tela-login h2{color:#1a3a6b;margin-bottom:10px;font-size:1.5em}
+.tela-login p{color:#666;margin-bottom:20px;font-size:0.95em}
+.tela-login input{width:100%;padding:14px;border:2px solid #b8d4f0;border-radius:10px;font-size:1em;margin-bottom:15px;text-align:center}
+.tela-login input:focus{outline:none;border-color:#4a90d9}
+.aviso-dominio{background:#e8f0fe;padding:10px;border-radius:8px;color:#1a3a6b;font-size:0.85em;margin-bottom:15px;border-left:4px solid #4a90d9;text-align:left}
+.aviso-dominio strong{color:#4a90d9}
+.erro-login{background:#f8d7da;color:#721c24;padding:10px;border-radius:8px;margin-bottom:15px;border-left:4px solid #e74c3c;font-size:0.9em;display:none}
+.erro-login.mostrar{display:block}
+.painel-usuario{display:none}
+.painel-usuario.ativo{display:block}
+.barra-usuario{display:flex;justify-content:space-between;align-items:center;background:#1a3a6b;color:white;padding:12px 20px;border-radius:12px;margin-bottom:20px;flex-wrap:wrap;gap:10px}
+.barra-usuario .info-user{display:flex;align-items:center;gap:10px;font-size:0.9em}
+.barra-usuario .avatar{background:#4a90d9;width:35px;height:35px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.2em}
+.barra-usuario .btn-sair{background:transparent;color:white;border:1px solid rgba(255,255,255,0.4);padding:6px 16px;border-radius:50px;cursor:pointer;font-size:0.85em}
+.barra-usuario .btn-sair:hover{background:rgba(255,255,255,0.15)}
+.opcoes{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin:15px 0}
+.opcao{background:#f0f7ff;border:2px solid #b8d4f0;border-radius:12px;padding:15px 10px;text-align:center;cursor:pointer;font-size:1.05em;font-weight:600;color:#1a3a6b;user-select:none;position:relative;transition:all 0.3s}
+.opcao:hover{transform:scale(1.03);border-color:#4a90d9;background:#dce8f7}
+.opcao.selecionada{background:#1a3a6b;color:white;border-color:#1a3a6b}
+.opcao .check{display:none;position:absolute;top:-8px;right:-8px;background:#27ae60;color:white;border-radius:50%;width:28px;height:28px;font-size:16px;line-height:28px;text-align:center}
+.opcao.selecionada .check{display:block}
+.emoji{display:block;font-size:2em;margin-bottom:5px}
+.btn{background:#1a3a6b;color:white;border:none;padding:14px 30px;border-radius:50px;font-size:1.1em;font-weight:bold;cursor:pointer;width:100%;margin-top:10px;transition:all 0.3s}
+.btn:hover{background:#4a90d9;transform:translateY(-2px)}
+.btn-secundario{background:transparent;color:#1a3a6b;border:2px solid #4a90d9}
+.btn-secundario:hover{background:#e8f0fe;transform:none}
+.btn-vermelho{background:#c0392b}
+.btn-verde{background:#27ae60}
+.btn-pequeno{padding:10px 20px;font-size:0.9em;width:auto;margin:0}
+.grupo-botoes{display:flex;gap:10px;flex-wrap:wrap}
+.grupo-botoes .btn{flex:1;min-width:120px}
+.modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);backdrop-filter:blur(5px);justify-content:center;align-items:center;z-index:1000}
+.modal.ativo{display:flex}
+.modal-conteudo{background:white;border-radius:20px;padding:40px;max-width:700px;width:90%;max-height:85vh;overflow-y:auto;border:3px solid #4a90d9}
+.modal-conteudo h2{color:#1a3a6b;margin-bottom:20px;text-align:center}
+.modal-conteudo input{width:100%;padding:12px;border:2px solid #b8d4f0;border-radius:10px;font-size:1em;margin-bottom:10px}
+.modal-conteudo input:focus{outline:none;border-color:#4a90d9}
+.resultado-item{display:flex;justify-content:space-between;align-items:center;padding:10px 12px;border-bottom:1px solid #e8f0fe}
+.resultado-item .nome{color:#1a3a6b;font-weight:600;flex:1}
+.resultado-item .numero{background:#1a3a6b;color:white;padding:2px 14px;border-radius:50px;font-weight:bold;margin:0 10px}
+.resultado-item .btn-remover{background:#e74c3c;color:white;border:none;border-radius:50%;width:28px;height:28px;cursor:pointer;font-weight:bold}
+.total-votos{text-align:center;margin:15px 0;padding:12px;background:#e8f0fe;border-radius:10px;color:#1a3a6b;font-weight:bold}
+.msg-confirmacao{text-align:center;padding:12px;background:#27ae60;color:white;border-radius:10px;margin-top:15px;display:none}
+.msg-confirmacao.mostrar{display:block}
+.area-adicionar{background:#f8f9fa;padding:15px;border-radius:10px;margin:15px 0;border:2px dashed #4a90d9}
+.area-adicionar .linha{display:flex;gap:10px;align-items:center}
+.area-adicionar .linha input{flex:1;margin-bottom:0}
+.area-adicionar .linha input#novoEmojiInput{max-width:70px;text-align:center;font-size:1.5em}
+.secao-votantes{margin-top:20px;border-top:2px solid #e8f0fe;padding-top:20px}
+.secao-votantes h4{color:#1a3a6b;margin-bottom:10px;text-align:center}
+.votante-item{background:#f8f9fa;padding:10px 15px;border-radius:8px;margin-bottom:8px;font-size:0.85em;border-left:4px solid #4a90d9}
+.votante-item .email{color:#1a3a6b;font-weight:600;word-break:break-all}
+.votante-item .escolhas{color:#666;margin-top:4px}
+.votante-item .horario{color:#999;font-size:0.85em;margin-top:4px}
+@media(max-width:700px){.opcoes{grid-template-columns:1fr 1fr}}
+@media(max-width:500px){.opcoes{grid-template-columns:1fr}.grupo-botoes{flex-direction:column}.area-adicionar .linha{flex-direction:column}}
+</style>
 </head>
 <body>
-
-    <div class="container">
-        <h1>🍽️ <span>Almoço</span> do Dia</h1>
-        <p class="subtitulo">Marque todas as opções que você vai comer hoje!</p>
-
-        <div class="data-atual" id="dataAtual"></div>
-
-        <!-- ===== TELA DE LOGIN ===== -->
-        <div class="tela-login ativo" id="telaLogin">
-            <h2>🔐 Entre com seu email institucional</h2>
-            <p>Use seu email da escola para votar</p>
-
-            <div class="aviso-dominio">
-                📧 Só é aceito email terminado em <strong>@aluno.edu.pi.gov.br</strong><br>
-                Exemplo: <em>raquel.nascimento.2010@aluno.edu.pi.gov.br</em>
-            </div>
-
-            <div class="erro-login" id="erroLogin"></div>
-
-            <input type="email" id="emailInput" placeholder="seu.nome@aluno.edu.pi.gov.br" autocomplete="email">
-            <button class="btn" id="btnEntrar">🚀 Entrar e votar</button>
-        </div>
-
-        <!-- ===== PAINEL DO USUÁRIO ===== -->
-        <div class="painel-usuario" id="painelUsuario">
-            <div class="barra-usuario">
-                <div class="info-user">
-                    <div class="avatar">👤</div>
-                    <div id="emailUsuarioLogado"></div>
-                </div>
-                <button class="btn-sair" id="btnSairUsuario">🚪 Sair</button>
-            </div>
-
-            <div class="info-multipla">✅ Você pode marcar QUANTAS opções quiser!</div>
-
-            <!-- OPÇÕES -->
-            <div class="opcoes" id="opcoesContainer"></div>
-
-            <div class="grupo-botoes">
-                <button class="btn" id="btnVotar">✅ Marcar opções selecionadas</button>
-                <button class="btn btn-secundario" id="btnAdmin">🔐 Admin</button>
-            </div>
-
-            <div class="msg-confirmacao" id="msgConfirmacao">
-                ✅ Suas opções foram marcadas com sucesso!
-            </div>
-        </div>
-    </div>
-
-    <!-- ===== MODAL ADMIN ===== -->
-    <div class="modal" id="modalAdmin">
-        <div class="modal-conteudo">
-            <h2>🔐 Painel Administrativo</h2>
-
-            <!-- Login -->
-            <div id="loginAdmin">
-                <p style="text-align:center;color:#666;margin-bottom:15px;">Digite a senha para gerenciar as opções</p>
-                <input type="password" id="senhaInput" placeholder="Digite a senha...">
-                <button class="btn" id="btnEntrarAdmin">🔓 Entrar</button>
-                <button class="btn btn-secundario" id="btnFecharModal">Fechar</button>
-            </div>
-
-            <!-- Painel (só aparece após login) -->
-            <div id="painelAdmin" style="display:none;">
-                <h3 style="color:#1a3a6b;text-align:center;margin-bottom:15px;">📊 Gerenciar Opções</h3>
-
-                <!-- Adicionar nova opção -->
-                <div class="area-adicionar">
-                    <h4 style="color:#1a3a6b;margin-bottom:10px;">➕ Adicionar nova comida</h4>
-                    <div class="linha">
-                        <input type="text" id="novaOpcaoInput" placeholder="Ex: Pizza, Hambúrguer...">
-                        <input type="text" id="novoEmojiInput" placeholder="🍕" maxlength="2">
-                        <button class="btn btn-verde btn-pequeno" id="btnAdicionarOpcao">Adicionar</button>
-                    </div>
-                    <small style="color:#888;">Digite o nome e escolha um emoji (ex: 🍕, 🍔, 🍝)</small>
-                </div>
-
-                <!-- Lista de opções com resultados -->
-                <div id="listaResultados"></div>
-                <div class="total-votos" id="totalVotos">📊 Total: 0 votos</div>
-
-                <!-- Lista de quem votou -->
-                <div class="secao-votantes">
-                    <h4>👥 Quem já votou (<span id="qtdVotantes">0</span>)</h4>
-                    <div id="listaVotantes"></div>
-                </div>
-
-                <div class="grupo-botoes">
-                    <button class="btn btn-vermelho" id="btnZerar">🔄 Zerar todos os votos</button>
-                    <button class="btn btn-secundario" id="btnSairAdmin">🚪 Sair</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        // ============================================
-        // CONFIGURAÇÕES
-        // ============================================
-        const DOMINIO_PERMITIDO = '@aluno.edu.pi.gov.br';
-        const SENHA_ADMIN = 'admin123'; // ⚠️ MUDE A SENHA AQUI
-
-        // ============================================
-        // DADOS
-        // ============================================
-        let opcoes = [];
-        let votos = {};           // { idOpcao: quantidade }
-        let selecionados = new Set();
-        let votantes = {};        // { email: { escolhas: [ids], horario: "..." } }
-        let emailLogado = null;
-
-        // ============================================
-        // OPÇÕES PADRÃO
-        // ============================================
-        function getOpcoesPadrao() {
-            return [
-                { id: 1, nome: 'Frango Grelhado', emoji: '🍗' },
-                { id: 2, nome: 'Bife à Parmegiana', emoji: '🥩' },
-                { id: 3, nome: 'Salmão grelhado', emoji: '🐟' },
-                { id: 4, nome: 'Salada Completa', emoji: '🥗' },
-                { id: 5, nome: 'Macarrão com Bolonhesa', emoji: '🍝' },
-                { id: 6, nome: 'Wrap de Frango', emoji: '🌯' }
-            ];
-        }
-
-        // ============================================
-        // INICIALIZAÇÃO
-        // ============================================
-        function iniciar() {
-            // Data atual
-            const hoje = new Date();
-            document.getElementById('dataAtual').textContent =
-                `📅 ${hoje.toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}`;
-
-            carregarDados();
-            renderizarOpcoes();
-
-            // Eventos - Login
-            document.getElementById('btnEntrar').addEventListener('click', fazerLogin);
-            document.getElementById('emailInput').addEventListener('keydown', function(e) {
-                if (e.key === 'Enter') fazerLogin();
-            });
-
-            // Eventos - Usuário
-            document.getElementById('btnVotar').addEventListener('click', votar);
-            document.getElementById('btnAdmin').addEventListener('click', abrirModal);
-            document.getElementById('btnSairUsuario').addEventListener('click', sairUsuario);
-
-            // Eventos - Admin
-            document.getElementById('btnFecharModal').addEventListener('click', fecharModal);
-            document.getElementById('btnEntrarAdmin').addEventListener('click', entrarAdmin);
-            document.getElementById('btnSairAdmin').addEventListener('click', sairAdmin);
-            document.getElementById('btnZerar').addEventListener('click', zerarVotos);
-            document.getElementById('btnAdicionarOpcao').addEventListener('click', adicionarOpcao);
-
-            document.getElementById('senhaInput').addEventListener('keydown', function(e) {
-                if (e.key === 'Enter') entrarAdmin();
-            });
-            document.getElementById('novaOpcaoInput').addEventListener('keydown', function(e) {
-                if (e.key === 'Enter') adicionarOpcao();
-            });
-            document.getElementById('novoEmojiInput').addEventListener('keydown', function(e) {
-                if (e.key === 'Enter') adicionarOpcao();
-            });
-
-            // Verificar se já estava logado (sessão)
-            const emailSalvo = sessionStorage.getItem('emailLogado');
-            if (emailSalvo) {
-                emailLogado = emailSalvo;
-                mostrarPainelUsuario();
-            }
-        }
-
-        // ============================================
-        // LOGIN
-        // ============================================
-        function fazerLogin() {
-            const input = document.getElementById('emailInput');
-            const erro = document.getElementById('erroLogin');
-            const email = input.value.trim().toLowerCase();
-
-            erro.classList.remove('mostrar');
-
-            // Validações
-            if (!email) {
-                mostrarErro('⚠️ Digite seu email!');
-                return;
-            }
-
-            if (!email.includes('@')) {
-                mostrarErro('⚠️ Email inválido! Digite um email completo.');
-                return;
-            }
-
-            if (!email.endsWith(DOMINIO_PERMITIDO)) {
-                mostrarErro(`❌ Apenas emails terminados em <strong>${DOMINIO_PERMITIDO}</strong> são aceitos!`);
-                return;
-            }
-
-            // Verificar se já votou hoje
-            carregarVotantes();
-            if (votantes[email]) {
-                mostrarErro(`⚠️ Este email já votou hoje!<br><small>Você escolheu: ${obterNomesEscolhas(votantes[email].escolhas)}</small>`);
-                return;
-            }
-
-            // Login OK
-            emailLogado = email;
-            sessionStorage.setItem('emailLogado', email);
-            input.value = '';
-            mostrarPainelUsuario();
-        }
-
-        function mostrarErro(msg) {
-            const erro = document.getElementById('erroLogin');
-            erro.innerHTML = msg;
-            erro.classList.add('mostrar');
-        }
-
-        function mostrarPainelUsuario() {
-            document.getElementById('telaLogin').classList.remove('ativo');
-            document.getElementById('painelUsuario').classList.add('ativo');
-            document.getElementById('emailUsuarioLogado').textContent = emailLogado;
-            renderizarOpcoes();
-        }
-
-        function sairUsuario() {
-            if (!confirm('Deseja sair? Você precisará entrar novamente.')) return;
-
-            emailLogado = null;
-            sessionStorage.removeItem('emailLogado');
-            selecionados.clear();
-            salvarSelecoes();
-
-            document.getElementById('telaLogin').classList.add('ativo');
-            document.getElementById('painelUsuario').classList.remove('ativo');
-            document.getElementById('emailInput').value = '';
-            document.getElementById('erroLogin').classList.remove('mostrar');
-        }
-
-        function obterNomesEscolhas(ids) {
-            return ids.map(id => {
-                const op = opcoes.find(o => o.id === id);
-                return op ? `${op.emoji} ${op.nome}` : '';
-            }).filter(Boolean).join(', ');
-        }
-
-        // ============================================
-        // FUNÇÕES DE DADOS
-        // ============================================
-        function carregarDados() {
-            // Opções
-            const dados = localStorage.getItem('opcoesAlmoco');
-            if (dados) {
-                opcoes = JSON.parse(dados);
-            } else {
-                opcoes = getOpcoesPadrao();
-                salvarOpcoes();
-            }
-
-            // Votos
-            const votosData = localStorage.getItem('votosAlmoco');
-            if (votosData) {
-                votos = JSON.parse(votosData);
-            } else {
-                votos = {};
-                opcoes.forEach(op => { votos[op.id] = 0; });
-                salvarVotos();
-            }
-
-            opcoes.forEach(op => {
-                if (votos[op.id] === undefined) votos[op.id] = 0;
-            });
-            salvarVotos();
-
-            carregarVotantes();
-        }
-
-        function carregarVotantes() {
-            const data = localStorage.getItem('votantesAlmoco');
-            votantes = data ? JSON.parse(data) : {};
-        }
-
-        function salvarVotantes() {
-            localStorage.setItem('votantesAlmoco', JSON.stringify(votantes));
-        }
-
-        function salvarOpcoes() {
-            localStorage.setItem('opcoesAlmoco', JSON.stringify(opcoes));
-        }
-
-        function salvarVotos() {
-            localStorage.setItem('votosAlmoco', JSON.stringify(votos));
-        }
-
-        function carregarSelecoes() {
-            const salvas = sessionStorage.getItem('selecoesAtuais_' + emailLogado);
-            if (salvas) {
-                const ids = JSON.parse(salvas);
-                ids.forEach(id => selecionados.add(id));
-                atualizarSelecoesUI();
-            }
-        }
-
-        function salvarSelecoes() {
-            if (emailLogado) {
-                sessionStorage.setItem('selecoesAtuais_' + emailLogado, JSON.stringify([...selecionados]));
-            }
-        }
-
-        // ============================================
-        // RENDERIZAR OPÇÕES
-        // ============================================
-        function renderizarOpcoes() {
-            const container = document.getElementById('opcoesContainer');
-            if (!container) return;
-            container.innerHTML = '';
-
-            if (opcoes.length === 0) {
-                container.innerHTML = `
-                    <div class="vazio" style="grid-column:1/-1;">
-                        <span class="emoji-grande">😕</span>
-                        Nenhuma opção cadastrada.<br>
-                        <small style="color:#aaa;">O admin pode adicionar no painel.</small>
-                    </div>
-                `;
-                return;
-            }
-
-            opcoes.forEach(op => {
-                const div = document.createElement('div');
-                div.className = 'opcao';
-                if (selecionados.has(op.id)) div.classList.add('selecionada');
-                div.dataset.id = op.id;
-                div.innerHTML = `
-                    <span class="check">✓</span>
-                    <span class="emoji">${op.emoji || '🍽️'}</span>
-                    ${op.nome}
-                `;
-                div.addEventListener('click', function() {
-                    const id = parseInt(this.dataset.id);
-                    toggleSelecao(id);
-                });
-                container.appendChild(div);
-            });
-        }
-
-        function toggleSelecao(id) {
-            if (selecionados.has(id)) {
-                selecionados.delete(id);
-            } else {
-                selecionados.add(id);
-            }
-            salvarSelecoes();
-            atualizarSelecoesUI();
-        }
-
-        function atualizarSelecoesUI() {
-            document.querySelectorAll('.opcao').forEach(el => {
-                const id = parseInt(el.dataset.id);
-                if (selecionados.has(id)) {
-                    el.classList.add('selecionada');
-                } else {
-                    el.classList.remove('selecionada');
-                }
-            });
-        }
-
-        // ============================================
-        // VOTAR
-        // ============================================
-        function votar() {
-            if (!emailLogado) {
-                alert('⚠️ Faça login primeiro!');
-                return;
-            }
-
-            if (selecionados.size === 0) {
-                alert('⚠️ Marque pelo menos uma opção antes de votar!');
-                return;
-            }
-
-            carregarVotantes();
-
-            // Se já votou, remover voto anterior
-            if (votantes[emailLogado]) {
-                votantes[emailLogado].escolhas.forEach(id => {
-                    if (votos[id] !== undefined && votos[id] > 0) votos[id]--;
-                });
-            }
-
-            // Adicionar novos votos
-            selecionados.forEach(id => {
-                votos[id] = (votos[id] || 0) + 1;
-            });
-
-            // Registrar votante
-            votantes[emailLogado] = {
-                escolhas: [...selecionados],
-                horario: new Date().toLocaleString('pt-BR')
-            };
-
-            salvarVotos();
-            salvarVotantes();
-
-            // Mensagem
-            const msg = document.getElementById('msgConfirmacao');
-            msg.classList.add('mostrar');
-            setTimeout(() => msg.classList.remove('mostrar'), 3000);
-
-            // Feedback visual
-            document.querySelectorAll('.opcao.selecionada').forEach(el => {
-                el.style.transition = '0.2s';
-                el.style.transform = 'scale(0.95)';
-                setTimeout(() => el.style.transform = 'scale(1)', 300);
-            });
-        }
-
-        // ============================================
-        // ADMIN
-        // ============================================
-        function abrirModal() {
-            document.getElementById('modalAdmin').classList.add('ativo');
-            document.getElementById('senhaInput').value = '';
-            document.getElementById('senhaInput').focus();
-            document.getElementById('loginAdmin').style.display = 'block';
-            document.getElementById('painelAdmin').style.display = 'none';
-        }
-
-        function fecharModal() {
-            document.getElementById('modalAdmin').classList.remove('ativo');
-        }
-
-        function entrarAdmin() {
-            const senha = document.getElementById('senhaInput').value;
-            if (senha === SENHA_ADMIN) {
-                document.getElementById('loginAdmin').style.display = 'none';
-                document.getElementById('painelAdmin').style.display = 'block';
-                mostrarResultadosAdmin();
-            } else {
-                alert('❌ Senha incorreta!');
-                document.getElementById('senhaInput').value = '';
-                document.getElementById('senhaInput').focus();
-            }
-        }
-
-        function sairAdmin() {
-            document.getElementById('painelAdmin').style.display = 'none';
-            document.getElementById('loginAdmin').style.display = 'block';
-            document.getElementById('senhaInput').value = '';
-            document.getElementById('senhaInput').focus();
-        }
-
-        function mostrarResultadosAdmin() {
-            const container = document.getElementById('listaResultados');
-            container.innerHTML = '';
-
-            if (opcoes.length === 0) {
-                container.innerHTML = `
-                    <div class="vazio">
-                        <span class="emoji-grande">📭</span>
-                        Nenhuma opção cadastrada.
-                    </div>
-                `;
-                document.getElementById('totalVotos').textContent = '📊 Total: 0 votos';
-                return;
-            }
-
-            let total = 0;
-            opcoes.forEach(op => {
-                const qtd = votos[op.id] || 0;
-                total += qtd;
-                const div = document.createElement('div');
-                div.className = 'resultado-item';
-                div.innerHTML = `
-                    <span class="nome">${op.emoji
+<div class="container">
+<h1>🍽️ <span>Almoço</span> do Dia</h1>
+<p class="subtitulo">Marque todas as opções que você vai comer hoje!</p>
+<div class="data-atual" id="dataAtual"></div>
+
+<div class="tela-login ativo" id="telaLogin">
+<h2>🔐 Entre com seu email institucional</h2>
+<p>Use seu email da escola para votar</p>
+<div class="aviso-dominio">
+📧 Só é aceito email terminado em <strong>@aluno.edu.pi.gov.br</strong><br>
+Exemplo: <em>raquel.nascimento.2010@aluno.edu.pi.gov.br</em>
+</div>
+<div class="erro-login" id="erroLogin"></div>
+<input type="email" id="emailInput" placeholder="seu.nome@aluno.edu.pi.gov.br">
+<button class="btn" id="btnEntrar">🚀 Entrar e votar</button>
+</div>
+
+<div class="painel-usuario" id="painelUsuario">
+<div class="barra-usuario">
+<div class="info-user">
+<div class="avatar">👤</div>
+<div id="emailUsuarioLogado"></div>
+</div>
+<button class="btn-sair" id="btnSairUsuario">🚪 Sair</button>
+</div>
+<div class="info-multipla">✅ Você pode marcar QUANTAS opções quiser!</div>
+<div class="opcoes" id="opcoesContainer"></div>
+<div class="grupo-botoes">
+<button class="btn" id="btnVotar">✅ Marcar opções selecionadas</button>
+<button class="btn btn-secundario" id="btnAdmin">🔐 Admin</button>
+</div>
+<div class="msg-confirmacao" id="msgConfirmacao">✅ Suas opções foram marcadas com sucesso!</div>
+</div>
+</div>
+
+<div class="modal" id="modalAdmin">
+<div class="modal-conteudo">
+<h2>🔐 Painel Administrativo</h2>
+<div id="loginAdmin">
+<p style="text-align:center;color:#666;margin-bottom:15px;">Digite a senha para gerenciar as opções</p>
+<input type="password" id="senhaInput" placeholder="Digite a senha...">
+<button class="btn" id="btnEntrarAdmin">🔓 Entrar</button>
+<button class="btn btn-secundario" id="btnFecharModal">Fechar</button>
+</div>
+<div id="painelAdmin" style="display:none;">
+<h3 style="color:#1a3a6b;text-align:center;margin-bottom:15px;">📊 Gerenciar Opções</h3>
+<div class="area-adicionar">
+<h4 style="color:#1a3a6b;margin-bottom:10px;">➕ Adicionar nova comida</h4>
+<div class="linha">
+<input type="text" id="novaOpcaoInput" placeholder="Ex: Pizza, Hambúrguer...">
+<input type="text" id="novoEmojiInput" placeholder="🍕" maxlength="2">
+<button class="btn btn-verde btn-pequeno" id="btnAdicionarOpcao">Adicionar</button>
+</div>
+<small style="color:#888;">Digite o nome e escolha um emoji (ex: 🍕, 🍔, 🍝)</small>
+</div>
+<div id="listaResultados"></div>
+<div class="total-votos" id="totalVotos">📊 Total: 0 votos</div>
+<div class="secao-votantes">
+<h4>👥 Quem já votou (<span id="qtdVotantes">0</span>)</h4>
+<div id="listaVotantes"></div>
+</div>
+<div class="grupo-botoes">
+<button class="btn btn-vermelho" id="btnZerar">🔄 Zerar todos os votos</button>
+<button class="btn btn-secundario" id="btnSairAdmin">🚪 Sair</button>
+</div>
+</div>
+</div>
+</div>
+
+<script>
+const DOMINIO_PERMITIDO='@aluno.edu.pi.gov.br';
+const SENHA_ADMIN='admin123';
+let opcoes=[],votos={},selecionados=new Set(),votantes={},emailLogado=null;
+
+function getOpcoesPadrao(){
+return[
+{id:1,nome:'Frango Grelhado',emoji:'🍗'},
+{id:2,nome:'Bife à Parmegiana',emoji:'🥩'},
+{id:3,nome:'Salmão grelhado',emoji:'🐟'},
+{id:4,nome:'Salada Completa',emoji:'🥗'},
+{id:5,nome:'Macarrão com Bolonhesa',emoji:'🍝'},
+{id:6,nome:'Wrap de Frango',emoji:'🌯'}
+];
+}
+
+function iniciar(){
+const hoje=new Date();
+document.getElementById('dataAtual').textContent='📅 '+hoje.toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+carregarDados();
+renderizarOpcoes();
+document.getElementById('btnEntrar').addEventListener('click',fazerLogin);
+document.getElementById('emailInput').addEventListener('keydown',e=>{if(e.key==='Enter')fazerLogin();});
+document.getElementById('btnVotar').addEventListener('click',votar);
+document.getElementById('btnAdmin').addEventListener('click',abrirModal);
+document.getElementById('btnSairUsuario').addEventListener('click',sairUsuario);
+document.getElementById('btnFecharModal').addEventListener('click',fecharModal);
+document.getElementById('btnEntrarAdmin').addEventListener('click',entrarAdmin);
+document.getElementById('btnSairAdmin').addEventListener('click',sairAdmin);
+document.getElementById('btnZerar').addEventListener('click',zerarVotos);
+document.getElementById('btnAdicionarOpcao').addEventListener('click',adicionarOpcao);
+document.getElementById('senhaInput').addEventListener('keydown',e=>{if(e.key==='Enter')entrarAdmin();});
+document.getElementById('novaOpcaoInput').addEventListener('keydown',e=>{if(e.key==='Enter')adicionarOpcao();});
+document.getElementById('novoEmojiInput').addEventListener('keydown',e=>{if(e.key==='Enter')adicionarOpcao();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')fecharModal();});
+document.getElementById('modalAdmin').addEventListener('click',function(e){if(e.target===this)fecharModal();});
+const emailSalvo=sessionStorage.getItem('emailLogado');
+if(emailSalvo){emailLogado=emailSalvo;mostrarPainelUsuario();}
+}
+
+function fazerLogin(){
+const input=document.getElementById('emailInput');
+const email=input.value.trim().toLowerCase();
+document.getElementById('erroLogin').classList.remove('mostrar');
+if(!email){mostrarErro('⚠️ Digite seu email!');return;}
+if(!email.includes('@')){mostrarErro('⚠️ Email inválido!');return;}
+if(!email.endsWith(DOMINIO_PERMITIDO)){mostrarErro('❌ Apenas emails terminados em <strong>'+DOMINIO_PERMITIDO+'</strong> são aceitos!');return;}
+carregarVotantes();
+if(votantes[email]){mostrarErro('⚠️ Este email já votou hoje!<br><small>Escolhas: '+obterNomesEscolhas(votantes[email].escolhas)+'</small>');return;}
+emailLogado=email;
+sessionStorage.setItem('emailLogado',email);
+input.value='';
+mostrarPainelUsuario();
+}
+
+function mostrarErro(msg){
+const erro=document.getElementById('erroLogin');
+erro.innerHTML=msg;
+erro.classList.add('mostrar');
+}
+
+function mostrarPainelUsuario(){
+document.getElementById('telaLogin').classList.remove('ativo');
+document.getElementById('painelUsuario').classList.add('ativo');
+document.getElementById('emailUsuarioLogado').textContent=emailLogado;
+carregarSelecoes();
+renderizarOpcoes();
+}
+
+function sairUsuario(){
+if(!confirm('Deseja sair?'))return;
+emailLogado=null;
+sessionStorage.removeItem('emailLogado');
+selecionados.clear();
+document.getElementById('telaLogin').classList.add('ativo');
+document.getElementById('painelUsuario').classList.remove('ativo');
+document.getElementById('emailInput').value='';
+document.getElementById('erroLogin').classList.remove('mostrar');
+}
+
+function obterNomesEscolhas(ids){
+return ids.map(id=>{const op=opcoes.find(o=>o.id===id);return op?op.emoji+' '+op.nome:'';}).filter(Boolean).join(', ');
+}
+
+function carregarDados(){
+const dados=localStorage.getItem('opcoesAlmoco');
+if(dados){opcoes=JSON.parse(dados);}else{opcoes=getOpcoesPadrao();salvarOpcoes();}
+const votosData=localStorage.getItem('votosAlmoco');
+if(votosData){votos=JSON.parse(votosData);}else{votos={};opcoes.forEach(op=>{votos[op.id]=0;});salvarVotos();}
+opcoes.forEach(op=>{if(votos[op.id]===undefined)votos[op.id]=0;});
+salvarVotos();
+carregarVotantes();
+}
+
+function carregarVotantes(){
+const data=localStorage.getItem('votantesAlmoco');
+votantes=data?JSON.parse(data):{};
+}
+
+function salvarVotantes(){localStorage.setItem('votantesAlmoco',JSON.stringify(votantes));}
+function salvarOpcoes(){localStorage.setItem('opcoesAlmoco',JSON.stringify(opcoes));}
+function salvarVotos(){localStorage.setItem('votosAlmoco',JSON.stringify(votos));}
+
+function carregarSelecoes(){
+if(!emailLogado)return;
+const salvas=sessionStorage.getItem('selecoesAtuais_'+emailLogado);
+selecionados.clear();
+if(salvas){JSON.parse(salvas).forEach(id=>selecionados.add(id));atualizarSelecoesUI();}
+}
+
+function salvarSelecoes(){
+if(emailLogado){sessionStorage.setItem('selecoesAtuais_'+emailLogado,JSON.stringify([...selecionados]));}
+}
+
+function renderizarOpcoes(){
+const container=document.getElementById('opcoesContainer');
+if(!container)return;
+container.innerHTML='';
+if(opcoes.length===0){
+container.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:30px;color:#888;">😕 Nenhuma opção cadastrada.</div>';
+return;
+}
+opcoes.forEach(op=>{
+const div=document.createElement('div');
+div.className='opcao';
+if(selecionados.has(op.id))div.classList.add('selecionada');
+div.dataset.id=op.id;
+div.innerHTML='<span class="check">✓</span><span class="emoji">'+(op.emoji||'🍽️')+'</span>'+op.nome;
+div.addEventListener('click',function(){toggleSelecao(parseInt(this.dataset.id));});
+container.appendChild(div);
+});
+}
+
+function toggleSelecao(id){
+if(selecionados.has(id)){selecionados.delete(id);}else{selecionados.add(id);}
+salvarSelecoes();
+atualizarSelecoesUI();
+}
+
+function atualizarSelecoesUI(){
+document.querySelectorAll('.opcao').forEach(el=>{
+const id=parseInt(el.dataset.id);
+if(selecionados.has(id)){el.classList.add('selecionada');}else{el.classList.remove('selecionada');}
+});
+}
+
+function votar(){
+if(!emailLogado){alert('⚠️ Faça login primeiro!');return;}
+if(selecionados.size===0){alert('⚠️ Marque pelo menos uma opção!');return;}
+carregarVotantes();
+if(votantes[emailLogado]){
+votantes[emailLogado].escolhas.forEach(id=>{if(votos[id]!==undefined&&votos[id]>0)votos[id]--;});
+}
+selecionados.forEach(id=>{votos[id]=(votos[id]||0)+1;});
+votantes[emailLogado]={escolhas:[...selecionados],horario:new Date().toLocaleString('pt-BR')};
+salvarVotos();
+salvarVotantes();
+const msg=document.getElementById('msgConfirmacao');
+msg.classList.add('mostrar');
+setTimeout(()=>msg.classList.remove('mostrar'),3000);
+}
+
+function abrirModal(){
+document.getElementById('modalAdmin').classList.add('ativo');
+document.getElementById('senhaInput').value='';
+document.getElementById('senhaInput').focus();
+document.getElementById('loginAdmin').style.display='block';
+document.getElementById('painelAdmin').style.display='none';
+}
+
+function fecharModal(){document.getElementById('modalAdmin').classList.remove('ativo');}
+
+function entrarAdmin(){
+const senha=document.getElementById('senhaInput').value;
+if(senha===SENHA_ADMIN){
+document.getElementById('loginAdmin').style.display='none';
+document.getElementById('painelAdmin').style.display='block';
+mostrarResultadosAdmin();
+}else{
+alert('❌ Senha incorreta!');
+document.getElementById('senhaInput').value='';
+document.getElementById('senhaInput').focus();
+}
+}
+
+function sairAdmin(){
+document.getElementById('painelAdmin').style.display='none';
+document.getElementById('loginAdmin').style.display='block';
+document.getElementById('senhaInput').value='';
+document.getElementById('senhaInput').focus();
+}
+
+function mostrarResultadosAdmin(){
+const container=document.getElementById('listaResultados');
+container.innerHTML='';
+if(opcoes.length===0){
+container.innerHTML='<div style="text-align:center;padding:30px;color:#888;">📭 Nenhuma opção.</div>';
+document.getElementById('totalVotos').textContent='📊 Total: 0 votos';
+}else{
+let total=0;
+opcoes.forEach(op=>{
+const qtd=votos[op.id]||0;
+total+=qtd;
+const div=document.createElement('div');
+div.className='resultado-item';
+div.innerHTML='<span class="nome">'+(op.emoji||'🍽️')+' '+op.nome+'</span><span class="numero">'+qtd+'</span><button class="btn-remover" data-id="'+op.id+'" title="Remover">✕</button>';
+container.appendChild(div);
+});
+container.querySelectorAll('.btn-remover').forEach(btn=>{
+btn.addEventListener('click',function(){removerOpcao(parseInt(this.dataset.id));});
+});
+document.getElementById('totalVotos').textContent='📊 Total: '+total+' votos ('+opcoes.length+' opções)';
+}
+carregarVotantes();
+const listaVot=document.getElementById('listaVotantes');
+const emails=Object.keys(votantes);
+document.getElementById('qtdVotantes').textContent=emails.length;
+listaVot.innerHTML='';
+if(emails.length===0){
+listaVot.innerHTML='<div style="text-align:center;color:#999;padding:15px;">Ninguém votou ainda.</div>';
+}else{
+emails.forEach(email=>{
+const v=votantes[email];
+const div=document.createElement('div');
+div.className='votante-item';
+div.innerHTML='<div class="email">📧 '+email+'</div><div class="escolhas">🍽️ '+(obterNomesEscolhas(v.escolhas)||'Nenhuma')+'</div><div class="horario">🕒 '+(v.horario||'')+'</div>';
+listaVot.appendChild(div);
+});
+}
+}
+
+function adicionarOpcao(){
+const inputNome=document.getElementById('novaOpcaoInput');
+const inputEmoji=document.getElementById('novoEmojiInput');
+const nome=inputNome.value.trim();
+const emoji=inputEmoji.value.trim()||'🍽️';
+if(!nome){alert('⚠️ Digite o nome da comida!');inputNome.focus();return;}
+if(opcoes.some(op=>op.nome.toLowerCase()===nome.toLowerCase())){alert('⚠️ Esta opção já existe!');inputNome.value='';inputNome.focus();return;}
+const novoId=opcoes.length>0?Math.max(...opcoes.map(o=>o.id))+1:1;
+opcoes.push({id:novoId,nome:nome,emoji:emoji});
+votos[novoId]=0;
+salvarOpcoes();
+salvarVotos();
+inputNome.value='';
+inputEmoji.value='';
+renderizarOpcoes();
+mostrarResultadosAdmin();
+alert('✅ "'+nome+'" foi adicionado!');
+}
+
+function removerOpcao(id){
+const op=opcoes.find(o=>o.id===id);
+if(!op)return;
+if(!confirm('⚠️ Remover "'+op.nome+'"?\nIsso apagará os votos dela.'))return;
+opcoes=opcoes.filter(o=>o.id!==id);
+delete votos[id];
+selecionados.delete(id);
+salvarOpcoes();
+salvarVotos();
+salvarSelecoes();
+renderizarOpcoes();
+mostrarResultadosAdmin();
+alert('✅ "'+op.nome+'" removido!');
+}
+
+function zerarVotos(){
+if(!confirm('⚠️ Zerar TODOS os votos?'))return;
+opcoes.forEach(op=>{votos[op.id]=0;});
+votos={};
+opcoes.forEach(op=>{votos[op.id]=0;});
+votantes={};
+salvarVotos();
+salvarVotantes();
+selecionados.clear();
+salvarSelecoes();
+atualizarSelecoesUI();
+mostrarResultadosAdmin();
+alert('✅ Votos zerados!');
+}
+
+window.onload=iniciar;
+</script>
+</body>
+</html>
