@@ -73,6 +73,129 @@
             border: 1px solid #ffc107;
         }
 
+        /* ===== TELA DE LOGIN ===== */
+        .tela-login {
+            display: none;
+            text-align: center;
+        }
+
+        .tela-login.ativo {
+            display: block;
+        }
+
+        .tela-login h2 {
+            color: #1a3a6b;
+            margin-bottom: 10px;
+            font-size: 1.5em;
+        }
+
+        .tela-login p {
+            color: #666;
+            margin-bottom: 20px;
+            font-size: 0.95em;
+        }
+
+        .tela-login input {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #b8d4f0;
+            border-radius: 10px;
+            font-size: 1em;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .tela-login input:focus {
+            outline: none;
+            border-color: #4a90d9;
+        }
+
+        .aviso-dominio {
+            background: #e8f0fe;
+            padding: 10px;
+            border-radius: 8px;
+            color: #1a3a6b;
+            font-size: 0.85em;
+            margin-bottom: 15px;
+            border-left: 4px solid #4a90d9;
+            text-align: left;
+        }
+
+        .aviso-dominio strong {
+            color: #4a90d9;
+        }
+
+        .erro-login {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border-left: 4px solid #e74c3c;
+            font-size: 0.9em;
+            display: none;
+        }
+
+        .erro-login.mostrar {
+            display: block;
+        }
+
+        /* ===== PAINEL DO USUÁRIO LOGADO ===== */
+        .painel-usuario {
+            display: none;
+        }
+
+        .painel-usuario.ativo {
+            display: block;
+        }
+
+        .barra-usuario {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #1a3a6b;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .barra-usuario .info-user {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.9em;
+        }
+
+        .barra-usuario .avatar {
+            background: #4a90d9;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2em;
+        }
+
+        .barra-usuario .btn-sair {
+            background: transparent;
+            color: white;
+            border: 1px solid rgba(255,255,255,0.4);
+            padding: 6px 16px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 0.85em;
+            transition: all 0.3s;
+        }
+
+        .barra-usuario .btn-sair:hover {
+            background: rgba(255,255,255,0.15);
+            border-color: white;
+        }
+
         /* ===== OPÇÕES DE COMIDA ===== */
         .opcoes {
             display: grid;
@@ -232,7 +355,7 @@
             background: white;
             border-radius: 20px;
             padding: 40px;
-            max-width: 650px;
+            max-width: 700px;
             width: 90%;
             max-height: 85vh;
             overflow-y: auto;
@@ -372,6 +495,46 @@
             margin-bottom: 10px;
         }
 
+        /* ===== LISTA DE VOTANTES (ADMIN) ===== */
+        .secao-votantes {
+            margin-top: 20px;
+            border-top: 2px solid #e8f0fe;
+            padding-top: 20px;
+        }
+
+        .secao-votantes h4 {
+            color: #1a3a6b;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .votante-item {
+            background: #f8f9fa;
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            font-size: 0.85em;
+            border-left: 4px solid #4a90d9;
+        }
+
+        .votante-item .email {
+            color: #1a3a6b;
+            font-weight: 600;
+            word-break: break-all;
+        }
+
+        .votante-item .escolhas {
+            color: #666;
+            margin-top: 4px;
+            font-size: 0.95em;
+        }
+
+        .votante-item .horario {
+            color: #999;
+            font-size: 0.8em;
+            margin-top: 4px;
+        }
+
         /* ===== RESPONSIVO ===== */
         @media (max-width: 700px) {
             .opcoes { grid-template-columns: 1fr 1fr; }
@@ -395,18 +558,46 @@
         <p class="subtitulo">Marque todas as opções que você vai comer hoje!</p>
 
         <div class="data-atual" id="dataAtual"></div>
-        <div class="info-multipla">✅ Você pode marcar QUANTAS opções quiser!</div>
 
-        <!-- OPÇÕES -->
-        <div class="opcoes" id="opcoesContainer"></div>
+        <!-- ===== TELA DE LOGIN ===== -->
+        <div class="tela-login ativo" id="telaLogin">
+            <h2>🔐 Entre com seu email institucional</h2>
+            <p>Use seu email da escola para votar</p>
 
-        <div class="grupo-botoes">
-            <button class="btn" id="btnVotar">✅ Marcar opções selecionadas</button>
-            <button class="btn btn-secundario" id="btnAdmin">🔐 Admin</button>
+            <div class="aviso-dominio">
+                📧 Só é aceito email terminado em <strong>@aluno.edu.pi.gov.br</strong><br>
+                Exemplo: <em>raquel.nascimento.2010@aluno.edu.pi.gov.br</em>
+            </div>
+
+            <div class="erro-login" id="erroLogin"></div>
+
+            <input type="email" id="emailInput" placeholder="seu.nome@aluno.edu.pi.gov.br" autocomplete="email">
+            <button class="btn" id="btnEntrar">🚀 Entrar e votar</button>
         </div>
 
-        <div class="msg-confirmacao" id="msgConfirmacao">
-            ✅ Suas opções foram marcadas com sucesso!
+        <!-- ===== PAINEL DO USUÁRIO ===== -->
+        <div class="painel-usuario" id="painelUsuario">
+            <div class="barra-usuario">
+                <div class="info-user">
+                    <div class="avatar">👤</div>
+                    <div id="emailUsuarioLogado"></div>
+                </div>
+                <button class="btn-sair" id="btnSairUsuario">🚪 Sair</button>
+            </div>
+
+            <div class="info-multipla">✅ Você pode marcar QUANTAS opções quiser!</div>
+
+            <!-- OPÇÕES -->
+            <div class="opcoes" id="opcoesContainer"></div>
+
+            <div class="grupo-botoes">
+                <button class="btn" id="btnVotar">✅ Marcar opções selecionadas</button>
+                <button class="btn btn-secundario" id="btnAdmin">🔐 Admin</button>
+            </div>
+
+            <div class="msg-confirmacao" id="msgConfirmacao">
+                ✅ Suas opções foram marcadas com sucesso!
+            </div>
         </div>
     </div>
 
@@ -431,7 +622,7 @@
                 <div class="area-adicionar">
                     <h4 style="color:#1a3a6b;margin-bottom:10px;">➕ Adicionar nova comida</h4>
                     <div class="linha">
-                        <input type="text" id="novaOpcaoInput" placeholder="Ex: Pizza, Hambúrguer, Macarrão...">
+                        <input type="text" id="novaOpcaoInput" placeholder="Ex: Pizza, Hambúrguer...">
                         <input type="text" id="novoEmojiInput" placeholder="🍕" maxlength="2">
                         <button class="btn btn-verde btn-pequeno" id="btnAdicionarOpcao">Adicionar</button>
                     </div>
@@ -441,6 +632,12 @@
                 <!-- Lista de opções com resultados -->
                 <div id="listaResultados"></div>
                 <div class="total-votos" id="totalVotos">📊 Total: 0 votos</div>
+
+                <!-- Lista de quem votou -->
+                <div class="secao-votantes">
+                    <h4>👥 Quem já votou (<span id="qtdVotantes">0</span>)</h4>
+                    <div id="listaVotantes"></div>
+                </div>
 
                 <div class="grupo-botoes">
                     <button class="btn btn-vermelho" id="btnZerar">🔄 Zerar todos os votos</button>
@@ -452,16 +649,22 @@
 
     <script>
         // ============================================
-        // DADOS (salvos no localStorage)
+        // CONFIGURAÇÕES
         // ============================================
-        let opcoes = [];
-        let votos = {};
-        let selecionados = new Set();
-
+        const DOMINIO_PERMITIDO = '@aluno.edu.pi.gov.br';
         const SENHA_ADMIN = 'admin123'; // ⚠️ MUDE A SENHA AQUI
 
         // ============================================
-        // OPÇÕES PADRÃO (se não houver salvas)
+        // DADOS
+        // ============================================
+        let opcoes = [];
+        let votos = {};           // { idOpcao: quantidade }
+        let selecionados = new Set();
+        let votantes = {};        // { email: { escolhas: [ids], horario: "..." } }
+        let emailLogado = null;
+
+        // ============================================
+        // OPÇÕES PADRÃO
         // ============================================
         function getOpcoesPadrao() {
             return [
@@ -483,43 +686,124 @@
             document.getElementById('dataAtual').textContent =
                 `📅 ${hoje.toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}`;
 
-            // Carregar dados
             carregarDados();
-
-            // Renderizar opções
             renderizarOpcoes();
 
-            // Carregar seleções anteriores
-            carregarSelecoes();
+            // Eventos - Login
+            document.getElementById('btnEntrar').addEventListener('click', fazerLogin);
+            document.getElementById('emailInput').addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') fazerLogin();
+            });
 
-            // Eventos
+            // Eventos - Usuário
             document.getElementById('btnVotar').addEventListener('click', votar);
             document.getElementById('btnAdmin').addEventListener('click', abrirModal);
+            document.getElementById('btnSairUsuario').addEventListener('click', sairUsuario);
+
+            // Eventos - Admin
             document.getElementById('btnFecharModal').addEventListener('click', fecharModal);
             document.getElementById('btnEntrarAdmin').addEventListener('click', entrarAdmin);
             document.getElementById('btnSairAdmin').addEventListener('click', sairAdmin);
             document.getElementById('btnZerar').addEventListener('click', zerarVotos);
             document.getElementById('btnAdicionarOpcao').addEventListener('click', adicionarOpcao);
 
-            // Enter na senha
             document.getElementById('senhaInput').addEventListener('keydown', function(e) {
                 if (e.key === 'Enter') entrarAdmin();
             });
-
-            // Enter na nova opção
             document.getElementById('novaOpcaoInput').addEventListener('keydown', function(e) {
                 if (e.key === 'Enter') adicionarOpcao();
             });
             document.getElementById('novoEmojiInput').addEventListener('keydown', function(e) {
                 if (e.key === 'Enter') adicionarOpcao();
             });
+
+            // Verificar se já estava logado (sessão)
+            const emailSalvo = sessionStorage.getItem('emailLogado');
+            if (emailSalvo) {
+                emailLogado = emailSalvo;
+                mostrarPainelUsuario();
+            }
+        }
+
+        // ============================================
+        // LOGIN
+        // ============================================
+        function fazerLogin() {
+            const input = document.getElementById('emailInput');
+            const erro = document.getElementById('erroLogin');
+            const email = input.value.trim().toLowerCase();
+
+            erro.classList.remove('mostrar');
+
+            // Validações
+            if (!email) {
+                mostrarErro('⚠️ Digite seu email!');
+                return;
+            }
+
+            if (!email.includes('@')) {
+                mostrarErro('⚠️ Email inválido! Digite um email completo.');
+                return;
+            }
+
+            if (!email.endsWith(DOMINIO_PERMITIDO)) {
+                mostrarErro(`❌ Apenas emails terminados em <strong>${DOMINIO_PERMITIDO}</strong> são aceitos!`);
+                return;
+            }
+
+            // Verificar se já votou hoje
+            carregarVotantes();
+            if (votantes[email]) {
+                mostrarErro(`⚠️ Este email já votou hoje!<br><small>Você escolheu: ${obterNomesEscolhas(votantes[email].escolhas)}</small>`);
+                return;
+            }
+
+            // Login OK
+            emailLogado = email;
+            sessionStorage.setItem('emailLogado', email);
+            input.value = '';
+            mostrarPainelUsuario();
+        }
+
+        function mostrarErro(msg) {
+            const erro = document.getElementById('erroLogin');
+            erro.innerHTML = msg;
+            erro.classList.add('mostrar');
+        }
+
+        function mostrarPainelUsuario() {
+            document.getElementById('telaLogin').classList.remove('ativo');
+            document.getElementById('painelUsuario').classList.add('ativo');
+            document.getElementById('emailUsuarioLogado').textContent = emailLogado;
+            renderizarOpcoes();
+        }
+
+        function sairUsuario() {
+            if (!confirm('Deseja sair? Você precisará entrar novamente.')) return;
+
+            emailLogado = null;
+            sessionStorage.removeItem('emailLogado');
+            selecionados.clear();
+            salvarSelecoes();
+
+            document.getElementById('telaLogin').classList.add('ativo');
+            document.getElementById('painelUsuario').classList.remove('ativo');
+            document.getElementById('emailInput').value = '';
+            document.getElementById('erroLogin').classList.remove('mostrar');
+        }
+
+        function obterNomesEscolhas(ids) {
+            return ids.map(id => {
+                const op = opcoes.find(o => o.id === id);
+                return op ? `${op.emoji} ${op.nome}` : '';
+            }).filter(Boolean).join(', ');
         }
 
         // ============================================
         // FUNÇÕES DE DADOS
         // ============================================
         function carregarDados() {
-            // Carregar opções
+            // Opções
             const dados = localStorage.getItem('opcoesAlmoco');
             if (dados) {
                 opcoes = JSON.parse(dados);
@@ -528,7 +812,7 @@
                 salvarOpcoes();
             }
 
-            // Carregar votos
+            // Votos
             const votosData = localStorage.getItem('votosAlmoco');
             if (votosData) {
                 votos = JSON.parse(votosData);
@@ -538,13 +822,21 @@
                 salvarVotos();
             }
 
-            // Garantir que todas as opções tenham voto
             opcoes.forEach(op => {
-                if (votos[op.id] === undefined) {
-                    votos[op.id] = 0;
-                }
+                if (votos[op.id] === undefined) votos[op.id] = 0;
             });
             salvarVotos();
+
+            carregarVotantes();
+        }
+
+        function carregarVotantes() {
+            const data = localStorage.getItem('votantesAlmoco');
+            votantes = data ? JSON.parse(data) : {};
+        }
+
+        function salvarVotantes() {
+            localStorage.setItem('votantesAlmoco', JSON.stringify(votantes));
         }
 
         function salvarOpcoes() {
@@ -556,7 +848,7 @@
         }
 
         function carregarSelecoes() {
-            const salvas = localStorage.getItem('selecoesAtuais');
+            const salvas = sessionStorage.getItem('selecoesAtuais_' + emailLogado);
             if (salvas) {
                 const ids = JSON.parse(salvas);
                 ids.forEach(id => selecionados.add(id));
@@ -565,7 +857,9 @@
         }
 
         function salvarSelecoes() {
-            localStorage.setItem('selecoesAtuais', JSON.stringify([...selecionados]));
+            if (emailLogado) {
+                sessionStorage.setItem('selecoesAtuais_' + emailLogado, JSON.stringify([...selecionados]));
+            }
         }
 
         // ============================================
@@ -573,6 +867,7 @@
         // ============================================
         function renderizarOpcoes() {
             const container = document.getElementById('opcoesContainer');
+            if (!container) return;
             container.innerHTML = '';
 
             if (opcoes.length === 0) {
@@ -589,21 +884,17 @@
             opcoes.forEach(op => {
                 const div = document.createElement('div');
                 div.className = 'opcao';
-                if (selecionados.has(op.id)) {
-                    div.classList.add('selecionada');
-                }
+                if (selecionados.has(op.id)) div.classList.add('selecionada');
                 div.dataset.id = op.id;
                 div.innerHTML = `
                     <span class="check">✓</span>
                     <span class="emoji">${op.emoji || '🍽️'}</span>
                     ${op.nome}
                 `;
-
                 div.addEventListener('click', function() {
                     const id = parseInt(this.dataset.id);
                     toggleSelecao(id);
                 });
-
                 container.appendChild(div);
             });
         }
@@ -633,19 +924,22 @@
         // VOTAR
         // ============================================
         function votar() {
+            if (!emailLogado) {
+                alert('⚠️ Faça login primeiro!');
+                return;
+            }
+
             if (selecionados.size === 0) {
                 alert('⚠️ Marque pelo menos uma opção antes de votar!');
                 return;
             }
 
-            // Salvar votos anteriores para remover
-            const votosAnteriores = localStorage.getItem('votosAnteriores');
-            if (votosAnteriores) {
-                const idsAnt = JSON.parse(votosAnteriores);
-                idsAnt.forEach(id => {
-                    if (votos[id] !== undefined && votos[id] > 0) {
-                        votos[id]--;
-                    }
+            carregarVotantes();
+
+            // Se já votou, remover voto anterior
+            if (votantes[emailLogado]) {
+                votantes[emailLogado].escolhas.forEach(id => {
+                    if (votos[id] !== undefined && votos[id] > 0) votos[id]--;
                 });
             }
 
@@ -654,12 +948,16 @@
                 votos[id] = (votos[id] || 0) + 1;
             });
 
-            // Salvar votos atuais para remover depois
-            localStorage.setItem('votosAnteriores', JSON.stringify([...selecionados]));
+            // Registrar votante
+            votantes[emailLogado] = {
+                escolhas: [...selecionados],
+                horario: new Date().toLocaleString('pt-BR')
+            };
 
             salvarVotos();
+            salvarVotantes();
 
-            // Mostrar mensagem
+            // Mensagem
             const msg = document.getElementById('msgConfirmacao');
             msg.classList.add('mostrar');
             setTimeout(() => msg.classList.remove('mostrar'), 3000);
@@ -694,7 +992,7 @@
                 document.getElementById('painelAdmin').style.display = 'block';
                 mostrarResultadosAdmin();
             } else {
-                alert('❌ Senha incorreta! Tente novamente.');
+                alert('❌ Senha incorreta!');
                 document.getElementById('senhaInput').value = '';
                 document.getElementById('senhaInput').focus();
             }
@@ -715,8 +1013,7 @@
                 container.innerHTML = `
                     <div class="vazio">
                         <span class="emoji-grande">📭</span>
-                        Nenhuma opção cadastrada.<br>
-                        <small style="color:#aaa;">Adicione uma acima!</small>
+                        Nenhuma opção cadastrada.
                     </div>
                 `;
                 document.getElementById('totalVotos').textContent = '📊 Total: 0 votos';
@@ -730,130 +1027,4 @@
                 const div = document.createElement('div');
                 div.className = 'resultado-item';
                 div.innerHTML = `
-                    <span class="nome">${op.emoji || '🍽️'} ${op.nome}</span>
-                    <span class="numero">${qtd}</span>
-                    <button class="btn-remover" data-id="${op.id}" title="Remover esta opção">✕</button>
-                `;
-                container.appendChild(div);
-            });
-
-            // Eventos de remover
-            container.querySelectorAll('.btn-remover').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const id = parseInt(this.dataset.id);
-                    removerOpcao(id);
-                });
-            });
-
-            document.getElementById('totalVotos').textContent = `📊 Total: ${total} votos (${opcoes.length} opções)`;
-        }
-
-        // ============================================
-        // GERENCIAR OPÇÕES
-        // ============================================
-        function adicionarOpcao() {
-            const inputNome = document.getElementById('novaOpcaoInput');
-            const inputEmoji = document.getElementById('novoEmojiInput');
-            const nome = inputNome.value.trim();
-            const emoji = inputEmoji.value.trim() || '🍽️';
-
-            if (!nome) {
-                alert('⚠️ Digite o nome da comida!');
-                inputNome.focus();
-                return;
-            }
-
-            // Verificar se já existe
-            if (opcoes.some(op => op.nome.toLowerCase() === nome.toLowerCase())) {
-                alert('⚠️ Esta opção já existe!');
-                inputNome.value = '';
-                inputNome.focus();
-                return;
-            }
-
-            // Gerar novo ID
-            const novoId = opcoes.length > 0 ? Math.max(...opcoes.map(o => o.id)) + 1 : 1;
-
-            // Adicionar
-            opcoes.push({ id: novoId, nome: nome, emoji: emoji });
-            votos[novoId] = 0;
-
-            salvarOpcoes();
-            salvarVotos();
-
-            // Limpar campos
-            inputNome.value = '';
-            inputEmoji.value = '';
-
-            // Atualizar UI
-            renderizarOpcoes();
-            mostrarResultadosAdmin();
-
-            // Feedback
-            inputNome.style.borderColor = '#27ae60';
-            setTimeout(() => inputNome.style.borderColor = '', 1000);
-
-            alert(`✅ "${nome}" foi adicionado com sucesso!`);
-        }
-
-        function removerOpcao(id) {
-            const op = opcoes.find(o => o.id === id);
-            if (!op) return;
-
-            if (!confirm(`⚠️ Tem certeza que quer remover "${op.nome}"?\nIsso também apagará todos os votos dela.`)) {
-                return;
-            }
-
-            // Remover opção
-            opcoes = opcoes.filter(o => o.id !== id);
-            delete votos[id];
-
-            // Remover das seleções atuais
-            selecionados.delete(id);
-
-            salvarOpcoes();
-            salvarVotos();
-            salvarSelecoes();
-
-            // Atualizar UI
-            renderizarOpcoes();
-            mostrarResultadosAdmin();
-
-            alert(`✅ "${op.nome}" foi removido!`);
-        }
-
-        function zerarVotos() {
-            if (!confirm('⚠️ Tem certeza que deseja ZERAR todos os votos?')) return;
-
-            opcoes.forEach(op => { votos[op.id] = 0; });
-            salvarVotos();
-            localStorage.removeItem('votosAnteriores');
-
-            // Limpar seleções
-            selecionados.clear();
-            salvarSelecoes();
-            atualizarSelecoesUI();
-
-            mostrarResultadosAdmin();
-            alert('✅ Todos os votos foram zerados!');
-        }
-
-        // ============================================
-        // FECHAR MODAL
-        // ============================================
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') fecharModal();
-        });
-
-        document.getElementById('modalAdmin').addEventListener('click', function(e) {
-            if (e.target === this) fecharModal();
-        });
-
-        // ============================================
-        // INICIAR
-        // ============================================
-        window.onload = iniciar;
-    </script>
-
-</body>
-</html>
+                    <span class="nome">${op.emoji
