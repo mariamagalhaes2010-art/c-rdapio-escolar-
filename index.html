@@ -3,158 +3,487 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🍽️ Marcação de Almoço</title>
+<title>Cardápio Escolar - Votação da Merenda</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif}
-body{background:linear-gradient(135deg,#0a1628,#1a3a6b);min-height:100vh;display:flex;justify-content:center;align-items:flex-start;padding:30px 20px}
-.container{background:rgba(255,255,255,0.95);border-radius:20px;padding:40px;max-width:800px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,0.5);border:2px solid #4a90d9;margin:20px 0}
-h1{color:#1a3a6b;text-align:center;font-size:2.2em;margin-bottom:5px}
-h1 span{color:#4a90d9}
-.subtitulo{text-align:center;color:#555;margin-bottom:10px;font-size:0.95em}
-.data-atual{text-align:center;background:#e8f0fe;padding:10px;border-radius:10px;color:#1a3a6b;font-weight:bold;margin-bottom:20px;border:1px solid #4a90d9}
-.info-multipla{text-align:center;background:#fff3cd;padding:8px;border-radius:8px;color:#856404;margin-bottom:20px;font-size:0.9em;border:1px solid #ffc107}
-.tela-login{display:none;text-align:center}
-.tela-login.ativo{display:block}
-.tela-login h2{color:#1a3a6b;margin-bottom:10px;font-size:1.5em}
-.tela-login p{color:#666;margin-bottom:20px;font-size:0.95em}
-.tela-login input{width:100%;padding:14px;border:2px solid #b8d4f0;border-radius:10px;font-size:1em;margin-bottom:15px;text-align:center}
-.tela-login input:focus{outline:none;border-color:#4a90d9}
-.aviso-dominio{background:#e8f0fe;padding:10px;border-radius:8px;color:#1a3a6b;font-size:0.85em;margin-bottom:15px;border-left:4px solid #4a90d9;text-align:left}
-.aviso-dominio strong{color:#4a90d9}
-.erro-login{background:#f8d7da;color:#721c24;padding:10px;border-radius:8px;margin-bottom:15px;border-left:4px solid #e74c3c;font-size:0.9em;display:none}
-.erro-login.mostrar{display:block}
-.painel-usuario{display:none}
-.painel-usuario.ativo{display:block}
-.barra-usuario{display:flex;justify-content:space-between;align-items:center;background:#1a3a6b;color:white;padding:12px 20px;border-radius:12px;margin-bottom:20px;flex-wrap:wrap;gap:10px}
-.barra-usuario .info-user{display:flex;align-items:center;gap:10px;font-size:0.9em}
-.barra-usuario .avatar{background:#4a90d9;width:35px;height:35px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.2em}
-.barra-usuario .btn-sair{background:transparent;color:white;border:1px solid rgba(255,255,255,0.4);padding:6px 16px;border-radius:50px;cursor:pointer;font-size:0.85em}
-.barra-usuario .btn-sair:hover{background:rgba(255,255,255,0.15)}
-.opcoes{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin:15px 0}
-.opcao{background:#f0f7ff;border:2px solid #b8d4f0;border-radius:12px;padding:15px 10px;text-align:center;cursor:pointer;font-size:1.05em;font-weight:600;color:#1a3a6b;user-select:none;position:relative;transition:all 0.3s}
-.opcao:hover{transform:scale(1.03);border-color:#4a90d9;background:#dce8f7}
-.opcao.selecionada{background:#1a3a6b;color:white;border-color:#1a3a6b}
-.opcao .check{display:none;position:absolute;top:-8px;right:-8px;background:#27ae60;color:white;border-radius:50%;width:28px;height:28px;font-size:16px;line-height:28px;text-align:center}
-.opcao.selecionada .check{display:block}
-.emoji{display:block;font-size:2em;margin-bottom:5px}
-.btn{background:#1a3a6b;color:white;border:none;padding:14px 30px;border-radius:50px;font-size:1.1em;font-weight:bold;cursor:pointer;width:100%;margin-top:10px;transition:all 0.3s}
-.btn:hover{background:#4a90d9;transform:translateY(-2px)}
-.btn-secundario{background:transparent;color:#1a3a6b;border:2px solid #4a90d9}
-.btn-secundario:hover{background:#e8f0fe;transform:none}
-.btn-vermelho{background:#c0392b}
-.btn-verde{background:#27ae60}
-.btn-pequeno{padding:10px 20px;font-size:0.9em;width:auto;margin:0}
-.grupo-botoes{display:flex;gap:10px;flex-wrap:wrap}
-.grupo-botoes .btn{flex:1;min-width:120px}
-.modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);backdrop-filter:blur(5px);justify-content:center;align-items:center;z-index:1000}
-.modal.ativo{display:flex}
-.modal-conteudo{background:white;border-radius:20px;padding:40px;max-width:700px;width:90%;max-height:85vh;overflow-y:auto;border:3px solid #4a90d9}
-.modal-conteudo h2{color:#1a3a6b;margin-bottom:20px;text-align:center}
-.modal-conteudo input{width:100%;padding:12px;border:2px solid #b8d4f0;border-radius:10px;font-size:1em;margin-bottom:10px}
-.modal-conteudo input:focus{outline:none;border-color:#4a90d9}
-.resultado-item{display:flex;justify-content:space-between;align-items:center;padding:10px 12px;border-bottom:1px solid #e8f0fe}
-.resultado-item .nome{color:#1a3a6b;font-weight:600;flex:1}
-.resultado-item .numero{background:#1a3a6b;color:white;padding:2px 14px;border-radius:50px;font-weight:bold;margin:0 10px}
-.resultado-item .btn-remover{background:#e74c3c;color:white;border:none;border-radius:50%;width:28px;height:28px;cursor:pointer;font-weight:bold}
-.total-votos{text-align:center;margin:15px 0;padding:12px;background:#e8f0fe;border-radius:10px;color:#1a3a6b;font-weight:bold}
-.msg-confirmacao{text-align:center;padding:12px;background:#27ae60;color:white;border-radius:10px;margin-top:15px;display:none}
-.msg-confirmacao.mostrar{display:block}
-.area-adicionar{background:#f8f9fa;padding:15px;border-radius:10px;margin:15px 0;border:2px dashed #4a90d9}
-.area-adicionar .linha{display:flex;gap:10px;align-items:center}
-.area-adicionar .linha input{flex:1;margin-bottom:0}
-.area-adicionar .linha input#novoEmojiInput{max-width:70px;text-align:center;font-size:1.5em}
-.secao-votantes{margin-top:20px;border-top:2px solid #e8f0fe;padding-top:20px}
-.secao-votantes h4{color:#1a3a6b;margin-bottom:10px;text-align:center}
-.votante-item{background:#f8f9fa;padding:10px 15px;border-radius:8px;margin-bottom:8px;font-size:0.85em;border-left:4px solid #4a90d9}
-.votante-item .email{color:#1a3a6b;font-weight:600;word-break:break-all}
-.votante-item .escolhas{color:#666;margin-top:4px}
-.votante-item .horario{color:#999;font-size:0.85em;margin-top:4px}
-@media(max-width:700px){.opcoes{grid-template-columns:1fr 1fr}}
-@media(max-width:500px){.opcoes{grid-template-columns:1fr}.grupo-botoes{flex-direction:column}.area-adicionar .linha{flex-direction:column}}
+:root {
+  --blue-primary: #1e3a8a;
+  --blue-hover: #1d4ed8;
+  --blue-light: #eff6ff;
+  --blue-border: #93c5fd;
+  --bg-page: #f1f5f9;
+  --text-dark: #0f172a;
+  --text-gray: #475569;
+  --radius-card: 16px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+
+body {
+  background-color: var(--bg-page);
+  color: var(--text-dark);
+  min-height: 100vh;
+  padding: 20px 15px 100px 15px;
+}
+
+.main-container {
+  max-width: 950px;
+  margin: 0 auto;
+}
+
+/* CABEÇALHO */
+.header-box {
+  background: var(--blue-primary);
+  color: white;
+  border-radius: var(--radius-card);
+  padding: 25px 20px;
+  margin-bottom: 20px;
+  position: relative;
+  box-shadow: 0 10px 25px rgba(30, 58, 138, 0.2);
+}
+
+.header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.badge-escola {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 4px 12px;
+  border-radius: 50px;
+  font-size: 0.8em;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.btn-admin {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  color: white;
+  padding: 6px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.85em;
+  font-weight: 600;
+}
+.btn-admin:hover { background: rgba(255, 255, 255, 0.15); }
+
+.header-box h1 { font-size: 1.8em; font-weight: 800; }
+.header-box p { font-size: 0.95em; opacity: 0.9; margin-top: 4px; }
+
+/* CARDÁPIO SEMANAL PUBLICADO */
+.secao-semanal {
+  background: white;
+  border-radius: var(--radius-card);
+  padding: 20px;
+  margin-bottom: 20px;
+  border: 1px solid #e2e8f0;
+}
+
+.secao-semanal h2 {
+  font-size: 1.15em;
+  color: var(--blue-primary);
+  margin-bottom: 12px;
+  border-bottom: 2px solid var(--blue-light);
+  padding-bottom: 6px;
+}
+
+.grid-semanal {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 10px;
+}
+
+.dia-card {
+  background: var(--blue-light);
+  border: 1px solid var(--blue-border);
+  padding: 12px;
+  border-radius: 10px;
+}
+
+.dia-card strong { display: block; color: var(--blue-primary); font-size: 0.85em; margin-bottom: 4px; }
+.dia-card span { font-size: 0.88em; color: var(--text-dark); line-height: 1.3; display: block; }
+
+/* TELA DE LOGIN */
+.card-login {
+  background: white;
+  border-radius: var(--radius-card);
+  padding: 30px 20px;
+  max-width: 450px;
+  margin: 30px auto;
+  border: 1px solid #e2e8f0;
+  text-align: center;
+}
+
+.card-login h2 { font-size: 1.4em; color: var(--blue-primary); margin-bottom: 8px; }
+.card-login p { color: var(--text-gray); font-size: 0.9em; margin-bottom: 20px; }
+
+.input-field {
+  width: 100%;
+  padding: 14px;
+  border: 2px solid #cbd5e1;
+  border-radius: 10px;
+  font-size: 0.95em;
+  outline: none;
+  margin-bottom: 12px;
+}
+.input-field:focus { border-color: var(--blue-primary); }
+
+.btn-primary {
+  width: 100%;
+  background: var(--blue-primary);
+  color: white;
+  border: none;
+  padding: 14px;
+  border-radius: 10px;
+  font-size: 1em;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.btn-primary:hover { background: var(--blue-hover); }
+
+.aviso-dominio {
+  background: #f8fafc;
+  border-left: 4px solid var(--blue-primary);
+  padding: 10px;
+  border-radius: 6px;
+  text-align: left;
+  font-size: 0.85em;
+  color: var(--text-gray);
+  margin-bottom: 15px;
+}
+
+.erro-box {
+  background: #fef2f2;
+  border: 1px solid #fca5a5;
+  color: #991b1b;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 0.85em;
+  margin-bottom: 12px;
+  display: none;
+}
+
+/* PAINEL DE USUÁRIO */
+.user-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: white;
+  padding: 12px 18px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #e2e8f0;
+  font-size: 0.9em;
+  font-weight: 600;
+}
+
+/* CATEGORIAS E OPÇÕES */
+.titulo-categoria {
+  font-size: 1.2em;
+  color: var(--blue-primary);
+  margin: 25px 0 12px 0;
+  border-bottom: 2px solid var(--blue-border);
+  padding-bottom: 5px;
+}
+
+.grid-opcoes {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 12px;
+}
+
+.card-opcao {
+  background: white;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 16px;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s;
+}
+
+.card-opcao:hover { border-color: var(--blue-border); background: #f8fafc; }
+.card-opcao.selecionado { border-color: var(--blue-primary); background: var(--blue-light); }
+
+.card-opcao h3 { font-size: 1.05em; color: var(--text-dark); margin-bottom: 4px; }
+.card-opcao p { font-size: 0.85em; color: var(--text-gray); }
+
+.check-mark {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 2px solid #cbd5e1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: bold;
+}
+.card-opcao.selecionado .check-mark { background: var(--blue-primary); border-color: var(--blue-primary); color: white; }
+
+/* SEÇÃO DE CAMPOS EXTRAS DO ALUNO */
+.secao-extras {
+  background: white;
+  border-radius: var(--radius-card);
+  padding: 20px;
+  margin-top: 25px;
+  border: 1px solid #e2e8f0;
+}
+
+.secao-extras h3 { font-size: 1.1em; color: var(--blue-primary); margin-bottom: 12px; }
+
+.textarea-field {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 0.9em;
+  resize: vertical;
+  min-height: 60px;
+  margin-bottom: 12px;
+  outline: none;
+}
+.textarea-field:focus { border-color: var(--blue-primary); }
+
+/* BARRA FIXA */
+.bar-confirmar {
+  position: fixed;
+  bottom: 0; left: 0; width: 100%;
+  background: white;
+  border-top: 2px solid #e2e8f0;
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  box-shadow: 0 -5px 20px rgba(0,0,0,0.1);
+  z-index: 100;
+}
+
+/* MODAL ADMIN */
+.modal {
+  display: none;
+  position: fixed;
+  top:0; left:0; width:100%; height:100%;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(4px);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 15px;
+}
+.modal.ativo { display: flex; }
+
+.modal-conteudo {
+  background: white;
+  border-radius: var(--radius-card);
+  padding: 25px;
+  max-width: 700px;
+  width: 100%;
+  max-height: 85vh;
+  overflow-y: auto;
+}
+
+.admin-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  margin-bottom: 6px;
+  font-size: 0.9em;
+}
+
+.btn-del {
+  background: #ef4444;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 4px 8px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.sucesso-msg {
+  background: #dcfce7;
+  color: #15803d;
+  padding: 12px;
+  border-radius: 8px;
+  text-align: center;
+  font-weight: bold;
+  margin-top: 15px;
+  display: none;
+}
+.sucesso-msg.ativo { display: block; }
 </style>
 </head>
 <body>
-<div class="container">
-<h1>🍽️ <span>Almoço</span> do Dia</h1>
-<p class="subtitulo">Marque todas as opções que você vai comer hoje!</p>
-<div class="data-atual" id="dataAtual"></div>
 
-<div class="tela-login ativo" id="telaLogin">
-<h2>🔐 Entre com seu email institucional</h2>
-<p>Use seu email da escola para votar</p>
-<div class="aviso-dominio">
-📧 Só é aceito email terminado em <strong>@aluno.edu.pi.gov.br</strong><br>
-Exemplo: <em>raquel.nascimento.2010@aluno.edu.pi.gov.br</em>
-</div>
-<div class="erro-login" id="erroLogin"></div>
-<input type="email" id="emailInput" placeholder="seu.nome@aluno.edu.pi.gov.br">
-<button class="btn" id="btnEntrar">🚀 Entrar e votar</button>
+<div class="main-container">
+  
+  <header class="header-box">
+    <div class="header-top">
+      <span class="badge-escola">ESCOLA PÚBLICA ESTADUAL</span>
+      <button class="btn-admin" id="btnAdmin">Área do Administrador</button>
+    </div>
+    <h1>Cardápio e Votação da Merenda Escolar</h1>
+    <p>Escolha os itens da sua refeição diária e acompanhe o cardápio oficial</p>
+  </header>
+
+  <!-- SEÇÃO CARDÁPIO SEMANAL -->
+  <section class="secao-semanal">
+    <h2>📅 Cardápio Oficial da Semana</h2>
+    <div class="grid-semanal" id="containerCardapioSemanal">
+      <div class="dia-card"><strong>Segunda-feira</strong><span id="dia-segunda">Carregando...</span></div>
+      <div class="dia-card"><strong>Terça-feira</strong><span id="dia-terca">Carregando...</span></div>
+      <div class="dia-card"><strong>Quarta-feira</strong><span id="dia-quarta">Carregando...</span></div>
+      <div class="dia-card"><strong>Quinta-feira</strong><span id="dia-quinta">Carregando...</span></div>
+      <div class="dia-card"><strong>Sexta-feira</strong><span id="dia-sexta">Carregando...</span></div>
+    </div>
+  </section>
+
+  <!-- TELA DE LOGIN -->
+  <div id="telaLogin" class="card-login">
+    <h2>Identificação do Aluno</h2>
+    <p>Digite seu e-mail institucional para votar</p>
+    
+    <div class="aviso-dominio">
+      Apenas e-mails terminados em <strong>@aluno.edu.pi.gov.br</strong>
+    </div>
+
+    <div class="erro-box" id="erroLogin"></div>
+
+    <input type="email" id="emailInput" class="input-field" placeholder="seu.nome@aluno.edu.pi.gov.br">
+    <button class="btn-primary" id="btnEntrar">Entrar para Votar</button>
+  </div>
+
+  <!-- PAINEL DE VOTAÇÃO -->
+  <div id="painelUsuario" style="display: none;">
+    <div class="user-bar">
+      <span>Aluno: <strong id="emailUsuarioLogado"></strong></span>
+      <button class="btn-admin" id="btnSairUsuario" style="color: #ef4444; border-color: #fca5a5;">Sair</button>
+    </div>
+
+    <p style="margin-bottom: 15px; color: var(--text-gray); font-size: 0.95em;">
+      Marque os itens que você gostaria de comer hoje:
+    </p>
+
+    <!-- CONTAINER DAS OPÇÕES POR CATEGORIA -->
+    <div id="categoriasContainer"></div>
+
+    <!-- SEÇÃO RESTRIÇÕES E OPINIÃO -->
+    <div class="secao-extras">
+      <h3>Informações Adicionais (Opcional)</h3>
+      
+      <label style="display:block; font-size:0.85em; font-weight:600; margin-bottom:4px; color:var(--text-gray);">
+        Você possui alguma restrição alimentar ou alergia?
+      </label>
+      <textarea id="restricaoInput" class="textarea-field" placeholder="Ex: Intolerância à lactose, alergia a amendoim, sou vegetariano..."></textarea>
+
+      <label style="display:block; font-size:0.85em; font-weight:600; margin-bottom:4px; color:var(--text-gray);">
+        Sua opinião ou sugestão sobre a merenda da escola:
+      </label>
+      <textarea id="opiniaoInput" class="textarea-field" placeholder="Escreva aqui sua sugestão para melhorar nossa refeição..."></textarea>
+    </div>
+
+    <div class="sucesso-msg" id="msgConfirmacao">Voto e informações gravados com sucesso! Obrigado!</div>
+  </div>
+
 </div>
 
-<div class="painel-usuario" id="painelUsuario">
-<div class="barra-usuario">
-<div class="info-user">
-<div class="avatar">👤</div>
-<div id="emailUsuarioLogado"></div>
-</div>
-<button class="btn-sair" id="btnSairUsuario">🚪 Sair</button>
-</div>
-<div class="info-multipla">✅ Você pode marcar QUANTAS opções quiser!</div>
-<div class="opcoes" id="opcoesContainer"></div>
-<div class="grupo-botoes">
-<button class="btn" id="btnVotar">✅ Marcar opções selecionadas</button>
-<button class="btn btn-secundario" id="btnAdmin">🔐 Admin</button>
-</div>
-<div class="msg-confirmacao" id="msgConfirmacao">✅ Suas opções foram marcadas com sucesso!</div>
-</div>
+<!-- BARRA FIXA DE CONFIRMAÇÃO -->
+<div class="bar-confirmar" id="barConfirmacao" style="display: none;">
+  <span style="font-weight: 600;">Itens selecionados: <strong id="qtdSelecionados" style="color: var(--blue-primary);">0</strong></span>
+  <button class="btn-primary" id="btnVotar" style="width: auto; padding: 10px 25px;">Confirmar Refeição</button>
 </div>
 
+<!-- MODAL ADMINISTRADOR -->
 <div class="modal" id="modalAdmin">
-<div class="modal-conteudo">
-<h2>🔐 Painel Administrativo</h2>
-<div id="loginAdmin">
-<p style="text-align:center;color:#666;margin-bottom:15px;">Digite a senha para gerenciar as opções</p>
-<input type="password" id="senhaInput" placeholder="Digite a senha...">
-<button class="btn" id="btnEntrarAdmin">🔓 Entrar</button>
-<button class="btn btn-secundario" id="btnFecharModal">Fechar</button>
+  <div class="modal-conteudo">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+      <h2>Painel Administrativo</h2>
+      <button id="btnFecharModal" style="background:none; border:none; font-size:1.2em; cursor:pointer;">✕</button>
+    </div>
+
+    <!-- LOGIN ADMIN -->
+    <div id="loginAdmin">
+      <p style="color: var(--text-gray); margin-bottom: 10px;">Digite a senha do administrador:</p>
+      <input type="password" id="senhaInput" class="input-field" placeholder="Senha...">
+      <button class="btn-primary" id="btnEntrarAdmin">Acessar Painel</button>
+    </div>
+
+    <!-- CONTEÚDO ADMIN -->
+    <div id="painelAdmin" style="display: none;">
+      
+      <!-- CADASTRAR OPÇÃO DE VOTAÇÃO -->
+      <div style="background: #f8fafc; border: 1px solid #e2e8f0; padding: 15px; border-radius: 10px; margin-bottom: 20px;">
+        <h3 style="font-size: 1em; color: var(--blue-primary); margin-bottom: 10px;">Adicionar Opção para Votação</h3>
+        <input type="text" id="novaOpcaoInput" class="input-field" placeholder="Nome do alimento (Ex: Arroz Integral)">
+        <input type="text" id="novaDescricaoInput" class="input-field" placeholder="Descrição (Ex: Arroz rico em fibras)">
+        
+        <select id="categoriaInput" class="input-field">
+          <option value="Prato Principal">Prato Principal</option>
+          <option value="Tipos de Arroz">Tipos de Arroz</option>
+          <option value="Feijão">Feijão</option>
+          <option value="Salada">Salada</option>
+          <option value="Fruta">Fruta</option>
+          <option value="Bebidas">Bebidas</option>
+        </select>
+
+        <button class="btn-primary" id="btnAdicionarOpcao">Cadastrar no Cardápio</button>
+      </div>
+
+      <!-- MONTAGEM DO CARDÁPIO SEMANAL -->
+      <div style="background: #eff6ff; border: 1px solid var(--blue-border); padding: 15px; border-radius: 10px; margin-bottom: 20px;">
+        <h3 style="font-size: 1em; color: var(--blue-primary); margin-bottom: 10px;">Montar Cardápio Oficial da Semana</h3>
+        <p style="font-size: 0.8em; color: var(--text-gray); margin-bottom: 10px;">Defina o menu diário com base nas votações dos alunos:</p>
+        
+        <input type="text" id="semSegunda" class="input-field" placeholder="Segunda-feira (Ex: Strogonoff de Frango, Arroz, Feijão, Salada e Suco)">
+        <input type="text" id="semTerca" class="input-field" placeholder="Terça-feira (Ex: Macarronada com Carne Moída e Melancia)">
+        <input type="text" id="semQuarta" class="input-field" placeholder="Quarta-feira (Ex: Feijoada Escolar, Arroz e Couve)">
+        <input type="text" id="semQuinta" class="input-field" placeholder="Quinta-feira (Ex: Frango Assado, Polenta e Maçã)">
+        <input type="text" id="semSexta" class="input-field" placeholder="Sexta-feira (Ex: Baião de Dois, Salada e Suco de Laranja)">
+
+        <button class="btn-primary" id="btnSalvarSemanal" style="background: #16a34a;">Salvar e Publicar Cardápio Semanal</button>
+      </div>
+
+      <!-- RESULTADOS DA VOTAÇÃO DO DIA -->
+      <h3>Resultados da Votação de Hoje</h3>
+      <div id="listaResultados" style="margin-top: 10px;"></div>
+      <div style="font-weight: bold; margin: 10px 0; font-size: 0.9em;" id="totalVotos">Total: 0 votos</div>
+
+      <!-- RELATÓRIO DE RESTRIÇÕES E OPINIÕES DOS ALUNOS -->
+      <h3 style="margin-top: 20px; margin-bottom: 10px;">Restrições Alimentares e Opiniões Enviadas</h3>
+      <div id="listaFeedback" style="max-height: 200px; overflow-y: auto; font-size: 0.85em;"></div>
+
+      <div style="display: flex; gap: 10px; margin-top: 20px;">
+        <button class="btn-primary" id="btnZerar" style="background: #ef4444;">Zerar Votação do Dia</button>
+        <button class="btn-admin" id="btnSairAdmin" style="color: var(--text-dark); border-color: #cbd5e1;">Fechar</button>
+      </div>
+
+    </div>
+  </div>
 </div>
-<div id="painelAdmin" style="display:none;">
-<h3 style="color:#1a3a6b;text-align:center;margin-bottom:15px;">📊 Gerenciar Opções</h3>
-<div class="area-adicionar">
-<h4 style="color:#1a3a6b;margin-bottom:10px;">➕ Adicionar nova comida</h4>
-<div class="linha">
-<input type="text" id="novaOpcaoInput" placeholder="Ex: Pizza, Hambúrguer...">
-<input type="text" id="novoEmojiInput" placeholder="🍕" maxlength="2">
-<button class="btn btn-verde btn-pequeno" id="btnAdicionarOpcao">Adicionar</button>
-</div>
-<small style="color:#888;">Digite o nome e escolha um emoji (ex: 🍕, 🍔, 🍝)</small>
-</div>
-<div id="listaResultados"></div>
-<div class="total-votos" id="totalVotos">📊 Total: 0 votos</div>
-<div class="secao-votantes">
-<h4>👥 Quem já votou (<span id="qtdVotantes">0</span>)</h4>
-<div id="listaVotantes"></div>
-</div>
-<div class="grupo-botoes">
-<button class="btn btn-vermelho" id="btnZerar">🔄 Zerar todos os votos</button>
-<button class="btn btn-secundario" id="btnSairAdmin">🚪 Sair</button>
-</div>
-</div>
-</div>
-</div>
+
 <script>
 const DOMINIO_PERMITIDO = '@aluno.edu.pi.gov.br';
 const SENHA_ADMIN = 'admin123';
 
 let opcoes = [];
 let votantesMap = {};
+let cardapioSemanal = [];
 let selecionados = new Set();
 let emailLogado = null;
 
 async function iniciar() {
-  const hoje = new Date();
-  document.getElementById('dataAtual').textContent = '📅 ' + hoje.toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
-  
   await carregarDados();
 
   document.getElementById('btnEntrar').addEventListener('click', fazerLogin);
@@ -164,14 +493,10 @@ async function iniciar() {
   document.getElementById('btnSairUsuario').addEventListener('click', sairUsuario);
   document.getElementById('btnFecharModal').addEventListener('click', fecharModal);
   document.getElementById('btnEntrarAdmin').addEventListener('click', entrarAdmin);
-  document.getElementById('btnSairAdmin').addEventListener('click', sairAdmin);
+  document.getElementById('btnSairAdmin').addEventListener('click', fecharModal);
   document.getElementById('btnZerar').addEventListener('click', zerarVotos);
   document.getElementById('btnAdicionarOpcao').addEventListener('click', adicionarOpcao);
-  document.getElementById('senhaInput').addEventListener('keydown', e => { if (e.key === 'Enter') entrarAdmin(); });
-  document.getElementById('novaOpcaoInput').addEventListener('keydown', e => { if (e.key === 'Enter') adicionarOpcao(); });
-  document.getElementById('novoEmojiInput').addEventListener('keydown', e => { if (e.key === 'Enter') adicionarOpcao(); });
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') fecharModal(); });
-  document.getElementById('modalAdmin').addEventListener('click', function(e) { if (e.target === this) fecharModal(); });
+  document.getElementById('btnSalvarSemanal').addEventListener('click', salvarCardapioSemanal);
 
   const emailSalvo = sessionStorage.getItem('emailLogado');
   if (emailSalvo) {
@@ -184,37 +509,64 @@ async function carregarDados() {
   try {
     const resposta = await fetch('/api/dados');
     const dados = await resposta.json();
-    opcoes = dados.opcoes;
+    opcoes = dados.opcoes || [];
+    cardapioSemanal = dados.cardapioSemanal || [];
     
     votantesMap = {};
-    dados.votantes.forEach(v => {
-      votantesMap[v.email] = {
-        escolhas: v.escolhas.map(e => e._id),
-        escolhasNomes: v.escolhas.map(e => `${e.emoji} ${e.nome}`).join(', '),
-        horario: v.horario
-      };
-    });
+    if (dados.votantes) {
+      dados.votantes.forEach(v => {
+        votantesMap[v.email] = {
+          escolhas: v.escolhas ? v.escolhas.map(e => e._id) : [],
+          escolhasNomes: v.escolhas ? v.escolhas.map(e => e.nome).join(', ') : '',
+          restricao: v.restricao || 'Nenhuma',
+          opiniao: v.opiniao || 'Nenhuma',
+          horario: v.horario
+        };
+      });
+    }
 
+    renderizarCardapioSemanal();
     renderizarOpcoes();
   } catch (erro) {
-    console.error('Erro ao carregar dados do banco:', erro);
+    console.error('Erro ao carregar dados:', erro);
   }
+}
+
+function renderizarCardapioSemanal() {
+  const mapaDias = {
+    'Segunda-feira': 'dia-segunda',
+    'Terça-feira': 'dia-terca',
+    'Quarta-feira': 'dia-quarta',
+    'Quinta-feira': 'dia-quinta',
+    'Sexta-feira': 'dia-sexta'
+  };
+
+  // Preenche valores padrão
+  Object.values(mapaDias).forEach(id => {
+    document.getElementById(id).textContent = 'Não definido';
+  });
+
+  cardapioSemanal.forEach(item => {
+    if (mapaDias[item.dia]) {
+      document.getElementById(mapaDias[item.dia]).textContent = item.refeicao || 'Não definido';
+    }
+  });
 }
 
 function fazerLogin() {
   const input = document.getElementById('emailInput');
   const email = input.value.trim().toLowerCase();
-  document.getElementById('erroLogin').classList.remove('mostrar');
+  const erroBox = document.getElementById('erroLogin');
+  erroBox.style.display = 'none';
 
-  if (!email) { mostrarErro('⚠️ Digite seu email!'); return; }
-  if (!email.includes('@')) { mostrarErro('⚠️ Email inválido!'); return; }
+  if (!email) { mostrarErro('Digite seu e-mail!'); return; }
   if (!email.endsWith(DOMINIO_PERMITIDO)) { 
-    mostrarErro('❌ Apenas emails terminados em <strong>' + DOMINIO_PERMITIDO + '</strong> são aceitos!'); 
+    mostrarErro('Apenas e-mails terminados em <strong>' + DOMINIO_PERMITIDO + '</strong>'); 
     return; 
   }
 
   if (votantesMap[email]) {
-    mostrarErro('⚠️ Este email já votou hoje!<br><small>Escolhas: ' + (votantesMap[email].escolhasNomes || 'Nenhuma') + '</small>');
+    mostrarErro('Você já votou hoje!<br><small>Escolhas: ' + (votantesMap[email].escolhasNomes || 'Nenhuma') + '</small>');
     return;
   }
 
@@ -225,221 +577,240 @@ function fazerLogin() {
 }
 
 function mostrarErro(msg) {
-  const erro = document.getElementById('erroLogin');
-  erro.innerHTML = msg;
-  erro.classList.add('mostrar');
+  const erroBox = document.getElementById('erroLogin');
+  erroBox.innerHTML = msg;
+  erroBox.style.display = 'block';
 }
 
 function mostrarPainelUsuario() {
-  document.getElementById('telaLogin').classList.remove('ativo');
-  document.getElementById('painelUsuario').classList.add('ativo');
+  document.getElementById('telaLogin').style.display = 'none';
+  document.getElementById('painelUsuario').style.display = 'block';
+  document.getElementById('barConfirmacao').style.display = 'flex';
   document.getElementById('emailUsuarioLogado').textContent = emailLogado;
   renderizarOpcoes();
 }
 
 function sairUsuario() {
-  if (!confirm('Deseja sair?')) return;
   emailLogado = null;
   sessionStorage.removeItem('emailLogado');
   selecionados.clear();
-  document.getElementById('telaLogin').classList.add('ativo');
-  document.getElementById('painelUsuario').classList.remove('ativo');
-  document.getElementById('emailInput').value = '';
-  document.getElementById('erroLogin').classList.remove('mostrar');
+  document.getElementById('telaLogin').style.display = 'block';
+  document.getElementById('painelUsuario').style.display = 'none';
+  document.getElementById('barConfirmacao').style.display = 'none';
 }
 
 function renderizarOpcoes() {
-  const container = document.getElementById('opcoesContainer');
+  const container = document.getElementById('categoriasContainer');
   if (!container) return;
   container.innerHTML = '';
 
-  if (opcoes.length === 0) {
-    container.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:30px;color:#888;">😕 Nenhuma opção cadastrada.</div>';
-    return;
-  }
+  const categorias = [
+    'Prato Principal',
+    'Tipos de Arroz',
+    'Feijão',
+    'Salada',
+    'Fruta',
+    'Bebidas'
+  ];
 
-  opcoes.forEach(op => {
-    const div = document.createElement('div');
-    div.className = 'opcao';
-    if (selecionados.has(op._id)) div.classList.add('selecionada');
-    div.dataset.id = op._id;
-    div.innerHTML = '<span class="check">✓</span><span class="emoji">' + (op.emoji || '🍽️') + '</span>' + op.nome;
-    div.addEventListener('click', function() { toggleSelecao(this.dataset.id); });
-    container.appendChild(div);
+  categorias.forEach(cat => {
+    const comidas = opcoes.filter(o => o.categoria === cat);
+
+    if (comidas.length > 0) {
+      const titulo = document.createElement('h3');
+      titulo.className = 'titulo-categoria';
+      titulo.textContent = cat;
+      container.appendChild(titulo);
+
+      const grid = document.createElement('div');
+      grid.className = 'grid-opcoes';
+
+      comidas.forEach(op => {
+        const card = document.createElement('div');
+        card.className = 'card-opcao' + (selecionados.has(op._id) ? ' selecionado' : '');
+        card.innerHTML = `
+          <div class="check-mark">${selecionados.has(op._id) ? '✓' : ''}</div>
+          <h3>${op.nome}</h3>
+          <p>${op.descricao || 'Opção disponível para a merenda.'}</p>
+        `;
+        card.addEventListener('click', function() { toggleSelecao(op._id); });
+        grid.appendChild(card);
+      });
+
+      container.appendChild(grid);
+    }
   });
+
+  document.getElementById('qtdSelecionados').textContent = selecionados.size;
 }
 
 function toggleSelecao(id) {
   if (selecionados.has(id)) { selecionados.delete(id); } else { selecionados.add(id); }
-  atualizarSelecoesUI();
-}
-
-function atualizarSelecoesUI() {
-  document.querySelectorAll('.opcao').forEach(el => {
-    if (selecionados.has(el.dataset.id)) { el.classList.add('selecionada'); } else { el.classList.remove('selecionada'); }
-  });
+  renderizarOpcoes();
 }
 
 async function votar() {
-  if (!emailLogado) { alert('⚠️ Faça login primeiro!'); return; }
-  if (selecionados.size === 0) { alert('⚠️ Marque pelo menos uma opção!'); return; }
+  if (!emailLogado) { alert('Faça login para votar!'); return; }
+  if (selecionados.size === 0) { alert('Selecione pelo menos 1 item!'); return; }
 
-  const escolhasArray = Array.from(selecionados);
+  const restricao = document.getElementById('restricaoInput').value.trim();
+  const opiniao = document.getElementById('opiniaoInput').value.trim();
 
   try {
     const resposta = await fetch('/api/votar', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: emailLogado, escolhasIds: escolhasArray })
+      body: JSON.stringify({ 
+        email: emailLogado, 
+        escolhasIds: Array.from(selecionados),
+        restricao,
+        opiniao
+      })
     });
 
     if (resposta.ok) {
       await carregarDados();
       const msg = document.getElementById('msgConfirmacao');
-      msg.classList.add('mostrar');
-      setTimeout(() => msg.classList.remove('mostrar'), 3000);
+      msg.style.display = 'block';
+      setTimeout(() => msg.style.display = 'none', 3500);
     }
   } catch (erro) {
-    alert('❌ Erro ao salvar seu voto no banco de dados.');
+    alert('Erro ao registrar voto.');
   }
 }
 
-function abrirModal() {
-  document.getElementById('modalAdmin').classList.add('ativo');
-  document.getElementById('senhaInput').value = '';
-  document.getElementById('senhaInput').focus();
-  document.getElementById('loginAdmin').style.display = 'block';
-  document.getElementById('painelAdmin').style.display = 'none';
-}
-
+function abrirModal() { document.getElementById('modalAdmin').classList.add('ativo'); }
 function fecharModal() { document.getElementById('modalAdmin').classList.remove('ativo'); }
 
 function entrarAdmin() {
-  const senha = document.getElementById('senhaInput').value;
-  if (senha === SENHA_ADMIN) {
+  if (document.getElementById('senhaInput').value === SENHA_ADMIN) {
     document.getElementById('loginAdmin').style.display = 'none';
     document.getElementById('painelAdmin').style.display = 'block';
     mostrarResultadosAdmin();
   } else {
-    alert('❌ Senha incorreta!');
-    document.getElementById('senhaInput').value = '';
-    document.getElementById('senhaInput').focus();
+    alert('Senha incorreta!');
   }
-}
-
-function sairAdmin() {
-  document.getElementById('painelAdmin').style.display = 'none';
-  document.getElementById('loginAdmin').style.display = 'block';
-  document.getElementById('senhaInput').value = '';
-  document.getElementById('senhaInput').focus();
 }
 
 function mostrarResultadosAdmin() {
   const container = document.getElementById('listaResultados');
   container.innerHTML = '';
+  let total = 0;
 
-  if (opcoes.length === 0) {
-    container.innerHTML = '<div style="text-align:center;padding:30px;color:#888;">📭 Nenhuma opção.</div>';
-    document.getElementById('totalVotos').textContent = '📊 Total: 0 votos';
-  } else {
-    let total = 0;
-    opcoes.forEach(op => {
-      const qtd = op.votos || 0;
-      total += qtd;
-      const div = document.createElement('div');
-      div.className = 'resultado-item';
-      div.innerHTML = '<span class="nome">' + (op.emoji || '🍽️') + ' ' + op.nome + '</span><span class="numero">' + qtd + '</span><button class="btn-remover" data-id="' + op._id + '" title="Remover">✕</button>';
-      container.appendChild(div);
-    });
+  opcoes.forEach(op => {
+    total += op.votos || 0;
+    const div = document.createElement('div');
+    div.className = 'admin-item';
+    div.innerHTML = `
+      <span><strong>${op.nome}</strong> (${op.categoria})</span>
+      <div>
+        <span style="background:var(--blue-primary); color:white; padding:2px 8px; border-radius:10px; margin-right:8px; font-weight:bold;">${op.votos || 0}</span>
+        <button class="btn-del" onclick="removerOpcao('${op._id}')">✕</button>
+      </div>
+    `;
+    container.appendChild(div);
+  });
 
-    container.querySelectorAll('.btn-remover').forEach(btn => {
-      btn.addEventListener('click', function() { removerOpcao(this.dataset.id); });
-    });
+  document.getElementById('totalVotos').textContent = `Total: ${total} votos acumulados`;
 
-    document.getElementById('totalVotos').textContent = '📊 Total: ' + total + ' votos (' + opcoes.length + ' opções)';
-  }
+  // Preenche formulário do cardápio semanal
+  cardapioSemanal.forEach(item => {
+    if (item.dia === 'Segunda-feira') document.getElementById('semSegunda').value = item.refeicao || '';
+    if (item.dia === 'Terça-feira') document.getElementById('semTerca').value = item.refeicao || '';
+    if (item.dia === 'Quarta-feira') document.getElementById('semQuarta').value = item.refeicao || '';
+    if (item.dia === 'Quinta-feira') document.getElementById('semQuinta').value = item.refeicao || '';
+    if (item.dia === 'Sexta-feira') document.getElementById('semSexta').value = item.refeicao || '';
+  });
 
-  const listaVot = document.getElementById('listaVotantes');
+  // Preenche feedbacks dos alunos
+  const containerFB = document.getElementById('listaFeedback');
+  containerFB.innerHTML = '';
+
   const emails = Object.keys(votantesMap);
-  document.getElementById('qtdVotantes').textContent = emails.length;
-  listaVot.innerHTML = '';
-
   if (emails.length === 0) {
-    listaVot.innerHTML = '<div style="text-align:center;color:#999;padding:15px;">Ninguém votou ainda.</div>';
+    containerFB.innerHTML = '<div style="color:#94a3b8;">Nenhum feedback recebido ainda.</div>';
   } else {
     emails.forEach(email => {
       const v = votantesMap[email];
       const div = document.createElement('div');
-      div.className = 'votante-item';
-      div.innerHTML = '<div class="email">📧 ' + email + '</div><div class="escolhas">🍽️ ' + (v.escolhasNomes || 'Nenhuma') + '</div><div class="horario">🕒 ' + (v.horario || '') + '</div>';
-      listaVot.appendChild(div);
+      div.style.cssText = 'background:#f8fafc; border:1px solid #e2e8f0; padding:8px; border-radius:6px; margin-bottom:6px;';
+      div.innerHTML = `
+        <strong>📧 ${email}</strong><br>
+        <span style="color:#1e3a8a;">⚠️ Restrição:</span> ${v.restricao}<br>
+        <span style="color:#16a34a;">💬 Opinião:</span> ${v.opiniao}
+      `;
+      containerFB.appendChild(div);
     });
   }
 }
 
 async function adicionarOpcao() {
-  const inputNome = document.getElementById('novaOpcaoInput');
-  const inputEmoji = document.getElementById('novoEmojiInput');
-  const nome = inputNome.value.trim();
-  const emoji = inputEmoji.value.trim() || '🍽️';
+  const nome = document.getElementById('novaOpcaoInput').value.trim();
+  const descricao = document.getElementById('novaDescricaoInput').value.trim();
+  const categoria = document.getElementById('categoriaInput').value;
 
-  if (!nome) { alert('⚠️ Digite o nome da comida!'); inputNome.focus(); return; }
+  if (!nome) return alert('Digite o nome do alimento!');
 
   try {
     const resposta = await fetch('/api/opcoes', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ nome, emoji })
+      body: JSON.stringify({ nome, descricao, categoria })
     });
 
     if (resposta.ok) {
-      inputNome.value = '';
-      inputEmoji.value = '';
+      document.getElementById('novaOpcaoInput').value = '';
+      document.getElementById('novaDescricaoInput').value = '';
       await carregarDados();
       mostrarResultadosAdmin();
-      alert('✅ "' + nome + '" foi adicionado ao MongoDB!');
+      alert('Opção adicionada com sucesso!');
     }
-  } catch (erro) {
-    alert('❌ Erro ao salvar nova opção.');
+  } catch (e) {
+    alert('Erro ao salvar opção.');
+  }
+}
+
+async function salvarCardapioSemanal() {
+  const dias = [
+    { dia: 'Segunda-feira', refeicao: document.getElementById('semSegunda').value.trim() },
+    { dia: 'Terça-feira', refeicao: document.getElementById('semTerca').value.trim() },
+    { dia: 'Quarta-feira', refeicao: document.getElementById('semQuarta').value.trim() },
+    { dia: 'Quinta-feira', refeicao: document.getElementById('semQuinta').value.trim() },
+    { dia: 'Sexta-feira', refeicao: document.getElementById('semSexta').value.trim() }
+  ];
+
+  try {
+    const resposta = await fetch('/api/semanal', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ dias })
+    });
+
+    if (resposta.ok) {
+      await carregarDados();
+      alert('Cardápio semanal salvo e publicado para os alunos!');
+    }
+  } catch (e) {
+    alert('Erro ao salvar cardápio semanal.');
   }
 }
 
 async function removerOpcao(id) {
-  const op = opcoes.find(o => o._id === id);
-  if (!op) return;
-  if (!confirm('⚠️ Remover "' + op.nome + '"?\nIsso apagará os votos dela.')) return;
-
-  try {
-    const resposta = await fetch('/api/opcoes/' + id, { method: 'DELETE' });
-    if (resposta.ok) {
-      selecionados.delete(id);
-      await carregarDados();
-      mostrarResultadosAdmin();
-      alert('✅ Opção removida com sucesso!');
-    }
-  } catch (erro) {
-    alert('❌ Erro ao remover opção.');
-  }
+  if (!confirm('Excluir esta opção do cardápio?')) return;
+  await fetch('/api/opcoes/' + id, { method: 'DELETE' });
+  await carregarDados();
+  mostrarResultadosAdmin();
 }
 
 async function zerarVotos() {
-  if (!confirm('⚠️ Zerar TODOS os votos no banco de dados?')) return;
-
-  try {
-    const resposta = await fetch('/api/zerar', { method: 'POST' });
-    if (resposta.ok) {
-      selecionados.clear();
-      await carregarDados();
-      mostrarResultadosAdmin();
-      alert('✅ Todos os votos foram zerados no MongoDB!');
-    }
-  } catch (erro) {
-    alert('❌ Erro ao zerar os votos.');
-  }
+  if (!confirm('Deseja zerar todas as votações do dia?')) return;
+  await fetch('/api/zerar', { method: 'POST' });
+  selecionados.clear();
+  await carregarDados();
+  mostrarResultadosAdmin();
 }
 
 window.onload = iniciar;
 </script>
-
 </body>
 </html>

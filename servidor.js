@@ -6,39 +6,51 @@ const cors = require('cors');
 const aplicacao = express();
 aplicacao.use(cors());
 aplicacao.use(express.json());
-aplicacao.use(express.static('.')); // Serve os arquivos estáticos da página
+aplicacao.use(express.static('.'));
 
 // Conexão com o MongoDB Atlas
 mongoose.connect(process.env.URI_BANCO)
   .then(() => console.log('✅ Conectado ao MongoDB Atlas com sucesso!'))
   .catch((erro) => console.error('❌ Erro de conexão com MongoDB:', erro));
 
-// MODELOS
+// MODELOS DO BANCO
 const Opcao = mongoose.model('Opcao', new mongoose.Schema({
   nome: { type: String, required: true },
-  emoji: { type: String, default: '🍽️' },
+  descricao: { type: String, default: '' },
+  categoria: { type: String, required: true },
   votos: { type: Number, default: 0 }
 }));
 
 const Votante = mongoose.model('Votante', new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   escolhas: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Opcao' }],
+  restricao: { type: String, default: '' },
+  opiniao: { type: String, default: '' },
   horario: { type: String }
 }));
 
+const CardapioSemanal = mongoose.model('CardapioSemanal', new mongoose.Schema({
+  dia: { type: String, required: true, unique: true },
+  refeicao: { type: String, default: '' }
+}));
+
 // ROTAS DA API
-aplicacao.get('/api/dados', async (requisicao, resposta) => {
+
+// Buscar todos os dados
+aplicacao.get('/api/dados', async (req, res) => {
   try {
     const opcoes = await Opcao.find();
     const votantes = await Votante.find().populate('escolhas');
-    resposta.json({ opcoes, votantes });
+    const cardapioSemanal = await CardapioSemanal.find();
+    res.json({ opcoes, votantes, cardapioSemanal });
   } catch (erro) {
-    resposta.status(500).json({ erro: 'Erro ao buscar dados do banco' });
+    res.status(500).json({ erro: 'Erro ao buscar dados do banco' });
   }
 });
 
-aplicacao.post('/api/votar', async (requisicao, resposta) => {
-  const { email, escolhasIds } = requisicao.body;
+// Votar, registrar restrições alimentares e opinião
+aplicacao.post('/api/votar', async (req, res) => {
+  const { email, escolhasIds, restricao, opiniao } = req.body;
 
   try {
     const votanteExistente = await Votante.findOne({ email });
@@ -59,45 +71,77 @@ aplicacao.post('/api/votar', async (requisicao, resposta) => {
 
     await Votante.findOneAndUpdate(
       { email },
-      { escolhas: escolhasIds, horario: horarioAtual },
+      { 
+        escolhas: escolhasIds, 
+        restricao: restricao || '', 
+        opiniao: opiniao || '', 
+        horario: horarioAtual 
+      },
       { upsert: true, new: true }
     );
 
-    resposta.json({ mensagem: 'Voto registrado com sucesso!' });
+    res.json({ mensagem: 'Voto e informações registrados com sucesso!' });
   } catch (erro) {
-    resposta.status(500).json({ erro: 'Erro ao registrar voto' });
+    res.status(500).json({ erro: 'Erro ao registrar voto' });
   }
 });
 
-aplicacao.post('/api/opcoes', async (requisicao, resposta) => {
+// Adicionar nova opção no Admin
+aplicacao.post('/api/opcoes', async (req, res) => {
   try {
-    const { nome, emoji } = requisicao.body;
-    const novaOpcao = new Opcao({ nome, emoji, votos: 0 });
+    const { nome, descricao, categoria } = req.body;
+    const novaOpcao = new Opcao({ 
+      nome, 
+      descricao: descricao || '', 
+      categoria: categoria || 'Prato Principal', 
+      votos: 0 
+    });
     await novaOpcao.save();
-    resposta.status(201).json(novaOpcao);
+    res.status(201).json(novaOpcao);
   } catch (erro) {
-    resposta.status(500).json({ erro: 'Erro ao adicionar opção' });
+    res.status(500).json({ erro: 'Erro ao adicionar opção' });
   }
 });
 
-aplicacao.delete('/api/opcoes/:id', async (requisicao, resposta) => {
+// Remover opção
+aplicacao.delete('/api/opcoes/:id', async (req, res) => {
   try {
-    const { id } = requisicao.params;
+    const { id } = req.params;
     await Opcao.findByIdAndDelete(id);
     await Votante.updateMany({}, { $pull: { escolhas: id } });
-    resposta.json({ mensagem: 'Opção removida!' });
+    res.json({ mensagem: 'Item removido do cardápio!' });
   } catch (erro) {
-    resposta.status(500).json({ erro: 'Erro ao remover opção' });
+    res.status(500).json({ erro: 'Erro ao remover item' });
   }
 });
 
-aplicacao.post('/api/zerar', async (requisicao, resposta) => {
+// Atualizar Cardápio Semanal
+aplicacao.post('/api/semanal', async (req, res) => {
+  try {
+    const { dias } = req.body; // Array com { dia, refeicao }
+    if (Array.isArray(dias)) {
+      for (const item of dias) {
+        await CardapioSemanal.findOneAndUpdate(
+          { dia: item.dia },
+          { refeicao: item.refeicao },
+          { upsert: true, new: true }
+        );
+      }
+    }
+    res.json({ mensagem: 'Cardápio semanal salvo com sucesso!' });
+  } catch (erro) {
+    res.status(500).json({ erro: 'Erro ao salvar cardápio semanal' });
+  }
+});
+
+// Zerar votação do dia
+aplicacao.post('/api/zerar', async (req, res) => {
   try {
     await Opcao.updateMany({}, { votos: 0 });
     await Votante.deleteMany({});
-    resposta.json({ mensagem: 'Votos zerados com sucesso!' });
+    res.json({ mensagem: 'Votação do dia zerada!' });
   } catch (erro) {
-    resposta.status(500).json({ erro: 'Erro ao zerar votos' });
+    res.status(500).json({ erro: 'Erro ao zerar votação' });
   }
 });
 
