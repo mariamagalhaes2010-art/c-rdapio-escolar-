@@ -142,288 +142,304 @@ Exemplo: <em>raquel.nascimento.2010@aluno.edu.pi.gov.br</em>
 </div>
 </div>
 </div>
-
 <script>
-const DOMINIO_PERMITIDO='@aluno.edu.pi.gov.br';
-const SENHA_ADMIN='admin123';
-let opcoes=[],votos={},selecionados=new Set(),votantes={},emailLogado=null;
+const DOMINIO_PERMITIDO = '@aluno.edu.pi.gov.br';
+const SENHA_ADMIN = 'admin123';
 
-function getOpcoesPadrao(){
-return[
-{id:1,nome:'Frango Grelhado',emoji:'🍗'},
-{id:2,nome:'Bife à Parmegiana',emoji:'🥩'},
-{id:3,nome:'Salmão grelhado',emoji:'🐟'},
-{id:4,nome:'Salada Completa',emoji:'🥗'},
-{id:5,nome:'Macarrão com Bolonhesa',emoji:'🍝'},
-{id:6,nome:'Wrap de Frango',emoji:'🌯'}
-];
-}
+let opcoes = [];
+let votantesMap = {};
+let selecionados = new Set();
+let emailLogado = null;
 
-function iniciar(){
-const hoje=new Date();
-document.getElementById('dataAtual').textContent='📅 '+hoje.toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
-carregarDados();
-renderizarOpcoes();
-document.getElementById('btnEntrar').addEventListener('click',fazerLogin);
-document.getElementById('emailInput').addEventListener('keydown',e=>{if(e.key==='Enter')fazerLogin();});
-document.getElementById('btnVotar').addEventListener('click',votar);
-document.getElementById('btnAdmin').addEventListener('click',abrirModal);
-document.getElementById('btnSairUsuario').addEventListener('click',sairUsuario);
-document.getElementById('btnFecharModal').addEventListener('click',fecharModal);
-document.getElementById('btnEntrarAdmin').addEventListener('click',entrarAdmin);
-document.getElementById('btnSairAdmin').addEventListener('click',sairAdmin);
-document.getElementById('btnZerar').addEventListener('click',zerarVotos);
-document.getElementById('btnAdicionarOpcao').addEventListener('click',adicionarOpcao);
-document.getElementById('senhaInput').addEventListener('keydown',e=>{if(e.key==='Enter')entrarAdmin();});
-document.getElementById('novaOpcaoInput').addEventListener('keydown',e=>{if(e.key==='Enter')adicionarOpcao();});
-document.getElementById('novoEmojiInput').addEventListener('keydown',e=>{if(e.key==='Enter')adicionarOpcao();});
-document.addEventListener('keydown',e=>{if(e.key==='Escape')fecharModal();});
-document.getElementById('modalAdmin').addEventListener('click',function(e){if(e.target===this)fecharModal();});
-const emailSalvo=sessionStorage.getItem('emailLogado');
-if(emailSalvo){emailLogado=emailSalvo;mostrarPainelUsuario();}
+async function iniciar() {
+  const hoje = new Date();
+  document.getElementById('dataAtual').textContent = '📅 ' + hoje.toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+  
+  await carregarDados();
+
+  document.getElementById('btnEntrar').addEventListener('click', fazerLogin);
+  document.getElementById('emailInput').addEventListener('keydown', e => { if (e.key === 'Enter') fazerLogin(); });
+  document.getElementById('btnVotar').addEventListener('click', votar);
+  document.getElementById('btnAdmin').addEventListener('click', abrirModal);
+  document.getElementById('btnSairUsuario').addEventListener('click', sairUsuario);
+  document.getElementById('btnFecharModal').addEventListener('click', fecharModal);
+  document.getElementById('btnEntrarAdmin').addEventListener('click', entrarAdmin);
+  document.getElementById('btnSairAdmin').addEventListener('click', sairAdmin);
+  document.getElementById('btnZerar').addEventListener('click', zerarVotos);
+  document.getElementById('btnAdicionarOpcao').addEventListener('click', adicionarOpcao);
+  document.getElementById('senhaInput').addEventListener('keydown', e => { if (e.key === 'Enter') entrarAdmin(); });
+  document.getElementById('novaOpcaoInput').addEventListener('keydown', e => { if (e.key === 'Enter') adicionarOpcao(); });
+  document.getElementById('novoEmojiInput').addEventListener('keydown', e => { if (e.key === 'Enter') adicionarOpcao(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') fecharModal(); });
+  document.getElementById('modalAdmin').addEventListener('click', function(e) { if (e.target === this) fecharModal(); });
+
+  const emailSalvo = sessionStorage.getItem('emailLogado');
+  if (emailSalvo) {
+    emailLogado = emailSalvo;
+    mostrarPainelUsuario();
+  }
 }
 
-function fazerLogin(){
-const input=document.getElementById('emailInput');
-const email=input.value.trim().toLowerCase();
-document.getElementById('erroLogin').classList.remove('mostrar');
-if(!email){mostrarErro('⚠️ Digite seu email!');return;}
-if(!email.includes('@')){mostrarErro('⚠️ Email inválido!');return;}
-if(!email.endsWith(DOMINIO_PERMITIDO)){mostrarErro('❌ Apenas emails terminados em <strong>'+DOMINIO_PERMITIDO+'</strong> são aceitos!');return;}
-carregarVotantes();
-if(votantes[email]){mostrarErro('⚠️ Este email já votou hoje!<br><small>Escolhas: '+obterNomesEscolhas(votantes[email].escolhas)+'</small>');return;}
-emailLogado=email;
-sessionStorage.setItem('emailLogado',email);
-input.value='';
-mostrarPainelUsuario();
+async function carregarDados() {
+  try {
+    const resposta = await fetch('/api/dados');
+    const dados = await resposta.json();
+    opcoes = dados.opcoes;
+    
+    votantesMap = {};
+    dados.votantes.forEach(v => {
+      votantesMap[v.email] = {
+        escolhas: v.escolhas.map(e => e._id),
+        escolhasNomes: v.escolhas.map(e => `${e.emoji} ${e.nome}`).join(', '),
+        horario: v.horario
+      };
+    });
+
+    renderizarOpcoes();
+  } catch (erro) {
+    console.error('Erro ao carregar dados do banco:', erro);
+  }
 }
 
-function mostrarErro(msg){
-const erro=document.getElementById('erroLogin');
-erro.innerHTML=msg;
-erro.classList.add('mostrar');
+function fazerLogin() {
+  const input = document.getElementById('emailInput');
+  const email = input.value.trim().toLowerCase();
+  document.getElementById('erroLogin').classList.remove('mostrar');
+
+  if (!email) { mostrarErro('⚠️ Digite seu email!'); return; }
+  if (!email.includes('@')) { mostrarErro('⚠️ Email inválido!'); return; }
+  if (!email.endsWith(DOMINIO_PERMITIDO)) { 
+    mostrarErro('❌ Apenas emails terminados em <strong>' + DOMINIO_PERMITIDO + '</strong> são aceitos!'); 
+    return; 
+  }
+
+  if (votantesMap[email]) {
+    mostrarErro('⚠️ Este email já votou hoje!<br><small>Escolhas: ' + (votantesMap[email].escolhasNomes || 'Nenhuma') + '</small>');
+    return;
+  }
+
+  emailLogado = email;
+  sessionStorage.setItem('emailLogado', email);
+  input.value = '';
+  mostrarPainelUsuario();
 }
 
-function mostrarPainelUsuario(){
-document.getElementById('telaLogin').classList.remove('ativo');
-document.getElementById('painelUsuario').classList.add('ativo');
-document.getElementById('emailUsuarioLogado').textContent=emailLogado;
-carregarSelecoes();
-renderizarOpcoes();
+function mostrarErro(msg) {
+  const erro = document.getElementById('erroLogin');
+  erro.innerHTML = msg;
+  erro.classList.add('mostrar');
 }
 
-function sairUsuario(){
-if(!confirm('Deseja sair?'))return;
-emailLogado=null;
-sessionStorage.removeItem('emailLogado');
-selecionados.clear();
-document.getElementById('telaLogin').classList.add('ativo');
-document.getElementById('painelUsuario').classList.remove('ativo');
-document.getElementById('emailInput').value='';
-document.getElementById('erroLogin').classList.remove('mostrar');
+function mostrarPainelUsuario() {
+  document.getElementById('telaLogin').classList.remove('ativo');
+  document.getElementById('painelUsuario').classList.add('ativo');
+  document.getElementById('emailUsuarioLogado').textContent = emailLogado;
+  renderizarOpcoes();
 }
 
-function obterNomesEscolhas(ids){
-return ids.map(id=>{const op=opcoes.find(o=>o.id===id);return op?op.emoji+' '+op.nome:'';}).filter(Boolean).join(', ');
+function sairUsuario() {
+  if (!confirm('Deseja sair?')) return;
+  emailLogado = null;
+  sessionStorage.removeItem('emailLogado');
+  selecionados.clear();
+  document.getElementById('telaLogin').classList.add('ativo');
+  document.getElementById('painelUsuario').classList.remove('ativo');
+  document.getElementById('emailInput').value = '';
+  document.getElementById('erroLogin').classList.remove('mostrar');
 }
 
-function carregarDados(){
-const dados=localStorage.getItem('opcoesAlmoco');
-if(dados){opcoes=JSON.parse(dados);}else{opcoes=getOpcoesPadrao();salvarOpcoes();}
-const votosData=localStorage.getItem('votosAlmoco');
-if(votosData){votos=JSON.parse(votosData);}else{votos={};opcoes.forEach(op=>{votos[op.id]=0;});salvarVotos();}
-opcoes.forEach(op=>{if(votos[op.id]===undefined)votos[op.id]=0;});
-salvarVotos();
-carregarVotantes();
+function renderizarOpcoes() {
+  const container = document.getElementById('opcoesContainer');
+  if (!container) return;
+  container.innerHTML = '';
+
+  if (opcoes.length === 0) {
+    container.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:30px;color:#888;">😕 Nenhuma opção cadastrada.</div>';
+    return;
+  }
+
+  opcoes.forEach(op => {
+    const div = document.createElement('div');
+    div.className = 'opcao';
+    if (selecionados.has(op._id)) div.classList.add('selecionada');
+    div.dataset.id = op._id;
+    div.innerHTML = '<span class="check">✓</span><span class="emoji">' + (op.emoji || '🍽️') + '</span>' + op.nome;
+    div.addEventListener('click', function() { toggleSelecao(this.dataset.id); });
+    container.appendChild(div);
+  });
 }
 
-function carregarVotantes(){
-const data=localStorage.getItem('votantesAlmoco');
-votantes=data?JSON.parse(data):{};
+function toggleSelecao(id) {
+  if (selecionados.has(id)) { selecionados.delete(id); } else { selecionados.add(id); }
+  atualizarSelecoesUI();
 }
 
-function salvarVotantes(){localStorage.setItem('votantesAlmoco',JSON.stringify(votantes));}
-function salvarOpcoes(){localStorage.setItem('opcoesAlmoco',JSON.stringify(opcoes));}
-function salvarVotos(){localStorage.setItem('votosAlmoco',JSON.stringify(votos));}
-
-function carregarSelecoes(){
-if(!emailLogado)return;
-const salvas=sessionStorage.getItem('selecoesAtuais_'+emailLogado);
-selecionados.clear();
-if(salvas){JSON.parse(salvas).forEach(id=>selecionados.add(id));atualizarSelecoesUI();}
+function atualizarSelecoesUI() {
+  document.querySelectorAll('.opcao').forEach(el => {
+    if (selecionados.has(el.dataset.id)) { el.classList.add('selecionada'); } else { el.classList.remove('selecionada'); }
+  });
 }
 
-function salvarSelecoes(){
-if(emailLogado){sessionStorage.setItem('selecoesAtuais_'+emailLogado,JSON.stringify([...selecionados]));}
+async function votar() {
+  if (!emailLogado) { alert('⚠️ Faça login primeiro!'); return; }
+  if (selecionados.size === 0) { alert('⚠️ Marque pelo menos uma opção!'); return; }
+
+  const escolhasArray = Array.from(selecionados);
+
+  try {
+    const resposta = await fetch('/api/votar', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: emailLogado, escolhasIds: escolhasArray })
+    });
+
+    if (resposta.ok) {
+      await carregarDados();
+      const msg = document.getElementById('msgConfirmacao');
+      msg.classList.add('mostrar');
+      setTimeout(() => msg.classList.remove('mostrar'), 3000);
+    }
+  } catch (erro) {
+    alert('❌ Erro ao salvar seu voto no banco de dados.');
+  }
 }
 
-function renderizarOpcoes(){
-const container=document.getElementById('opcoesContainer');
-if(!container)return;
-container.innerHTML='';
-if(opcoes.length===0){
-container.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:30px;color:#888;">😕 Nenhuma opção cadastrada.</div>';
-return;
-}
-opcoes.forEach(op=>{
-const div=document.createElement('div');
-div.className='opcao';
-if(selecionados.has(op.id))div.classList.add('selecionada');
-div.dataset.id=op.id;
-div.innerHTML='<span class="check">✓</span><span class="emoji">'+(op.emoji||'🍽️')+'</span>'+op.nome;
-div.addEventListener('click',function(){toggleSelecao(parseInt(this.dataset.id));});
-container.appendChild(div);
-});
+function abrirModal() {
+  document.getElementById('modalAdmin').classList.add('ativo');
+  document.getElementById('senhaInput').value = '';
+  document.getElementById('senhaInput').focus();
+  document.getElementById('loginAdmin').style.display = 'block';
+  document.getElementById('painelAdmin').style.display = 'none';
 }
 
-function toggleSelecao(id){
-if(selecionados.has(id)){selecionados.delete(id);}else{selecionados.add(id);}
-salvarSelecoes();
-atualizarSelecoesUI();
+function fecharModal() { document.getElementById('modalAdmin').classList.remove('ativo'); }
+
+function entrarAdmin() {
+  const senha = document.getElementById('senhaInput').value;
+  if (senha === SENHA_ADMIN) {
+    document.getElementById('loginAdmin').style.display = 'none';
+    document.getElementById('painelAdmin').style.display = 'block';
+    mostrarResultadosAdmin();
+  } else {
+    alert('❌ Senha incorreta!');
+    document.getElementById('senhaInput').value = '';
+    document.getElementById('senhaInput').focus();
+  }
 }
 
-function atualizarSelecoesUI(){
-document.querySelectorAll('.opcao').forEach(el=>{
-const id=parseInt(el.dataset.id);
-if(selecionados.has(id)){el.classList.add('selecionada');}else{el.classList.remove('selecionada');}
-});
+function sairAdmin() {
+  document.getElementById('painelAdmin').style.display = 'none';
+  document.getElementById('loginAdmin').style.display = 'block';
+  document.getElementById('senhaInput').value = '';
+  document.getElementById('senhaInput').focus();
 }
 
-function votar(){
-if(!emailLogado){alert('⚠️ Faça login primeiro!');return;}
-if(selecionados.size===0){alert('⚠️ Marque pelo menos uma opção!');return;}
-carregarVotantes();
-if(votantes[emailLogado]){
-votantes[emailLogado].escolhas.forEach(id=>{if(votos[id]!==undefined&&votos[id]>0)votos[id]--;});
-}
-selecionados.forEach(id=>{votos[id]=(votos[id]||0)+1;});
-votantes[emailLogado]={escolhas:[...selecionados],horario:new Date().toLocaleString('pt-BR')};
-salvarVotos();
-salvarVotantes();
-const msg=document.getElementById('msgConfirmacao');
-msg.classList.add('mostrar');
-setTimeout(()=>msg.classList.remove('mostrar'),3000);
+function mostrarResultadosAdmin() {
+  const container = document.getElementById('listaResultados');
+  container.innerHTML = '';
+
+  if (opcoes.length === 0) {
+    container.innerHTML = '<div style="text-align:center;padding:30px;color:#888;">📭 Nenhuma opção.</div>';
+    document.getElementById('totalVotos').textContent = '📊 Total: 0 votos';
+  } else {
+    let total = 0;
+    opcoes.forEach(op => {
+      const qtd = op.votos || 0;
+      total += qtd;
+      const div = document.createElement('div');
+      div.className = 'resultado-item';
+      div.innerHTML = '<span class="nome">' + (op.emoji || '🍽️') + ' ' + op.nome + '</span><span class="numero">' + qtd + '</span><button class="btn-remover" data-id="' + op._id + '" title="Remover">✕</button>';
+      container.appendChild(div);
+    });
+
+    container.querySelectorAll('.btn-remover').forEach(btn => {
+      btn.addEventListener('click', function() { removerOpcao(this.dataset.id); });
+    });
+
+    document.getElementById('totalVotos').textContent = '📊 Total: ' + total + ' votos (' + opcoes.length + ' opções)';
+  }
+
+  const listaVot = document.getElementById('listaVotantes');
+  const emails = Object.keys(votantesMap);
+  document.getElementById('qtdVotantes').textContent = emails.length;
+  listaVot.innerHTML = '';
+
+  if (emails.length === 0) {
+    listaVot.innerHTML = '<div style="text-align:center;color:#999;padding:15px;">Ninguém votou ainda.</div>';
+  } else {
+    emails.forEach(email => {
+      const v = votantesMap[email];
+      const div = document.createElement('div');
+      div.className = 'votante-item';
+      div.innerHTML = '<div class="email">📧 ' + email + '</div><div class="escolhas">🍽️ ' + (v.escolhasNomes || 'Nenhuma') + '</div><div class="horario">🕒 ' + (v.horario || '') + '</div>';
+      listaVot.appendChild(div);
+    });
+  }
 }
 
-function abrirModal(){
-document.getElementById('modalAdmin').classList.add('ativo');
-document.getElementById('senhaInput').value='';
-document.getElementById('senhaInput').focus();
-document.getElementById('loginAdmin').style.display='block';
-document.getElementById('painelAdmin').style.display='none';
+async function adicionarOpcao() {
+  const inputNome = document.getElementById('novaOpcaoInput');
+  const inputEmoji = document.getElementById('novoEmojiInput');
+  const nome = inputNome.value.trim();
+  const emoji = inputEmoji.value.trim() || '🍽️';
+
+  if (!nome) { alert('⚠️ Digite o nome da comida!'); inputNome.focus(); return; }
+
+  try {
+    const resposta = await fetch('/api/opcoes', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ nome, emoji })
+    });
+
+    if (resposta.ok) {
+      inputNome.value = '';
+      inputEmoji.value = '';
+      await carregarDados();
+      mostrarResultadosAdmin();
+      alert('✅ "' + nome + '" foi adicionado ao MongoDB!');
+    }
+  } catch (erro) {
+    alert('❌ Erro ao salvar nova opção.');
+  }
 }
 
-function fecharModal(){document.getElementById('modalAdmin').classList.remove('ativo');}
+async function removerOpcao(id) {
+  const op = opcoes.find(o => o._id === id);
+  if (!op) return;
+  if (!confirm('⚠️ Remover "' + op.nome + '"?\nIsso apagará os votos dela.')) return;
 
-function entrarAdmin(){
-const senha=document.getElementById('senhaInput').value;
-if(senha===SENHA_ADMIN){
-document.getElementById('loginAdmin').style.display='none';
-document.getElementById('painelAdmin').style.display='block';
-mostrarResultadosAdmin();
-}else{
-alert('❌ Senha incorreta!');
-document.getElementById('senhaInput').value='';
-document.getElementById('senhaInput').focus();
-}
-}
-
-function sairAdmin(){
-document.getElementById('painelAdmin').style.display='none';
-document.getElementById('loginAdmin').style.display='block';
-document.getElementById('senhaInput').value='';
-document.getElementById('senhaInput').focus();
+  try {
+    const resposta = await fetch('/api/opcoes/' + id, { method: 'DELETE' });
+    if (resposta.ok) {
+      selecionados.delete(id);
+      await carregarDados();
+      mostrarResultadosAdmin();
+      alert('✅ Opção removida com sucesso!');
+    }
+  } catch (erro) {
+    alert('❌ Erro ao remover opção.');
+  }
 }
 
-function mostrarResultadosAdmin(){
-const container=document.getElementById('listaResultados');
-container.innerHTML='';
-if(opcoes.length===0){
-container.innerHTML='<div style="text-align:center;padding:30px;color:#888;">📭 Nenhuma opção.</div>';
-document.getElementById('totalVotos').textContent='📊 Total: 0 votos';
-}else{
-let total=0;
-opcoes.forEach(op=>{
-const qtd=votos[op.id]||0;
-total+=qtd;
-const div=document.createElement('div');
-div.className='resultado-item';
-div.innerHTML='<span class="nome">'+(op.emoji||'🍽️')+' '+op.nome+'</span><span class="numero">'+qtd+'</span><button class="btn-remover" data-id="'+op.id+'" title="Remover">✕</button>';
-container.appendChild(div);
-});
-container.querySelectorAll('.btn-remover').forEach(btn=>{
-btn.addEventListener('click',function(){removerOpcao(parseInt(this.dataset.id));});
-});
-document.getElementById('totalVotos').textContent='📊 Total: '+total+' votos ('+opcoes.length+' opções)';
-}
-carregarVotantes();
-const listaVot=document.getElementById('listaVotantes');
-const emails=Object.keys(votantes);
-document.getElementById('qtdVotantes').textContent=emails.length;
-listaVot.innerHTML='';
-if(emails.length===0){
-listaVot.innerHTML='<div style="text-align:center;color:#999;padding:15px;">Ninguém votou ainda.</div>';
-}else{
-emails.forEach(email=>{
-const v=votantes[email];
-const div=document.createElement('div');
-div.className='votante-item';
-div.innerHTML='<div class="email">📧 '+email+'</div><div class="escolhas">🍽️ '+(obterNomesEscolhas(v.escolhas)||'Nenhuma')+'</div><div class="horario">🕒 '+(v.horario||'')+'</div>';
-listaVot.appendChild(div);
-});
-}
+async function zerarVotos() {
+  if (!confirm('⚠️ Zerar TODOS os votos no banco de dados?')) return;
+
+  try {
+    const resposta = await fetch('/api/zerar', { method: 'POST' });
+    if (resposta.ok) {
+      selecionados.clear();
+      await carregarDados();
+      mostrarResultadosAdmin();
+      alert('✅ Todos os votos foram zerados no MongoDB!');
+    }
+  } catch (erro) {
+    alert('❌ Erro ao zerar os votos.');
+  }
 }
 
-function adicionarOpcao(){
-const inputNome=document.getElementById('novaOpcaoInput');
-const inputEmoji=document.getElementById('novoEmojiInput');
-const nome=inputNome.value.trim();
-const emoji=inputEmoji.value.trim()||'🍽️';
-if(!nome){alert('⚠️ Digite o nome da comida!');inputNome.focus();return;}
-if(opcoes.some(op=>op.nome.toLowerCase()===nome.toLowerCase())){alert('⚠️ Esta opção já existe!');inputNome.value='';inputNome.focus();return;}
-const novoId=opcoes.length>0?Math.max(...opcoes.map(o=>o.id))+1:1;
-opcoes.push({id:novoId,nome:nome,emoji:emoji});
-votos[novoId]=0;
-salvarOpcoes();
-salvarVotos();
-inputNome.value='';
-inputEmoji.value='';
-renderizarOpcoes();
-mostrarResultadosAdmin();
-alert('✅ "'+nome+'" foi adicionado!');
-}
-
-function removerOpcao(id){
-const op=opcoes.find(o=>o.id===id);
-if(!op)return;
-if(!confirm('⚠️ Remover "'+op.nome+'"?\nIsso apagará os votos dela.'))return;
-opcoes=opcoes.filter(o=>o.id!==id);
-delete votos[id];
-selecionados.delete(id);
-salvarOpcoes();
-salvarVotos();
-salvarSelecoes();
-renderizarOpcoes();
-mostrarResultadosAdmin();
-alert('✅ "'+op.nome+'" removido!');
-}
-
-function zerarVotos(){
-if(!confirm('⚠️ Zerar TODOS os votos?'))return;
-opcoes.forEach(op=>{votos[op.id]=0;});
-votos={};
-opcoes.forEach(op=>{votos[op.id]=0;});
-votantes={};
-salvarVotos();
-salvarVotantes();
-selecionados.clear();
-salvarSelecoes();
-atualizarSelecoesUI();
-mostrarResultadosAdmin();
-alert('✅ Votos zerados!');
-}
-
-window.onload=iniciar;
+window.onload = iniciar;
 </script>
+
 </body>
 </html>
