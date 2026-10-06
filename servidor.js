@@ -8,12 +8,12 @@ aplicacao.use(cors());
 aplicacao.use(express.json());
 aplicacao.use(express.static('.'));
 
-// Conexão com o MongoDB Atlas
+// Conexão com MongoDB Atlas
 mongoose.connect(process.env.URI_BANCO)
   .then(() => console.log('✅ Conectado ao MongoDB Atlas com sucesso!'))
   .catch((erro) => console.error('❌ Erro de conexão com MongoDB:', erro));
 
-// MODELOS DO BANCO
+// MODELOS DO BANCO DE DADOS
 const Opcao = mongoose.model('Opcao', new mongoose.Schema({
   nome: { type: String, required: true },
   descricao: { type: String, default: '' },
@@ -36,7 +36,7 @@ const CardapioSemanal = mongoose.model('CardapioSemanal', new mongoose.Schema({
 
 // ROTAS DA API
 
-// Buscar todos os dados
+// Buscar dados completos
 aplicacao.get('/api/dados', async (req, res) => {
   try {
     const opcoes = await Opcao.find();
@@ -48,7 +48,7 @@ aplicacao.get('/api/dados', async (req, res) => {
   }
 });
 
-// Votar, registrar restrições alimentares e opinião
+// Registrar voto do aluno
 aplicacao.post('/api/votar', async (req, res) => {
   const { email, escolhasIds, restricao, opiniao } = req.body;
 
@@ -80,16 +80,20 @@ aplicacao.post('/api/votar', async (req, res) => {
       { upsert: true, new: true }
     );
 
-    res.json({ mensagem: 'Voto e informações registrados com sucesso!' });
+    res.json({ mensagem: 'Voto registrado com sucesso!' });
   } catch (erro) {
     res.status(500).json({ erro: 'Erro ao registrar voto' });
   }
 });
 
-// Adicionar nova opção no Admin
+// Cadastrar nova opção no Admin
 aplicacao.post('/api/opcoes', async (req, res) => {
   try {
     const { nome, descricao, categoria } = req.body;
+    if (!nome || !categoria) {
+      return res.status(400).json({ erro: 'Nome e categoria são obrigatórios' });
+    }
+
     const novaOpcao = new Opcao({ 
       nome, 
       descricao: descricao || '', 
@@ -109,16 +113,16 @@ aplicacao.delete('/api/opcoes/:id', async (req, res) => {
     const { id } = req.params;
     await Opcao.findByIdAndDelete(id);
     await Votante.updateMany({}, { $pull: { escolhas: id } });
-    res.json({ mensagem: 'Item removido do cardápio!' });
+    res.json({ mensagem: 'Item removido!' });
   } catch (erro) {
     res.status(500).json({ erro: 'Erro ao remover item' });
   }
 });
 
-// Atualizar Cardápio Semanal
+// Atualizar Cardápio Semanal (Opcional)
 aplicacao.post('/api/semanal', async (req, res) => {
   try {
-    const { dias } = req.body; // Array com { dia, refeicao }
+    const { dias } = req.body;
     if (Array.isArray(dias)) {
       for (const item of dias) {
         await CardapioSemanal.findOneAndUpdate(
@@ -128,7 +132,7 @@ aplicacao.post('/api/semanal', async (req, res) => {
         );
       }
     }
-    res.json({ mensagem: 'Cardápio semanal salvo com sucesso!' });
+    res.json({ mensagem: 'Cardápio semanal atualizado!' });
   } catch (erro) {
     res.status(500).json({ erro: 'Erro ao salvar cardápio semanal' });
   }

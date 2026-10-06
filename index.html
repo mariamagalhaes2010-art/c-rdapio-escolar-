@@ -3,433 +3,459 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cardápio Escolar - Votação da Merenda</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<title>Cardápio Digital Escolar</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root {
-  --blue-primary: #1e3a8a;
-  --blue-hover: #1d4ed8;
-  --blue-light: #eff6ff;
-  --blue-border: #93c5fd;
-  --bg-page: #f1f5f9;
-  --text-dark: #0f172a;
-  --text-gray: #475569;
-  --radius-card: 16px;
+  --bg-dark: #0b132b;
+  --bg-card: #1c2541;
+  --bg-card-hover: #232f54;
+  --primary-blue: #2563eb;
+  --primary-hover: #1d4ed8;
+  --cyan-accent: #38bdf8;
+  --text-light: #f8fafc;
+  --text-muted: #94a3b8;
+  --border-color: rgba(255, 255, 255, 0.1);
+  --border-active: #3b82f6;
+  --radius-lg: 20px;
+  --radius-md: 12px;
 }
 
-* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
 
 body {
-  background-color: var(--bg-page);
-  color: var(--text-dark);
+  background-color: var(--bg-dark);
+  color: var(--text-light);
   min-height: 100vh;
-  padding: 20px 15px 100px 15px;
+  padding-bottom: 120px;
 }
 
-.main-container {
-  max-width: 950px;
+.main-wrapper {
+  max-width: 1000px;
   margin: 0 auto;
+  padding: 20px 15px;
 }
 
-/* CABEÇALHO */
-.header-box {
-  background: var(--blue-primary);
-  color: white;
-  border-radius: var(--radius-card);
+/* HEADER DIGITAL NAVY */
+.app-header {
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
   padding: 25px 20px;
   margin-bottom: 20px;
-  position: relative;
-  box-shadow: 0 10px 25px rgba(30, 58, 138, 0.2);
+  box-shadow: 0 15px 35px rgba(0,0,0,0.4);
 }
 
 .header-top {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 
-.badge-escola {
-  background: rgba(255, 255, 255, 0.2);
-  padding: 4px 12px;
+.badge-tag {
+  background: rgba(37, 99, 235, 0.2);
+  color: var(--cyan-accent);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  padding: 5px 14px;
   border-radius: 50px;
   font-size: 0.8em;
-  font-weight: 600;
-  letter-spacing: 0.5px;
+  font-weight: 700;
+  text-transform: uppercase;
 }
 
-.btn-admin {
-  background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  color: white;
-  padding: 6px 14px;
+.btn-admin-gear {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--border-color);
+  color: var(--text-light);
+  padding: 8px 16px;
   border-radius: 8px;
   cursor: pointer;
   font-size: 0.85em;
   font-weight: 600;
+  transition: all 0.2s;
 }
-.btn-admin:hover { background: rgba(255, 255, 255, 0.15); }
+.btn-admin-gear:hover { background: var(--primary-blue); border-color: var(--primary-blue); }
 
-.header-box h1 { font-size: 1.8em; font-weight: 800; }
-.header-box p { font-size: 0.95em; opacity: 0.9; margin-top: 4px; }
+.app-header h1 { font-size: 2em; font-weight: 800; }
+.app-header p { color: var(--text-muted); font-size: 0.9em; margin-top: 4px; }
 
-/* CARDÁPIO SEMANAL PUBLICADO */
-.secao-semanal {
-  background: white;
-  border-radius: var(--radius-card);
+/* SEÇÃO CARDÁPIO SEMANAL */
+.weekly-section {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
   padding: 20px;
-  margin-bottom: 20px;
-  border: 1px solid #e2e8f0;
+  margin-bottom: 24px;
 }
 
-.secao-semanal h2 {
+.weekly-section h2 {
   font-size: 1.15em;
-  color: var(--blue-primary);
+  color: var(--cyan-accent);
   margin-bottom: 12px;
-  border-bottom: 2px solid var(--blue-light);
-  padding-bottom: 6px;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 8px;
 }
 
-.grid-semanal {
+.weekly-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
   gap: 10px;
 }
 
-.dia-card {
-  background: var(--blue-light);
-  border: 1px solid var(--blue-border);
+.day-card {
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid var(--border-color);
   padding: 12px;
-  border-radius: 10px;
+  border-radius: var(--radius-md);
 }
 
-.dia-card strong { display: block; color: var(--blue-primary); font-size: 0.85em; margin-bottom: 4px; }
-.dia-card span { font-size: 0.88em; color: var(--text-dark); line-height: 1.3; display: block; }
+.day-card strong { display: block; color: var(--cyan-accent); font-size: 0.85em; margin-bottom: 4px; }
+.day-card span { font-size: 0.85em; color: var(--text-muted); line-height: 1.3; display: block; }
 
-/* TELA DE LOGIN */
-.card-login {
-  background: white;
-  border-radius: var(--radius-card);
-  padding: 30px 20px;
-  max-width: 450px;
+/* LOGIN CARD */
+.login-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 35px 25px;
+  max-width: 460px;
   margin: 30px auto;
-  border: 1px solid #e2e8f0;
   text-align: center;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.5);
 }
 
-.card-login h2 { font-size: 1.4em; color: var(--blue-primary); margin-bottom: 8px; }
-.card-login p { color: var(--text-gray); font-size: 0.9em; margin-bottom: 20px; }
+.login-card h2 { font-size: 1.5em; margin-bottom: 8px; }
+.login-card p { color: var(--text-muted); font-size: 0.9em; margin-bottom: 20px; }
 
-.input-field {
+.input-custom {
   width: 100%;
-  padding: 14px;
-  border: 2px solid #cbd5e1;
-  border-radius: 10px;
+  padding: 14px 18px;
+  background: rgba(15, 23, 42, 0.7);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  color: white;
   font-size: 0.95em;
   outline: none;
   margin-bottom: 12px;
 }
-.input-field:focus { border-color: var(--blue-primary); }
+.input-custom:focus { border-color: var(--primary-blue); }
 
-.btn-primary {
+.btn-action {
   width: 100%;
-  background: var(--blue-primary);
+  background: var(--primary-blue);
   color: white;
   border: none;
   padding: 14px;
-  border-radius: 10px;
+  border-radius: var(--radius-md);
   font-size: 1em;
   font-weight: 700;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: all 0.2s;
 }
-.btn-primary:hover { background: var(--blue-hover); }
+.btn-action:hover { background: var(--primary-hover); transform: translateY(-2px); }
 
-.aviso-dominio {
-  background: #f8fafc;
-  border-left: 4px solid var(--blue-primary);
+.alert-domain {
+  background: rgba(37, 99, 235, 0.1);
+  border-left: 3px solid var(--cyan-accent);
   padding: 10px;
   border-radius: 6px;
-  text-align: left;
   font-size: 0.85em;
-  color: var(--text-gray);
-  margin-bottom: 15px;
+  color: var(--cyan-accent);
+  text-align: left;
+  margin-bottom: 16px;
 }
 
-.erro-box {
-  background: #fef2f2;
-  border: 1px solid #fca5a5;
-  color: #991b1b;
+.error-box {
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  color: #fca5a5;
   padding: 10px;
   border-radius: 8px;
   font-size: 0.85em;
-  margin-bottom: 12px;
+  margin-bottom: 14px;
   display: none;
 }
 
-/* PAINEL DE USUÁRIO */
+/* PAINEL USUÁRIO BAR */
 .user-bar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: white;
-  padding: 12px 18px;
-  border-radius: 10px;
-  margin-bottom: 20px;
-  border: 1px solid #e2e8f0;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  padding: 12px 20px;
+  border-radius: var(--radius-md);
+  margin-bottom: 24px;
   font-size: 0.9em;
-  font-weight: 600;
 }
 
 /* CATEGORIAS E OPÇÕES */
-.titulo-categoria {
-  font-size: 1.2em;
-  color: var(--blue-primary);
-  margin: 25px 0 12px 0;
-  border-bottom: 2px solid var(--blue-border);
-  padding-bottom: 5px;
+.category-title {
+  font-size: 1.25em;
+  font-weight: 700;
+  color: var(--text-light);
+  margin: 30px 0 14px 0;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 8px;
 }
 
-.grid-opcoes {
+.cards-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 12px;
+  gap: 14px;
 }
 
-.card-opcao {
-  background: white;
-  border: 2px solid #e2e8f0;
-  border-radius: 12px;
-  padding: 16px;
+.dish-card {
+  background: var(--bg-card);
+  border: 2px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 18px;
   cursor: pointer;
   position: relative;
   transition: all 0.2s;
-}
-
-.card-opcao:hover { border-color: var(--blue-border); background: #f8fafc; }
-.card-opcao.selecionado { border-color: var(--blue-primary); background: var(--blue-light); }
-
-.card-opcao h3 { font-size: 1.05em; color: var(--text-dark); margin-bottom: 4px; }
-.card-opcao p { font-size: 0.85em; color: var(--text-gray); }
-
-.check-mark {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  border: 2px solid #cbd5e1;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 12px;
-  font-weight: bold;
+  flex-direction: column;
+  justify-content: space-between;
 }
-.card-opcao.selecionado .check-mark { background: var(--blue-primary); border-color: var(--blue-primary); color: white; }
 
-/* SEÇÃO DE CAMPOS EXTRAS DO ALUNO */
-.secao-extras {
-  background: white;
-  border-radius: var(--radius-card);
+.dish-card:hover {
+  background: var(--bg-card-hover);
+  border-color: rgba(59, 130, 246, 0.5);
+  transform: translateY(-3px);
+}
+
+.dish-card.selected {
+  border-color: var(--primary-blue);
+  background: rgba(37, 99, 235, 0.15);
+  box-shadow: 0 0 0 2px var(--primary-blue);
+}
+
+.dish-card h3 { font-size: 1.05em; font-weight: 700; margin-bottom: 6px; color: white; }
+.dish-card p { font-size: 0.85em; color: var(--text-muted); line-height: 1.4; }
+
+.check-indicator {
+  position: absolute;
+  top: 14px; right: 14px;
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  border: 2px solid var(--border-color);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.8em; font-weight: bold;
+}
+.dish-card.selected .check-indicator {
+  background: var(--primary-blue);
+  border-color: var(--primary-blue);
+  color: white;
+}
+
+/* CAMPOS DE RESTRIÇÃO E OPINIÃO DO ALUNO */
+.extra-fields-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
   padding: 20px;
-  margin-top: 25px;
-  border: 1px solid #e2e8f0;
+  margin-top: 30px;
 }
 
-.secao-extras h3 { font-size: 1.1em; color: var(--blue-primary); margin-bottom: 12px; }
+.extra-fields-card h3 { font-size: 1.1em; color: var(--cyan-accent); margin-bottom: 12px; }
 
-.textarea-field {
+.textarea-custom {
   width: 100%;
   padding: 12px;
-  border: 1px solid #cbd5e1;
-  border-radius: 8px;
+  background: rgba(15, 23, 42, 0.7);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  color: white;
   font-size: 0.9em;
   resize: vertical;
-  min-height: 60px;
-  margin-bottom: 12px;
+  min-height: 65px;
+  margin-bottom: 14px;
   outline: none;
 }
-.textarea-field:focus { border-color: var(--blue-primary); }
+.textarea-custom:focus { border-color: var(--primary-blue); }
 
-/* BARRA FIXA */
-.bar-confirmar {
+/* BARRA FIXA FLUTUANTE DE CONFIRMAÇÃO */
+.floating-bar {
   position: fixed;
-  bottom: 0; left: 0; width: 100%;
-  background: white;
-  border-top: 2px solid #e2e8f0;
-  padding: 15px 20px;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  box-shadow: 0 -5px 20px rgba(0,0,0,0.1);
+  bottom: 20px; left: 50%;
+  transform: translateX(-50%);
+  width: 90%; max-width: 700px;
+  background: rgba(15, 23, 42, 0.95);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(59, 130, 246, 0.4);
+  padding: 14px 24px;
+  border-radius: 50px;
+  display: flex; align-items: center; justify-content: space-between;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.6);
   z-index: 100;
 }
 
+.btn-confirm-order {
+  background: var(--primary-blue);
+  color: white;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 30px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-confirm-order:hover { background: var(--primary-hover); }
+
 /* MODAL ADMIN */
-.modal {
+.modal-overlay {
   display: none;
   position: fixed;
   top:0; left:0; width:100%; height:100%;
-  background: rgba(0,0,0,0.6);
-  backdrop-filter: blur(4px);
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-  padding: 15px;
+  background: rgba(0,0,0,0.8);
+  backdrop-filter: blur(6px);
+  justify-content: center; align-items: center;
+  z-index: 1000; padding: 15px;
 }
-.modal.ativo { display: flex; }
+.modal-overlay.active { display: flex; }
 
-.modal-conteudo {
-  background: white;
-  border-radius: var(--radius-card);
+.modal-box {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
   padding: 25px;
-  max-width: 700px;
-  width: 100%;
-  max-height: 85vh;
-  overflow-y: auto;
+  max-width: 650px; width: 100%;
+  max-height: 85vh; overflow-y: auto;
 }
 
-.admin-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px;
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  margin-bottom: 6px;
+.admin-item-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 10px; background: rgba(15, 23, 42, 0.5);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md); margin-bottom: 8px;
   font-size: 0.9em;
 }
 
-.btn-del {
-  background: #ef4444;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  padding: 4px 8px;
-  cursor: pointer;
-  font-weight: bold;
+.btn-del-sm {
+  background: rgba(239, 68, 68, 0.2);
+  color: #fca5a5; border: none;
+  border-radius: 50%; width: 26px; height: 26px;
+  cursor: pointer; font-weight: bold;
 }
 
-.sucesso-msg {
-  background: #dcfce7;
-  color: #15803d;
-  padding: 12px;
-  border-radius: 8px;
-  text-align: center;
-  font-weight: bold;
-  margin-top: 15px;
-  display: none;
+.success-toast {
+  background: rgba(16, 185, 129, 0.2);
+  border: 1px solid rgba(16, 185, 129, 0.4);
+  color: #34d399; padding: 12px;
+  border-radius: var(--radius-md);
+  text-align: center; font-weight: bold;
+  margin-top: 15px; display: none;
 }
-.sucesso-msg.ativo { display: block; }
+.success-toast.active { display: block; }
 </style>
 </head>
 <body>
 
-<div class="main-container">
-  
-  <header class="header-box">
+<div class="main-wrapper">
+
+  <!-- CABEÇALHO -->
+  <header class="app-header">
     <div class="header-top">
-      <span class="badge-escola">ESCOLA PÚBLICA ESTADUAL</span>
-      <button class="btn-admin" id="btnAdmin">Área do Administrador</button>
+      <span class="badge-tag">CARDÁPIO DIGITAL ESCOLAR</span>
+      <button class="btn-admin-gear" id="btnAdmin">⚙️ Painel Admin</button>
     </div>
-    <h1>Cardápio e Votação da Merenda Escolar</h1>
-    <p>Escolha os itens da sua refeição diária e acompanhe o cardápio oficial</p>
+    <h1>Votação da Merenda Escolar</h1>
+    <p>Selecione os pratos da sua preferência para a refeição diária</p>
   </header>
 
-  <!-- SEÇÃO CARDÁPIO SEMANAL -->
-  <section class="secao-semanal">
+  <!-- SEÇÃO DO CARDÁPIO SEMANAL (OPCIONAL) -->
+  <section class="weekly-section">
     <h2>📅 Cardápio Oficial da Semana</h2>
-    <div class="grid-semanal" id="containerCardapioSemanal">
-      <div class="dia-card"><strong>Segunda-feira</strong><span id="dia-segunda">Carregando...</span></div>
-      <div class="dia-card"><strong>Terça-feira</strong><span id="dia-terca">Carregando...</span></div>
-      <div class="dia-card"><strong>Quarta-feira</strong><span id="dia-quarta">Carregando...</span></div>
-      <div class="dia-card"><strong>Quinta-feira</strong><span id="dia-quinta">Carregando...</span></div>
-      <div class="dia-card"><strong>Sexta-feira</strong><span id="dia-sexta">Carregando...</span></div>
+    <div class="weekly-grid">
+      <div class="day-card"><strong>Segunda-feira</strong><span id="dia-segunda">Aguardando definição pós-votação</span></div>
+      <div class="day-card"><strong>Terça-feira</strong><span id="dia-terca">Aguardando definição pós-votação</span></div>
+      <div class="day-card"><strong>Quarta-feira</strong><span id="dia-quarta">Aguardando definição pós-votação</span></div>
+      <div class="day-card"><strong>Quinta-feira</strong><span id="dia-quinta">Aguardando definição pós-votação</span></div>
+      <div class="day-card"><strong>Sexta-feira</strong><span id="dia-sexta">Aguardando definição pós-votação</span></div>
     </div>
   </section>
 
   <!-- TELA DE LOGIN -->
-  <div id="telaLogin" class="card-login">
-    <h2>Identificação do Aluno</h2>
-    <p>Digite seu e-mail institucional para votar</p>
+  <div id="telaLogin" class="login-card">
+    <h2>🔑 Acesso do Aluno</h2>
+    <p>Digite seu e-mail da escola para votar</p>
     
-    <div class="aviso-dominio">
-      Apenas e-mails terminados em <strong>@aluno.edu.pi.gov.br</strong>
+    <div class="alert-domain">
+      📧 Apenas e-mails terminados em <strong>@aluno.edu.pi.gov.br</strong>
     </div>
 
-    <div class="erro-box" id="erroLogin"></div>
+    <div class="error-box" id="erroLogin"></div>
 
-    <input type="email" id="emailInput" class="input-field" placeholder="seu.nome@aluno.edu.pi.gov.br">
-    <button class="btn-primary" id="btnEntrar">Entrar para Votar</button>
+    <input type="email" id="emailInput" class="input-custom" placeholder="seu.nome@aluno.edu.pi.gov.br">
+    <button class="btn-action" id="btnEntrar">Entrar e Votar</button>
   </div>
 
-  <!-- PAINEL DE VOTAÇÃO -->
+  <!-- PAINEL DO ALUNO -->
   <div id="painelUsuario" style="display: none;">
     <div class="user-bar">
-      <span>Aluno: <strong id="emailUsuarioLogado"></strong></span>
-      <button class="btn-admin" id="btnSairUsuario" style="color: #ef4444; border-color: #fca5a5;">Sair</button>
+      <span>Aluno logado: <strong id="emailUsuarioLogado" style="color: var(--cyan-accent);"></strong></span>
+      <button class="btn-admin-gear" id="btnSairUsuario" style="background: rgba(239, 68, 68, 0.15); color: #fca5a5;">Sair 🚪</button>
     </div>
 
-    <p style="margin-bottom: 15px; color: var(--text-gray); font-size: 0.95em;">
-      Marque os itens que você gostaria de comer hoje:
-    </p>
-
-    <!-- CONTAINER DAS OPÇÕES POR CATEGORIA -->
+    <!-- CONTAINER DAS CATEGORIAS -->
     <div id="categoriasContainer"></div>
 
-    <!-- SEÇÃO RESTRIÇÕES E OPINIÃO -->
-    <div class="secao-extras">
-      <h3>Informações Adicionais (Opcional)</h3>
+    <!-- CAMPOS DE RESTRIÇÃO E SUGGESTÕES -->
+    <div class="extra-fields-card">
+      <h3>Informações Complementares (Opcional)</h3>
       
-      <label style="display:block; font-size:0.85em; font-weight:600; margin-bottom:4px; color:var(--text-gray);">
-        Você possui alguma restrição alimentar ou alergia?
+      <label style="display:block; font-size:0.85em; color:var(--text-muted); margin-bottom:4px;">
+        Possui alguma restrição alimentar ou alergia?
       </label>
-      <textarea id="restricaoInput" class="textarea-field" placeholder="Ex: Intolerância à lactose, alergia a amendoim, sou vegetariano..."></textarea>
+      <textarea id="restricaoInput" class="textarea-custom" placeholder="Ex: Intolerância a lactose, alergia a corante, vegetariano..."></textarea>
 
-      <label style="display:block; font-size:0.85em; font-weight:600; margin-bottom:4px; color:var(--text-gray);">
-        Sua opinião ou sugestão sobre a merenda da escola:
+      <label style="display:block; font-size:0.85em; color:var(--text-muted); margin-bottom:4px;">
+        Sua opinião ou sugestão para a merenda da escola:
       </label>
-      <textarea id="opiniaoInput" class="textarea-field" placeholder="Escreva aqui sua sugestão para melhorar nossa refeição..."></textarea>
+      <textarea id="opiniaoInput" class="textarea-custom" placeholder="Deixe sua opinião sobre as refeições do dia a dia..."></textarea>
     </div>
 
-    <div class="sucesso-msg" id="msgConfirmacao">Voto e informações gravados com sucesso! Obrigado!</div>
+    <div class="success-toast" id="msgConfirmacao">🎉 Suas escolhas e informações foram salvas com sucesso!</div>
   </div>
 
 </div>
 
-<!-- BARRA FIXA DE CONFIRMAÇÃO -->
-<div class="bar-confirmar" id="barConfirmacao" style="display: none;">
-  <span style="font-weight: 600;">Itens selecionados: <strong id="qtdSelecionados" style="color: var(--blue-primary);">0</strong></span>
-  <button class="btn-primary" id="btnVotar" style="width: auto; padding: 10px 25px;">Confirmar Refeição</button>
+<!-- BARRA FIXA FLUTUANTE DE CONFIRMAÇÃO -->
+<div class="floating-bar" id="barConfirmacao" style="display: none;">
+  <span>Itens selecionados: <strong id="qtdSelecionados" style="color: var(--cyan-accent);">0</strong></span>
+  <button class="btn-confirm-order" id="btnVotar">Confirmar Refeição</button>
 </div>
 
-<!-- MODAL ADMINISTRADOR -->
-<div class="modal" id="modalAdmin">
-  <div class="modal-conteudo">
-    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
-      <h2>Painel Administrativo</h2>
-      <button id="btnFecharModal" style="background:none; border:none; font-size:1.2em; cursor:pointer;">✕</button>
+<!-- MODAL ADMIN -->
+<div class="modal-overlay" id="modalAdmin">
+  <div class="modal-box">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; border-bottom:1px solid var(--border-color); padding-bottom:10px;">
+      <h2>⚙️ Painel de Administração</h2>
+      <button id="btnFecharModal" style="background:none; border:none; color:white; font-size:1.4em; cursor:pointer;">✕</button>
     </div>
 
     <!-- LOGIN ADMIN -->
     <div id="loginAdmin">
-      <p style="color: var(--text-gray); margin-bottom: 10px;">Digite a senha do administrador:</p>
-      <input type="password" id="senhaInput" class="input-field" placeholder="Senha...">
-      <button class="btn-primary" id="btnEntrarAdmin">Acessar Painel</button>
+      <p style="color: var(--text-muted); margin-bottom: 10px;">Digite a senha do administrador:</p>
+      <input type="password" id="senhaInput" class="input-custom" placeholder="Senha...">
+      <button class="btn-action" id="btnEntrarAdmin">Acessar Painel</button>
     </div>
 
     <!-- CONTEÚDO ADMIN -->
     <div id="painelAdmin" style="display: none;">
       
-      <!-- CADASTRAR OPÇÃO DE VOTAÇÃO -->
-      <div style="background: #f8fafc; border: 1px solid #e2e8f0; padding: 15px; border-radius: 10px; margin-bottom: 20px;">
-        <h3 style="font-size: 1em; color: var(--blue-primary); margin-bottom: 10px;">Adicionar Opção para Votação</h3>
-        <input type="text" id="novaOpcaoInput" class="input-field" placeholder="Nome do alimento (Ex: Arroz Integral)">
-        <input type="text" id="novaDescricaoInput" class="input-field" placeholder="Descrição (Ex: Arroz rico em fibras)">
+      <!-- CONFIRMAÇÃO DE AÇÃO DO ADMIN -->
+      <div class="success-toast" id="msgAdminSucesso"></div>
+
+      <!-- CADASTRAR OPÇÃO DE COMIDA -->
+      <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid var(--border-color); padding: 15px; border-radius: var(--radius-md); margin-bottom: 20px;">
+        <h3 style="color: var(--cyan-accent); margin-bottom: 10px; font-size: 1.05em;">➕ Cadastrar Opção no Cardápio</h3>
         
-        <select id="categoriaInput" class="input-field">
+        <input type="text" id="novaOpcaoInput" class="input-custom" placeholder="Nome da comida (Ex: Frango Grelhado)">
+        <input type="text" id="novaDescricaoInput" class="input-custom" placeholder="Descrição opcional (Ex: Com tempero verde natural)">
+        
+        <select id="categoriaInput" class="input-custom" style="background: #0f172a;">
           <option value="Prato Principal">Prato Principal</option>
           <option value="Tipos de Arroz">Tipos de Arroz</option>
           <option value="Feijão">Feijão</option>
@@ -438,35 +464,34 @@ body {
           <option value="Bebidas">Bebidas</option>
         </select>
 
-        <button class="btn-primary" id="btnAdicionarOpcao">Cadastrar no Cardápio</button>
+        <button class="btn-action" id="btnAdicionarOpcao">Salvar no Cardápio</button>
       </div>
 
-      <!-- MONTAGEM DO CARDÁPIO SEMANAL -->
-      <div style="background: #eff6ff; border: 1px solid var(--blue-border); padding: 15px; border-radius: 10px; margin-bottom: 20px;">
-        <h3 style="font-size: 1em; color: var(--blue-primary); margin-bottom: 10px;">Montar Cardápio Oficial da Semana</h3>
-        <p style="font-size: 0.8em; color: var(--text-gray); margin-bottom: 10px;">Defina o menu diário com base nas votações dos alunos:</p>
+      <!-- MONTAGEM DO CARDÁPIO SEMANAL (TOTALMENTE OPCIONAL) -->
+      <div style="background: rgba(37, 99, 235, 0.1); border: 1px solid var(--border-active); padding: 15px; border-radius: var(--radius-md); margin-bottom: 20px;">
+        <h3 style="color: var(--cyan-accent); margin-bottom: 6px; font-size: 1.05em;">📅 Publicar Cardápio Oficial Semanal (Opcional)</h3>
+        <p style="font-size: 0.8em; color: var(--text-muted); margin-bottom: 12px;">Preencha para divulgar aos alunos após analisar os resultados das votações:</p>
         
-        <input type="text" id="semSegunda" class="input-field" placeholder="Segunda-feira (Ex: Strogonoff de Frango, Arroz, Feijão, Salada e Suco)">
-        <input type="text" id="semTerca" class="input-field" placeholder="Terça-feira (Ex: Macarronada com Carne Moída e Melancia)">
-        <input type="text" id="semQuarta" class="input-field" placeholder="Quarta-feira (Ex: Feijoada Escolar, Arroz e Couve)">
-        <input type="text" id="semQuinta" class="input-field" placeholder="Quinta-feira (Ex: Frango Assado, Polenta e Maçã)">
-        <input type="text" id="semSexta" class="input-field" placeholder="Sexta-feira (Ex: Baião de Dois, Salada e Suco de Laranja)">
+        <input type="text" id="semSegunda" class="input-custom" placeholder="Segunda-feira (Ex: Strogonoff de Frango e Arroz)">
+        <input type="text" id="semTerca" class="input-custom" placeholder="Terça-feira (Ex: Macarronada e Suco de Laranja)">
+        <input type="text" id="semQuarta" class="input-custom" placeholder="Quarta-feira (Ex: Feijoada Escolar e Couve)">
+        <input type="text" id="semQuinta" class="input-custom" placeholder="Quinta-feira (Ex: Frango Assado e Salada)">
+        <input type="text" id="semSexta" class="input-custom" placeholder="Sexta-feira (Ex: Baião de Dois e Fruta)">
 
-        <button class="btn-primary" id="btnSalvarSemanal" style="background: #16a34a;">Salvar e Publicar Cardápio Semanal</button>
+        <button class="btn-action" id="btnSalvarSemanal" style="background: #10b981;">Publicar Cardápio Semanal</button>
       </div>
 
-      <!-- RESULTADOS DA VOTAÇÃO DO DIA -->
-      <h3>Resultados da Votação de Hoje</h3>
-      <div id="listaResultados" style="margin-top: 10px;"></div>
-      <div style="font-weight: bold; margin: 10px 0; font-size: 0.9em;" id="totalVotos">Total: 0 votos</div>
+      <!-- VOTAÇÃO E RELATÓRIOS -->
+      <h3 style="margin-bottom: 10px;">📊 Resultado das Votações do Dia</h3>
+      <div id="listaResultados"></div>
+      <div style="font-weight: bold; margin: 10px 0; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 8px; text-align: center;" id="totalVotos">Total: 0 votos</div>
 
-      <!-- RELATÓRIO DE RESTRIÇÕES E OPINIÕES DOS ALUNOS -->
-      <h3 style="margin-top: 20px; margin-bottom: 10px;">Restrições Alimentares e Opiniões Enviadas</h3>
-      <div id="listaFeedback" style="max-height: 200px; overflow-y: auto; font-size: 0.85em;"></div>
+      <h3 style="margin-top: 20px; margin-bottom: 10px;">💬 Restrições e Sugestões dos Alunos</h3>
+      <div id="listaFeedback" style="max-height: 180px; overflow-y: auto; font-size: 0.85em;"></div>
 
       <div style="display: flex; gap: 10px; margin-top: 20px;">
-        <button class="btn-primary" id="btnZerar" style="background: #ef4444;">Zerar Votação do Dia</button>
-        <button class="btn-admin" id="btnSairAdmin" style="color: var(--text-dark); border-color: #cbd5e1;">Fechar</button>
+        <button class="btn-action" id="btnZerar" style="background: #ef4444;">🔄 Zerar Votos do Dia</button>
+        <button class="btn-action" id="btnSairAdmin" style="background: rgba(255,255,255,0.1);">Fechar Admin</button>
       </div>
 
     </div>
@@ -541,14 +566,9 @@ function renderizarCardapioSemanal() {
     'Sexta-feira': 'dia-sexta'
   };
 
-  // Preenche valores padrão
-  Object.values(mapaDias).forEach(id => {
-    document.getElementById(id).textContent = 'Não definido';
-  });
-
   cardapioSemanal.forEach(item => {
-    if (mapaDias[item.dia]) {
-      document.getElementById(mapaDias[item.dia]).textContent = item.refeicao || 'Não definido';
+    if (mapaDias[item.dia] && item.refeicao) {
+      document.getElementById(mapaDias[item.dia]).textContent = item.refeicao;
     }
   });
 }
@@ -613,25 +633,30 @@ function renderizarOpcoes() {
     'Bebidas'
   ];
 
+  let totalExibido = 0;
+
   categorias.forEach(cat => {
     const comidas = opcoes.filter(o => o.categoria === cat);
 
     if (comidas.length > 0) {
+      totalExibido += comidas.length;
       const titulo = document.createElement('h3');
-      titulo.className = 'titulo-categoria';
+      titulo.className = 'category-title';
       titulo.textContent = cat;
       container.appendChild(titulo);
 
       const grid = document.createElement('div');
-      grid.className = 'grid-opcoes';
+      grid.className = 'cards-grid';
 
       comidas.forEach(op => {
         const card = document.createElement('div');
-        card.className = 'card-opcao' + (selecionados.has(op._id) ? ' selecionado' : '');
+        card.className = 'dish-card' + (selecionados.has(op._id) ? ' selected' : '');
         card.innerHTML = `
-          <div class="check-mark">${selecionados.has(op._id) ? '✓' : ''}</div>
-          <h3>${op.nome}</h3>
-          <p>${op.descricao || 'Opção disponível para a merenda.'}</p>
+          <div>
+            <div class="check-indicator">${selecionados.has(op._id) ? '✓' : '+'}</div>
+            <h3>${op.nome}</h3>
+            <p>${op.descricao || 'Opção disponível para o cardápio de hoje.'}</p>
+          </div>
         `;
         card.addEventListener('click', function() { toggleSelecao(op._id); });
         grid.appendChild(card);
@@ -640,6 +665,10 @@ function renderizarOpcoes() {
       container.appendChild(grid);
     }
   });
+
+  if (totalExibido === 0) {
+    container.innerHTML = '<div style="text-align:center; padding:40px; color:var(--text-muted);">Nenhum item cadastrado no cardápio ainda. O administrador precisa cadastrar as opções no Painel Admin.</div>';
+  }
 
   document.getElementById('qtdSelecionados').textContent = selecionados.size;
 }
@@ -650,8 +679,8 @@ function toggleSelecao(id) {
 }
 
 async function votar() {
-  if (!emailLogado) { alert('Faça login para votar!'); return; }
-  if (selecionados.size === 0) { alert('Selecione pelo menos 1 item!'); return; }
+  if (!emailLogado) { alert('Faça login primeiro!'); return; }
+  if (selecionados.size === 0) { alert('Selecione pelo menos 1 item para seu prato!'); return; }
 
   const restricao = document.getElementById('restricaoInput').value.trim();
   const opiniao = document.getElementById('opiniaoInput').value.trim();
@@ -671,16 +700,16 @@ async function votar() {
     if (resposta.ok) {
       await carregarDados();
       const msg = document.getElementById('msgConfirmacao');
-      msg.style.display = 'block';
-      setTimeout(() => msg.style.display = 'none', 3500);
+      msg.classList.add('active');
+      setTimeout(() => msg.classList.remove('active'), 4000);
     }
   } catch (erro) {
     alert('Erro ao registrar voto.');
   }
 }
 
-function abrirModal() { document.getElementById('modalAdmin').classList.add('ativo'); }
-function fecharModal() { document.getElementById('modalAdmin').classList.remove('ativo'); }
+function abrirModal() { document.getElementById('modalAdmin').classList.add('active'); }
+function fecharModal() { document.getElementById('modalAdmin').classList.remove('active'); }
 
 function entrarAdmin() {
   if (document.getElementById('senhaInput').value === SENHA_ADMIN) {
@@ -692,6 +721,13 @@ function entrarAdmin() {
   }
 }
 
+function mostrarAdminToast(msg) {
+  const toast = document.getElementById('msgAdminSucesso');
+  toast.textContent = msg;
+  toast.classList.add('active');
+  setTimeout(() => toast.classList.remove('active'), 3500);
+}
+
 function mostrarResultadosAdmin() {
   const container = document.getElementById('listaResultados');
   container.innerHTML = '';
@@ -700,20 +736,20 @@ function mostrarResultadosAdmin() {
   opcoes.forEach(op => {
     total += op.votos || 0;
     const div = document.createElement('div');
-    div.className = 'admin-item';
+    div.className = 'admin-item-row';
     div.innerHTML = `
       <span><strong>${op.nome}</strong> (${op.categoria})</span>
       <div>
-        <span style="background:var(--blue-primary); color:white; padding:2px 8px; border-radius:10px; margin-right:8px; font-weight:bold;">${op.votos || 0}</span>
-        <button class="btn-del" onclick="removerOpcao('${op._id}')">✕</button>
+        <span style="background:var(--primary-blue); color:white; padding:2px 8px; border-radius:10px; margin-right:8px; font-weight:bold;">${op.votos || 0}</span>
+        <button class="btn-del-sm" onclick="removerOpcao('${op._id}')">✕</button>
       </div>
     `;
     container.appendChild(div);
   });
 
-  document.getElementById('totalVotos').textContent = `Total: ${total} votos acumulados`;
+  document.getElementById('totalVotos').textContent = `Total: ${total} seleções no sistema`;
 
-  // Preenche formulário do cardápio semanal
+  // Preenche formulário semanal caso já exista
   cardapioSemanal.forEach(item => {
     if (item.dia === 'Segunda-feira') document.getElementById('semSegunda').value = item.refeicao || '';
     if (item.dia === 'Terça-feira') document.getElementById('semTerca').value = item.refeicao || '';
@@ -722,22 +758,22 @@ function mostrarResultadosAdmin() {
     if (item.dia === 'Sexta-feira') document.getElementById('semSexta').value = item.refeicao || '';
   });
 
-  // Preenche feedbacks dos alunos
+  // Preenche comentários/restrições
   const containerFB = document.getElementById('listaFeedback');
   containerFB.innerHTML = '';
 
   const emails = Object.keys(votantesMap);
   if (emails.length === 0) {
-    containerFB.innerHTML = '<div style="color:#94a3b8;">Nenhum feedback recebido ainda.</div>';
+    containerFB.innerHTML = '<div style="color:var(--text-muted);">Nenhum feedback recebido ainda.</div>';
   } else {
     emails.forEach(email => {
       const v = votantesMap[email];
       const div = document.createElement('div');
-      div.style.cssText = 'background:#f8fafc; border:1px solid #e2e8f0; padding:8px; border-radius:6px; margin-bottom:6px;';
+      div.style.cssText = 'background:rgba(15, 23, 42, 0.5); border:1px solid var(--border-color); padding:8px; border-radius:6px; margin-bottom:6px;';
       div.innerHTML = `
         <strong>📧 ${email}</strong><br>
-        <span style="color:#1e3a8a;">⚠️ Restrição:</span> ${v.restricao}<br>
-        <span style="color:#16a34a;">💬 Opinião:</span> ${v.opiniao}
+        <span style="color:var(--cyan-accent);">⚠️ Restrição:</span> ${v.restricao}<br>
+        <span style="color:#10b981;">💬 Opinião:</span> ${v.opiniao}
       `;
       containerFB.appendChild(div);
     });
@@ -749,7 +785,7 @@ async function adicionarOpcao() {
   const descricao = document.getElementById('novaDescricaoInput').value.trim();
   const categoria = document.getElementById('categoriaInput').value;
 
-  if (!nome) return alert('Digite o nome do alimento!');
+  if (!nome) return alert('Digite o nome da comida!');
 
   try {
     const resposta = await fetch('/api/opcoes', {
@@ -761,12 +797,15 @@ async function adicionarOpcao() {
     if (resposta.ok) {
       document.getElementById('novaOpcaoInput').value = '';
       document.getElementById('novaDescricaoInput').value = '';
+      
       await carregarDados();
       mostrarResultadosAdmin();
-      alert('Opção adicionada com sucesso!');
+      mostrarAdminToast('✅ "' + nome + '" cadastrado com sucesso e publicado nas escolhas!');
+    } else {
+      alert('Erro ao salvar no servidor.');
     }
   } catch (e) {
-    alert('Erro ao salvar opção.');
+    alert('Erro de conexão ao salvar opção.');
   }
 }
 
@@ -788,7 +827,7 @@ async function salvarCardapioSemanal() {
 
     if (resposta.ok) {
       await carregarDados();
-      alert('Cardápio semanal salvo e publicado para os alunos!');
+      mostrarAdminToast('✅ Cardápio semanal atualizado e exibido no topo!');
     }
   } catch (e) {
     alert('Erro ao salvar cardápio semanal.');
@@ -796,18 +835,20 @@ async function salvarCardapioSemanal() {
 }
 
 async function removerOpcao(id) {
-  if (!confirm('Excluir esta opção do cardápio?')) return;
+  if (!confirm('Remover este item do cardápio?')) return;
   await fetch('/api/opcoes/' + id, { method: 'DELETE' });
   await carregarDados();
   mostrarResultadosAdmin();
+  mostrarAdminToast('Item removido com sucesso!');
 }
 
 async function zerarVotos() {
-  if (!confirm('Deseja zerar todas as votações do dia?')) return;
+  if (!confirm('Deseja zerar as votações de hoje?')) return;
   await fetch('/api/zerar', { method: 'POST' });
   selecionados.clear();
   await carregarDados();
   mostrarResultadosAdmin();
+  mostrarAdminToast('Votação diária zerada!');
 }
 
 window.onload = iniciar;
